@@ -1,4 +1,4 @@
-# Career Counselling Portal
+# Career Counselling Portal:)
 
 Clone the Project and then run the following commands:
 1) npm install
