@@ -1,4 +1,124 @@
-.me{
-    color: var(--purple);
-    font-family: var(--fontHeading);
+
+.card 
+{
+  width: 80%;
+  height: 70vh;
+  margin: auto;
+  border-radius: 8px;
+  box-shadow:  4px 5px 10px var(--blue);
+  
 }
+.robot{
+    color: bisque;
+}
+.card__row {
+  display: flex;
+}
+
+.card__col {
+  flex: 1;
+}
+
+.card__image {
+  overflow: hidden;
+  border-radius: 8px 0 0 8px;
+}
+
+.cardImage img {
+  width: 90%;
+  height: auto;
+  border-radius: 8px 0 0 8px;
+}
+
+.card__content {
+  padding: 20px;
+}
+
+.cardTitle {
+  font-size: 2.2em;
+  margin-bottom: 5px;
+  color: var(--blue);
+  text-shadow:  1px 1px 2px violet;
+  font-family: var(--fontHeading);
+}
+
+.cardText {
+  font-size: 1.1em;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  font-family: var(--fontHeading);
+ 
+}
+
+
+.chatButton {
+   cursor: pointer;
+   transition: background-color 0.3s var(--lightPink);
+   padding: 10px 10px 10px 10px;
+   border: 2px solid var(--blue);
+   background-color: var(--blue);
+   color: white;
+   font-family: var(--fontHeading);
+   box-shadow: 2px 4px 4px var(--purple);
+
+}
+.loginButton {
+    cursor: pointer;
+    background-color: var(--lavender);
+    transition: background-color 0.3s var(--lightPink);
+    margin-left:300px;
+    padding: 10px 10px 10px 10px;
+    border: 1px solid var(--blue);
+    font-family: var(--fontHeading);
+    box-shadow: 2px 4px 4px var(--purple);
+
+}
+
+.loginButton:hover {
+  background-color: var(--lavender );
+}
+.chatButton:hover {
+    background-color: var(--blue );
+    color: white;
+}
+@media screen and (max-width:1143px)
+{
+    .loginButton {
+        margin-left: 180px; 
+      }
+}
+@media screen  and (max-width: 854px) {
+    .card {
+      width: 90%;
+      height: auto; 
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .card__row {
+      flex-direction: column;
+    }
+  
+    .card__col {
+      flex: initial;
+      width: 100%;
+    }
+  
+    .card__image {
+      border-radius: 8px 8px 0 0;
+    }
+  
+    .cardImage img {
+      border-radius: 8px 8px 0 0;
+    }
+  
+    .card__content {
+      padding: 20px;
+      order: -1;
+    }
+  
+    .loginButton {
+      margin-left: 0;
+    }
+}
+  
