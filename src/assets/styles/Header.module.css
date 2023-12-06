@@ -1,0 +1,74 @@
+
+.navigation
+{
+    /* box-shadow: 2px 2px 1px var(--lavender); */
+    padding:0px;
+    margin: 0px;
+    border: 1px solid var(--blue);
+}
+.header{
+    background-color: white;
+}
+.profileIcon{
+    color:var(--blue);
+    margin-left: 10px;
+}
+.logoHeading
+{
+    color: var(--blue);
+    font-family: var(--fontHeading);
+    font-size: 24px;
+    text-shadow:  1px 1px 2px rgb(68, 68, 137);
+    padding: 0px;
+    margin: 2px;
+   
+}
+.navLink{
+    color: var(--blue);
+    font-family: var(--fontHeading);
+    text-align: center;
+    text-shadow:  1px 1px 2px rgb(184, 184, 222);
+    font-size: 14px;
+    margin:0px;
+    padding-top: 0px;
+}
+
+
+.navbar-toggler
+{
+    color:var(--purple);
+    outline: none;
+}
+.navbar-nav a:hover{
+    color:var(--purple);
+}
+.navbbarToggler{
+    background-color: var(--lightPink);
+}
+@media (max-width: 768px)
+{
+    .logoHeading{
+        font-size:12px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .navbar .navbar-collapse {
+      position: absolute;
+      top: 90px;
+      left: -100%;
+      width: 100%;
+      max-width: 280px;
+      background-color: var(--purple) ;
+      padding: 10px;
+      box-shadow: 4px 4px 8px var(--purple);
+      transition: left 0.3s ease;
+      z-index: 1000; 
+    }
+    .navLink{
+        margin-top:2px;
+    }
+    .navbar .collapse.show {
+      left: 0;
+    }
+  } 

@@ -4,5 +4,8 @@
     --purple: #BB9CC0;
     --blue: #67729D;
     --fontHeading: 'Philosopher', sans-serif;
+    
 }
-
+body{
+    background-image: linear-gradient(to right, var(--blue), var(--lightPink));
+}
