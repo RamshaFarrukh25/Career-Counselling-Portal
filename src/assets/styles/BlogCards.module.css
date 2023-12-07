@@ -2,14 +2,22 @@
     box-sizing: border-box;
 }
 
-    .mainHeading{
-        font-family: var(--fontHeading);
-        color: var(--blue);
-        text-align: center;
-        border-bottom: 2px solid var(--purple); /* Adjust the thickness and color of the line */
-        padding: 10px;
-        width: 50%;
-        margin: 0px 300px;
+    .mainHeading {
+      font-family: var(--fontHeading);
+      color: white;
+      padding: 10px;
+      text-shadow: 5px 5px 5px var(--blue);
+      position: relative; /* Positioning context for pseudo-element */
+    }
+    
+    .mainHeading::after {
+      content: ''; /* Create a pseudo-element */
+      position: absolute;
+      bottom: 0; /* Position at the bottom of the mainHeading */
+      left: 50%; /* Center horizontally */
+      width: 50%; /* Half width */
+      border-bottom: 2px solid white; /* Border properties */
+      transform: translateX(-50%); /* Adjust to center properly */
     }
 
   .searchBarContainer {
@@ -42,7 +50,7 @@
     margin: 0;
     min-height: 100vh;
     font-family: var(--fontHeading);
-    background: #fafafa;
+    /* background: #fafafa; */
   }
   
   .cardsWrapper {
@@ -59,7 +67,7 @@
     font-family: var(--fontHeading);
     --bg-filter-opacity: 0.5;
     background-image: linear-gradient(rgba(0,0,0,var(--bg-filter-opacity)), url('https://cdn.pixabay.com/photo/2016/04/20/08/21/entrepreneur-1340649_1280.jpg')); /* Updated background */
-    height: 20em;
+    height: 17em;
     width: 15em;
     font-size: 1.5em;
     color: var(--lightPink);
@@ -69,11 +77,11 @@
     align-items: flex-end;
     background-size: cover;
     background-position: center;
-    box-shadow: 0 0 5em -1em var(--blue);
+    box-shadow: 2px 2px 2px  var(--blue);
     transition: all, 0.5s;
     position: relative;
     overflow: hidden;
-    border: 10px solid var(--lavender);
+    border: 3px solid var(--lavender);
     text-decoration: none;
   }
   
@@ -146,7 +154,7 @@
   }
   
   .card:after {
-    background: var(--purple);
+    background: white;
     width: 200%;
     height: 200%;
   }
