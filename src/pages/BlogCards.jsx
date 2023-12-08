@@ -3,13 +3,9 @@ import backgroundImage from "../assets/images/Blogs_BlogPic.jpg"
 
 export default function BlogCards(){
     return (
-        <div className={BlogCardsCSS.overAll}>
-            <div className={BlogCardsCSS.mainHeading}>
+        <div className={`${BlogCardsCSS.overAll} mt-5`}>
+            <div className={`${BlogCardsCSS.mainHeading} text-center`}>
                 <h1>Popular Blogs</h1>
-            </div>
-            <div className={BlogCardsCSS.searchBarContainer}>
-                <input type="search" placeholder="Search" className={BlogCardsCSS.searchBarInput}/>
-                <button className={BlogCardsCSS.searchBarBtn}>Search</button>
             </div>
             <section className={BlogCardsCSS.cardsWrapper}>
                 <div className={BlogCardsCSS.cardGridSpace}>
