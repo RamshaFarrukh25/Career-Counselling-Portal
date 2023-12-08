@@ -1,0 +1,41 @@
+.mainHeading {
+  font-family: var(--fontHeading);
+  color: white;
+  text-shadow: 2px 2px 4px #2B3499;
+
+}
+
+.container {
+  width: 80%; /* Set the width of the container */
+  margin: 0 auto; /* Center the container */
+}
+
+.mainHR {
+  border-top: 3px solid #2B3499; /* Use the blue variable for the border color */
+  width: 100%; /* Make the hr span the entire width of the container */
+}
+
+.BlogImageClass {
+  width: 100%; /* Make the image span the entire width of the container */
+  border-radius: 10px; /* Adding border-radius for rounded corners */
+  box-shadow: 5px 5px 10px black; /* Modifying box-shadow with horizontal and vertical offset, blur radius, and color */
+  display: block; /* Ensure the image behaves as a block-level element */
+  margin-top: 20px; /* Adjust margin as needed */
+  /* Other styles as required */
+}
+
+.date{
+  text-shadow: 2px 2px 4px #2B3499;
+  font-size: 18px;
+}
+
+.author
+{
+  font-style: italic;
+  text-shadow: 2px 2px 4px #2B3499;
+}
+.article
+{
+  font-family: var(--fontHeading);
+  color:white;
+}
