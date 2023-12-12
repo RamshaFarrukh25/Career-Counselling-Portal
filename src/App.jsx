@@ -7,6 +7,7 @@ import Signup from "./pages/Signup"
 import Login from "./pages/Login"
 import BlogCards from './pages/BlogCards'
 import BlogDetail from './pages/BlogDetail'
+import AskCounsellor from './pages/AskCounsellor'
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/blogCards" element={<BlogCards/>}/>
           <Route path="/blogDetail" element={<BlogDetail/>}/>
+          <Route path="/askCounsellor" element={<AskCounsellor/>}/>
            
         </Routes>
       </BrowserRouter>
