@@ -1,0 +1,221 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  :focus {
+    outline: none;
+  }
+  
+  .wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .inner {
+    position: relative;
+    width: 900px;
+    z-index: 9;
+    padding: 30px 60px 40px;
+    background: #fff;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    margin: 50px 0px;
+  }
+
+.ratingLogo {
+    width: 200px;
+    height: 130px;
+    cursor: pointer;
+}
+
+.revLogo{
+    width: 200px;
+    height: 130px;
+    cursor: pointer;
+}
+
+  
+  .form {
+    /* width: 100%; */
+    position: relative;
+    z-index: 9;
+    padding: 20px 60px 40px;
+    background: #fff;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  }
+  
+  
+  .formHolder {
+    position: relative;
+    margin-top: 40px;
+    margin-bottom: 21px;
+  }
+  
+  .formHolder span {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    color: #666;
+  }
+  
+  .formControl {
+    border: none;
+    border-bottom: 1px solid #e6e6e6;
+    display: block;
+    width: 100%;
+    height: 38px;
+    background: none;
+    padding: 3px 42px 0px;
+    color: #666;
+    font-family: var(--fontHeading);
+    font-size: 18px;
+  }
+  
+  .formControl:focus {
+    border-bottom: 1px solid var(--purple);
+  }
+  
+  .submitBtn {
+    border: none;
+    width: 100%;
+    height: 49px;
+    margin-top: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: var(--blue);
+    color: white;
+    text-transform: uppercase;
+    font-family: var(--fontHeading);
+    font-size: 20px;
+    letter-spacing: 2px;
+    transition: all 0.5s;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .submitBtn span {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .submitBtn:before,
+  .submitBtn:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: var(--purple);
+    transition: all 0.3s;
+    transform: translate(-100%, 0);
+    transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+  }
+  
+  .submitBtn:after {
+    transition-delay: 0.2s;
+  }
+  
+  .submitBtn:hover:before,
+  .submitBtn:hover:after {
+    transform: translate(0, 0);
+  }
+
+  .heading {
+    font-size: 40px;
+    font-family: var(--fontHeading);
+    color: white;
+    padding: 10px;
+    text-shadow: 5px 5px 5px var(--blue);
+    position: relative; /* Positioning context for pseudo-element */
+  }
+  
+  .heading::after {
+    content: ''; /* Create a pseudo-element */
+    position: absolute;
+    bottom: 0; /* Position at the bottom of the mainHeading */
+    left: 50%; /* Center horizontally */
+    width: 50%; /* Half width */
+    border-bottom: 2px solid white; /* Border properties */
+    transform: translateX(-50%); /* Adjust to center properly */
+  }
+
+  .reviewCards{
+    width: 1100px;
+  }
+
+  .singleCard{
+    padding: 10px;
+  }
+  
+  /****** Style Star Rating Widget *****/
+
+  .rateHeading{
+    font-size: 18px;
+    font-family: var(--fontHeading);
+  }
+
+  .rating { 
+    width: 208px; 
+    height: 20px;
+    margin-top: -8px;
+    margin-left: 110px;
+} 
+.rating label { 
+    float: right; 
+    position: relative; 
+    width: 40px; 
+    height: 40px; 
+    cursor: pointer; 
+} 
+.rating label:not(:first-of-type) { 
+    padding-right: 2px; 
+} 
+.rating label:before { 
+    content: "\2605"; 
+    font-size: 42px; 
+    color: #ccc; 
+    line-height: 1; 
+} 
+.rating input { 
+    display: none; 
+} 
+.rating input:checked ~ label:before,
+ .rating:not(:checked) > label:hover:before, 
+ .rating:not(:checked) > label:hover ~ label:before { color: var(--purple); }
+  
+  @media (max-width: 991px) {
+    .inner {
+      width: 400px;
+      left: 4%;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .inner {
+      width: 100%;
+      left: 0;
+    }
+  
+    .form {
+      padding: 35px;
+      box-shadow: none;
+    }
+  
+    .wrapper {
+      background: none;
+    }
+
+    .reviewCards{
+      background: none;
+      width: 300px;
+    }
+  }
+  
