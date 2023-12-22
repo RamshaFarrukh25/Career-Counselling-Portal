@@ -7,7 +7,8 @@ const initialState = {
     password: "",
     confirmPassword: "",
   },
-  passwordMatch: ""
+  passwordMatch: "",
+  isSignup: false
 }
 
 const signupSlice = createSlice({
@@ -20,31 +21,33 @@ const signupSlice = createSlice({
         [payload.name]: payload.value
       }
     },
-    handleSubmit: (state) => {
-      if(state.passwordMatch == "passwordError"){
-        return
-      }
-      console.log(state.signupForm.email)
-    },
-    clearForm: (state) => {
-      if(state.passwordMatch == "passwordMatch"){
-        state.signupForm = {
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        } 
-      }  
-    },
     matchPasswords: (state) => {
       if(state.signupForm.password !== state.signupForm.confirmPassword){
         state.passwordMatch = "passwordError"
       } else {
         state.passwordMatch = "passwordMatch"
       }
+    },
+    handleSignup: (state) => {
+      if(state.passwordMatch !== "passwordMatch"){
+        state.isSignup = false
+        return
+      }else {
+        state.isSignup = true
+      }
+    },
+    clearForm: (state) => {
+      state.signupForm = {
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      }
+      state.passwordMatch = ""
+      state.isSignup = false
     }
   }
 })
 
-export const { handleChange, handleSubmit, clearForm, matchPasswords } = signupSlice.actions
+export const { handleChange, matchPasswords, handleSignup, clearForm } = signupSlice.actions
 export default signupSlice.reducer

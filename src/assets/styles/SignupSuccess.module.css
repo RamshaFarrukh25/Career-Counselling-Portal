@@ -1,0 +1,27 @@
+
+.thanksContainer {
+    text-align: center;
+    font-family: var(--fontHeading);
+    color: white;
+    width: 80%;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.thanksHeading{
+    color: white;
+    text-shadow:  1px 1px 2px violet;
+}
+
+.checkMark{
+    width: 100px;
+    height: 100px;
+}
+
+.thanksParagraph{
+    color: white;
+    font-size: 20px;  
+}
