@@ -4,10 +4,12 @@ import "./assets/styles/Global.module.css"
 import Signup from "./pages/Signup"
 import SignupSuccess from './pages/SignupSuccess'
 import Login from "./pages/Login"
+import BlogCards from './pages/BlogCards'
+import BlogDetail from './pages/BlogDetail'
+import AskCounsellor from './pages/AskCounsellor'
 import Layout from './layouts/Layout'
 import Home from './pages/Home'
 import AboutUs from './pages/AboutUs'
-import BlogDetail from "./pages/BlogDetail"
 import OfferCounselling from "./pages/OfferCounselling"
 
 export default function App() {
@@ -24,6 +26,7 @@ export default function App() {
           <Route path="signup" element={<Signup />} />
           <Route path="blogDetail" element={<BlogDetail />} />
           <Route path="OfferCounselling" element={<OfferCounselling />} />
+          <Route path="askCounsellor" element={<AskCounsellor/>}/>
         </Routes>
       </BrowserRouter>
     </>
