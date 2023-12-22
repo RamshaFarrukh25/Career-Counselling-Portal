@@ -10,7 +10,7 @@ export default function Header(){
         <nav className={` ${HeaderCSS.navigation} navbar navbar-expand-lg`}>
             <div className="container-fluid d-flex flex-column">
                 <div className="container-fluid d-flex align-items-center justify-content-center">
-                    <Link className={`${HeaderCSS.navbarBrand} navbar-brand`} to="#">
+                    <Link className={`${HeaderCSS.navbarBrand} navbar-brand`} to=".">
                         <h1 className={`${HeaderCSS.logoHeading} mt-2`}> ▂▃▅▇█▓▒░ BotGuidedPathways ░▒▓█▇▅▃▂</h1>
                     </Link>
                     <button className={` ${HeaderCSS.navbbarToggler} navbar-toggler ms-auto`} type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -25,7 +25,7 @@ export default function Header(){
                             <Link to="#" className={`${HeaderCSS.navLink} nav-link`}  >Ask Counsellor</Link>
                         </li>
                         <li className={`${HeaderCSS.navItem} nav-item`}>
-                            <Link to="/OfferCounselling" className={`${HeaderCSS.navLink} nav-link`}
+                            <Link to="OfferCounselling" className={`${HeaderCSS.navLink} nav-link`}
                             onClick={(event)=>{
                                 dispatch(handleModelChange())
                                 dispatch(resetCount())
@@ -36,7 +36,7 @@ export default function Header(){
                             >Offer Counselling</Link>
                         </li>
                         <li className={`${HeaderCSS.navItem} nav-item`}>
-                            <Link className={`${HeaderCSS.navLink} nav-link`}  to="#">About Us</Link>
+                            <Link className={`${HeaderCSS.navLink} nav-link`}  to="about">About Us</Link>
                         </li>
                         <li className={`${HeaderCSS.navItem} nav-item`}>
                             <Link to="#" className={`${HeaderCSS.navLink} nav-link`}>Blogs</Link>

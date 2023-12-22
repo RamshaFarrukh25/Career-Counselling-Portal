@@ -5,7 +5,7 @@ import {
 } from "../features/login/loginSlice"
 import { Link } from "react-router-dom"
 import LoginCSS from "../assets/styles/Login.module.css"
-import Image1 from "../assets/images/Login_Image1.gif"
+import Robo from "../assets/images/Login_Robo.gif"
 
 
 export default function Login() {
@@ -14,7 +14,7 @@ export default function Login() {
     return (
       <div className={LoginCSS.wrapper}>
         <div className={LoginCSS.inner}>
-          <img src={Image1} alt="" className={LoginCSS.image1} />
+          <img src={Robo} alt="" className={LoginCSS.image1} />
 
           <form 
             className={LoginCSS.form}

@@ -1,0 +1,208 @@
+.aboutContainer{
+    width: 80%;
+    margin: auto;
+    font-family: var(--fontHeading);
+    background-color: white;
+    border-radius: 8px;
+    box-shadow:  4px 5px 10px var(--blue);
+}
+
+.aboutContainer .missionheading{
+    font-size: 2.2em;
+    margin-bottom: 5px;
+    color: var(--blue);
+    text-shadow:  1px 1px 2px violet;
+}
+
+.aboutContainer .missionDescription{
+    font-size: 18px;
+}
+
+
+.missionImage{
+    max-width: 100%;   
+}
+
+.headingDiv{
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.headingDiv::after{
+    content: ''; 
+    position: absolute;
+    bottom: 0; 
+    left: 50%; 
+    width: 50%; 
+    border-bottom: 2px solid white; 
+    transform: translateX(-50%);
+}
+
+.headingDiv .mainHeading{
+    color: white;
+    text-shadow: 5px 5px 5px var(--blue);
+    font-family: var(--fontHeading);
+    text-align: center;
+    padding: 20px;
+    font-size: 45px;
+}
+
+/* Team Cards */
+
+.cardsContainer {
+   width: 80%;
+   margin-bottom: 30px;
+   font-family: var(--fontHeading);
+}
+
+.cardsContainer .teamCards {
+    display: flex;
+    justify-content: center;
+}
+
+.team {
+    width: 300px;
+    height: 300px;
+    transform-style: preserve-3d;
+    perspective: 500px;
+    border: none;
+    background-color: inherit;
+}
+
+.team .face {
+    position: absolute;
+    color: white;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.06);
+    transform-style: preserve-3d;
+    transition: 0.5s;
+    backface-visibility: hidden;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+
+.team .frontFace,
+.team .backFace {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.name {
+    letter-spacing: 2px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.designation {
+    font-size: 0.9rem;
+    color: white;
+    letter-spacing: 0.8px;
+}
+
+.team:hover .frontFace {
+    transform: rotateY(180deg);
+}
+
+.team .backFace {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.06);
+    transform: rotateY(180deg);
+    padding: 20px 30px;
+    text-align: center;
+    user-select: none;
+}
+
+.iconsLeft{
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    font-size: 1.2rem;
+}
+
+
+.iconsRight {
+    position: absolute;
+    bottom: 35px;
+    right: 25px;
+    font-size: 1.2rem;
+}
+
+.team:hover .backFace {
+    transform: rotateY(360deg);
+}
+
+.socialIcons{
+    font-size: 25px;
+    margin-top: 5px;
+}
+
+.socialIcons a{
+    text-decoration: none;
+    color: white;
+    margin-right: 12px;
+}
+
+.linkedIn:hover{
+    color: var(--blue);
+}
+
+.gitHub:hover{
+    color: var(--blue);
+}
+
+/* Contact */
+
+.contactContainer{
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    margin: auto;
+    font-family: var(--fontHeading);
+    color: white;
+}
+
+.icons{
+    padding-inline: 20px;
+    margin-bottom: 30px;
+}
+
+.icons img{
+    max-width: 50px;
+    border-radius: 50%;
+    border: 1px solid white;
+}
+
+
+.icons img:hover{
+    transform: scale(1.2);
+}
+
+@media screen and (max-width: 992px) {
+
+    .aboutContainer{
+        width: 90%;
+    }
+
+    .teamCards {
+        margin-top: 40px;
+        margin-bottom: 20px;
+    }
+
+    .contactContainer{
+        flex-wrap: wrap;
+    }
+}
