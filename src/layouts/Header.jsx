@@ -1,12 +1,12 @@
 import HeaderCSS from "../assets/styles/Header.module.css"
-import { Link, Outlet } from "react-router-dom"
+import { Link } from "react-router-dom"
 export default function Header(){
   return (
     <header className={HeaderCSS.header}>
         <nav className={` ${HeaderCSS.navigation} navbar navbar-expand-lg`}>
             <div className="container-fluid d-flex flex-column">
                 <div className="container-fluid d-flex align-items-center justify-content-center">
-                    <Link className={`${HeaderCSS.navbarBrand} navbar-brand`} to="#">
+                    <Link className={`${HeaderCSS.navbarBrand} navbar-brand`} to=".">
                         <h1 className={`${HeaderCSS.logoHeading} mt-2`}> ▂▃▅▇█▓▒░ BotGuidedPathways ░▒▓█▇▅▃▂</h1>
                     </Link>
                     <button className={` ${HeaderCSS.navbbarToggler} navbar-toggler ms-auto`} type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -24,7 +24,7 @@ export default function Header(){
                             <Link to="#" className={`${HeaderCSS.navLink} nav-link`}>Offer Counselling</Link>
                         </li>
                         <li className={`${HeaderCSS.navItem} nav-item`}>
-                            <Link className={`${HeaderCSS.navLink} nav-link`}  to="#">About Us</Link>
+                            <Link className={`${HeaderCSS.navLink} nav-link`}  to="about">About Us</Link>
                         </li>
                         <li className={`${HeaderCSS.navItem} nav-item`}>
                             <Link to="#" className={`${HeaderCSS.navLink} nav-link`}>Blogs</Link>

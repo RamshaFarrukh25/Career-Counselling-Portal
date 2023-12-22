@@ -1,20 +1,29 @@
+import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { 
   handleChange, 
-  handleSubmit, 
-  clearForm,
-  matchPasswords
+  matchPasswords,
+  handleSignup,
+  clearForm
 } from "../features/signup/signupSlice"
 import { Link } from "react-router-dom"
 import SignupCSS from "../assets/styles/Signup.module.css"
 import Image1 from "../assets/images/Signup_Image1.png"
 import Robo from "../assets/images/Signup_Robo.png"
-
+import OTP from "./OTP"
 
 export default function Signup() {
   const dispatch = useDispatch()
-  const { signupForm, passwordMatch } = useSelector((store) => store.signup)
+  const { signupForm, passwordMatch, isSignup } = useSelector((store) => store.signup)
+
+  React.useEffect(() => {
+    return () => {
+      dispatch(clearForm())
+    }
+  }, [dispatch])
+
   return (
+    <>
     <div className={SignupCSS.wrapper}>
       <div className={SignupCSS.inner}>
         <img src={Image1} alt="" className={SignupCSS.image1} />
@@ -22,8 +31,7 @@ export default function Signup() {
         <form 
           onSubmit={(event) => { 
             event.preventDefault()
-            dispatch(handleSubmit())
-            dispatch(clearForm())
+            dispatch(handleSignup())
           }} 
           className={SignupCSS.form}
         >
@@ -118,7 +126,7 @@ export default function Signup() {
                   })
                 )
               }
-              onMouseOut={(event) => dispatch(matchPasswords())}
+              onKeyUp={(event) => dispatch(matchPasswords())}
               required
             />
           </div>
@@ -127,7 +135,6 @@ export default function Signup() {
           >
             <span>Signup</span>
           </button>
-
           <p className={SignupCSS.accountExist}>
             Already have an account?  
             <Link to="/login">Login</Link>
@@ -136,5 +143,7 @@ export default function Signup() {
         <img src={Robo} alt="" className={SignupCSS.image2} />
       </div>
     </div>
+    {isSignup && <OTP />}
+    </>
   )
 }

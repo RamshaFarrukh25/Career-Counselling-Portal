@@ -1,0 +1,37 @@
+
+.heading{
+    font-family: var(--fontHeading);
+    font-weight: bold;
+    font-size: 18px;
+    color: #AA4A44;
+}
+
+.input{
+    font-family: var(--fontHeading);
+    font-size: 20px;
+    max-width: 70px;
+}
+
+.validateBtn{
+    font-family: var(--fontHeading);
+    background-color: #AA4A44;
+    font-size: 18px;
+    color: white;
+}
+
+.error{
+    text-align: center;
+    margin-top: 5px;
+    color: red;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.time{
+    text-align: center;
+    margin-top: 8px;
+    font-style: italic;
+    font-weight: bold;
+    color: #AA4A44;
+    font-size: 18px;
+}
