@@ -7,6 +7,7 @@ import Layout from './layouts/Layout'
 import Home from './pages/Home'
 import BlogDetail from "./pages/BlogDetail"
 
+import OfferCounselling from "./pages/OfferCounselling"
 export default function App() {
   return (
     <>
@@ -18,7 +19,7 @@ export default function App() {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="blogDetail" element={<BlogDetail />} />
-
+          <Route path="OfferCounselling" element={<OfferCounselling />} />
         </Routes>
       </BrowserRouter>
     </>

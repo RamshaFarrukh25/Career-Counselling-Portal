@@ -1,6 +1,10 @@
 import HeaderCSS from "../assets/styles/Header.module.css"
-import { Link, Outlet } from "react-router-dom"
+import { Link} from "react-router-dom"
+import { handleModelChange,resetCount,ErrorMsg } from "../features/offerCounselling/offerCounsellingSlice"
+import { useDispatch } from "react-redux"
+
 export default function Header(){
+   const dispatch = useDispatch()
   return (
     <header className={HeaderCSS.header}>
         <nav className={` ${HeaderCSS.navigation} navbar navbar-expand-lg`}>
@@ -21,7 +25,15 @@ export default function Header(){
                             <Link to="#" className={`${HeaderCSS.navLink} nav-link`}  >Ask Counsellor</Link>
                         </li>
                         <li className={`${HeaderCSS.navItem} nav-item`}>
-                            <Link to="#" className={`${HeaderCSS.navLink} nav-link`}>Offer Counselling</Link>
+                            <Link to="/OfferCounselling" className={`${HeaderCSS.navLink} nav-link`}
+                            onClick={(event)=>{
+                                dispatch(handleModelChange())
+                                dispatch(resetCount())
+                                dispatch(ErrorMsg({
+                                    msg:''
+                                }))
+                            }}
+                            >Offer Counselling</Link>
                         </li>
                         <li className={`${HeaderCSS.navItem} nav-item`}>
                             <Link className={`${HeaderCSS.navLink} nav-link`}  to="#">About Us</Link>
