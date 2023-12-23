@@ -1,0 +1,271 @@
+
+/* Model */
+.model{
+	background-color: var(--purple);
+}
+
+.modelTitle{
+	font-family: var(--fontHeading);
+	color: var(--blue);
+	font-weight: bolder;
+}
+.modelLabels{
+	font-family: var(--fontHeading);
+	color:rgb(91, 35, 91);
+	text-decoration: underline;
+	font-size: 20px;
+}
+.modelContent{
+	font-family: var(--fontHeading);
+	color:black;
+	font-size:20px;
+}
+.modelAcceptBtn
+{
+	background-color: var(--blue);
+	border-radius: 5px;
+	box-shadow: 3px 3px 3px var(--purple);
+	border-color: var(--blue);
+	color:white;
+	font-family: var(--fontHeading);
+
+}
+.modelRejectBtn{
+	background-color: darkred;
+	border-radius: 5px;
+	box-shadow: 3px 3px 3px var(--blue);
+	border-color:white;
+	color:white;
+	font-family: var(--fontHeading);
+
+}
+#msform {
+	width: 500px;
+	margin: 100px auto;
+	text-align: center;
+	position: relative;
+}
+#msform fieldset {
+	background: var(--lightPink);
+	border: 0 none;
+	border-radius: 3px;
+	box-shadow: 1px  1px 2px 1px var(--blue);
+	padding: 20px 30px;
+	box-sizing: border-box;
+	width: 80%;
+	margin: 0 10%;
+	
+	/*stacking fieldsets above each other*/
+	position: relative;
+}
+/*Hide all except first fieldset*/
+#msform fieldset:not(:first-of-type) {
+	display: block;
+	margin-top:10px;
+}
+.workingContainer{
+	gap:10px;
+}
+
+/*inputs*/
+.input {
+	padding: 15px;
+	border-bottom: 2px solid var(--purple);
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-radius: 3px;
+	margin-bottom: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	font-family: montserrat;
+	color: #2C3E50;
+	font-size: 13px;
+}
+
+/*buttons*/
+#msform .actionButton{
+	width: 100px;
+	background: var(--blue);
+	font-weight: bold;
+	color: white;
+	border: 0 none;
+	border-radius: 1px;
+	cursor: pointer;
+	padding: 10px;
+	margin: 10px 5px;
+    text-decoration: none;
+    font-size: 15px;
+}
+.addBtn{
+	width: 100px;
+	background: var(--blue);
+	font-weight: bold;
+	color: white;
+	border: 0 none;
+	border-radius: 1px;
+	cursor: pointer;
+	padding: 10px;
+	margin: 0px 5px;
+	margin-bottom: 4px;
+    text-decoration: none;
+    font-size: 15px;
+}
+#msform .actionButton:hover, #msform .actionButton:focus , .addBtn:focus,.addBtn:hover{
+	box-shadow: 0 0 0 2px white, 0 0 0 3px var(--blue);
+}
+/*headings*/
+.fsTitle {
+	font-size: 15px;
+	text-transform: uppercase;
+	color: var(--blue);
+	margin-bottom: 10px;
+	text-shadow: 5px 5px 5px white;
+}
+.fsSubTitle {
+	font-weight: normal;
+	font-size: 13px;
+	color: black;
+	margin-bottom: 20px;
+}
+/*progressbar*/
+#progressbar {
+	margin-bottom: 30px;
+	overflow: hidden;
+	/*CSS counters to number the steps*/
+	counter-reset: step;
+}
+#progressbar li {
+	list-style-type: none;
+	color:white;
+	text-shadow:20px 10px 20px var(--blue);
+	text-transform: uppercase;
+	font-size: 12px;
+	width: 33.33%;
+	float: left;
+	position: relative;
+	font-family: var(--fontHeading);
+	font-weight: bolder;
+}
+.cnicImg,.qualification  {
+	display: block;
+	float: left;
+	clear: both;
+	width: 200px;
+	margin-right: 10px;
+	font-family: var(--fontHeading);
+	font-size: 16px;
+	font-weight:bold;
+	color:var(--blue)
+}
+.transcriptImg
+{
+	display: block;
+	float: left;
+	clear: both;
+	width: 310px;
+	margin-right: 10px;
+	font-family: var(--fontHeading);
+	font-size: 13px;
+	font-weight:bold;
+	color:var(--blue)
+}
+.certificateImg{
+	display: block;
+	float: left;
+	clear: both;
+	width: 200px;
+	font-family: var(--fontHeading);
+	font-size: 12px;
+	font-weight:bold;
+	color:var(--blue)
+}
+.qualificationdropdown
+{
+	width: 100%;
+	font-family: var(--fontHeading);
+	border-radius: 5px;
+	padding: 10px;
+	color: var(--blue);
+}
+.visuallyHidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+  }
+  
+.workingExperienceYearFields
+{
+	gap:20px;
+}
+.cnicImgTitles{
+color: rgb(190, 32, 32);
+font-size: 13px;
+font-family: var(--fontHeading);
+margin: 0px;
+}
+.errorMsg{
+color:red;
+font-family: var(--fontHeading);
+font-size: 15px;
+}
+#progressbar li:before {
+	content: counter(step);
+	counter-increment: step;
+	width: 40px;
+	line-height: 20px;
+	display: block;
+	font-size: 10px;
+	color: var(--blue);
+	background: white;
+	border-radius: 3px;
+	margin: 0 auto 5px auto;
+}
+.genderContainer {
+	display: flex;
+	align-items: center;
+	font-family: var(--fontHeading);
+	color: var(--blue);
+  }
+ 
+  
+  .genderLabel {
+	margin-left: 5px;
+  }
+  .genderRadioLabel{
+	margin-left: 5px;
+  }
+  .radio{
+	margin-left:10px;
+  }
+  
+  
+  
+/*progressbar connectors*/
+#progressbar li:after {
+	content: '';
+	width: 100%;
+	height: 2px;
+	background: white;
+	position: absolute;
+	left: -50%;
+	top: 9px;
+	z-index: -1; /*put it behind the numbers*/
+}
+#progressbar li:first-child:after {
+	/*connector not needed before the first step*/
+	content: none; 
+}
+/*marking active/completed steps green*/
+/*The number of the step and the connector before it = green*/
+#progressbar li.active:before,  #progressbar li.active:after{
+	background: var(--blue);
+	color: white;
+}
+
+  

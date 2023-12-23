@@ -102,26 +102,6 @@
     line-height: 2em;
   }
   
-  .card .tags {
-    display: flex;
-  }
-  
-  .card .tags .tag {
-    font-size: 0.75em;
-    background: rgba(255,255,255,0.5);
-    border-radius: 0.3rem;
-    padding: 0 0.5em;
-    margin-right: 0.5em;
-    line-height: 1.5em;
-    transition: all, 0.5s;
-    text-decoration: none;
-    color: white;
-  }
-  
-  .card:hover .tags .tag {
-    background: var(--blue);
-    color: white;
-  }
   
   .card .date {
     position: absolute;
@@ -161,7 +141,6 @@
   
   .card:hover {
     color: var(--blue);
-    /*transform: rotateY(180deg);*/
   }
   
   .card:hover:before,
