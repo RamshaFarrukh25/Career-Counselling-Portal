@@ -27,7 +27,8 @@ const initialState = {
     },
     stepCount:0,
     errorMsg:"",
-    showModel:false
+    showModel:false,
+    isOTPModal: false
 }
 const offerCounsellingSlice = createSlice({
     name:'offerCounselling',
@@ -95,7 +96,10 @@ const offerCounsellingSlice = createSlice({
         updateWorkingExperienceFile: (state, { payload }) => {
             const { index, name,file } = payload;
             state.offerCounsellorForm.workingExperience[index][name] = file.name;
-        }           
+        },
+        openOTPModal: (state) => {
+            state.isOTPModal = true
+        }        
         
     }
 
@@ -103,5 +107,5 @@ const offerCounsellingSlice = createSlice({
 
 export const{handleChange, handleSubmit,setCount,ErrorMsg,
     resetCount,handleFileChange,handleModelChange,addWorkingExperience,
-    removeWorkingExperience,updateWorkingExperience,updateWorkingExperienceFile} = offerCounsellingSlice.actions
+    removeWorkingExperience,updateWorkingExperience,updateWorkingExperienceFile,openOTPModal} = offerCounsellingSlice.actions
 export default offerCounsellingSlice.reducer
