@@ -5,10 +5,12 @@ import
   handleSubmit,setCount,
   ErrorMsg,resetCount,
   handleFileChange, handleModelChange,addWorkingExperience,
-  updateWorkingExperience,removeWorkingExperience,updateWorkingExperienceFile} 
+  updateWorkingExperience,removeWorkingExperience,updateWorkingExperienceFile,openOTPModal
+} 
 from "../features/offerCounselling/offerCounsellingSlice";
 import React from "react";
 import {useNavigate} from "react-router-dom"
+import OTP from "./OTP"
 
 export default function OfferCounselling(){
   //dispatch
@@ -20,7 +22,7 @@ export default function OfferCounselling(){
     buttonRef.current.click()
   },[])
   //state parameters from offerCounselling State
-  const {offerCounsellorForm,stepCount,errorMsg, showModel,workingExperience} = useSelector((store) => store.offerCounselling)
+  const {offerCounsellorForm,stepCount,errorMsg, showModel,workingExperience, isOTPModal} = useSelector((store) => store.offerCounselling)
 
   return (
     <> 
@@ -475,7 +477,8 @@ export default function OfferCounselling(){
 
             if (allDetailsFilled) {
               dispatch(ErrorMsg({ msg: '' }))
-              alert("hello from Ramsha :)))))))))))")
+              dispatch(openOTPModal())
+              //alert("hello from Ramsha :)))))))))))")
             } else {
               event.preventDefault();
               dispatch(ErrorMsg({ msg: 'please fill all the required details' }))
@@ -493,6 +496,7 @@ export default function OfferCounselling(){
     </>)}
     </form>
    </div>
+   {isOTPModal && <OTP />}
   </>
   )
 }

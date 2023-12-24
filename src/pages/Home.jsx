@@ -1,5 +1,6 @@
 import Hero from "./Hero"
 import BlogCards from "./BlogCards"
+import Reviews from "./Reviews"
 
 export default function Home()
 {
@@ -7,6 +8,7 @@ export default function Home()
         <>
         <Hero />
         <BlogCards />
+        <Reviews/>
         </>
     )
 }
