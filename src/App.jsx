@@ -1,8 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import "./assets/styles/Global.module.css"
+<<<<<<< Updated upstream
 
 import Hero from './pages/Hero'
 import Header from './layouts/Header'
+=======
+import theme from "./assets/theme";
+import { ThemeProvider } from "@mui/material/styles";
+>>>>>>> Stashed changes
 import Signup from "./pages/Signup"
 import SignupSuccess from './pages/SignupSuccess'
 import Login from "./pages/Login"
@@ -13,11 +18,14 @@ import Layout from './layouts/Layout'
 import Home from './pages/Home'
 import AboutUs from './pages/AboutUs'
 import OfferCounselling from "./pages/OfferCounselling"
+import Admin from './pages/Admin'
+import Dashboard from './pages/Admin/Components/DashBoard/DashBoard';
 
 
 export default function App() {
   return (
     <>
+    <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Routes>
 
@@ -40,8 +48,12 @@ export default function App() {
           <Route path="blogDetail" element={<BlogDetail />} />
           <Route path="OfferCounselling" element={<OfferCounselling />} />
           <Route path="askCounsellor" element={<AskCounsellor/>}/>
+          <Route path="admin" element={<Admin/>}/>
+
+          
         </Routes>
       </BrowserRouter>
+      </ThemeProvider>
     </>
   )
 }

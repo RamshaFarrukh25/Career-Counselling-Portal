@@ -9,7 +9,11 @@ export const store = configureStore({
     reducer: {
         signup: signupReducer,
         otp: otpReducer,
+<<<<<<< Updated upstream
         login: loginReducer,
+=======
+        reviews: reviewsReducer,
+>>>>>>> Stashed changes
         offerCounselling: offerCounsellingReducer
     }
 })
