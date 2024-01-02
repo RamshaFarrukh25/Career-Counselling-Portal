@@ -1,13 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import "./assets/styles/Global.module.css"
-<<<<<<< Updated upstream
-
 import Hero from './pages/Hero'
 import Header from './layouts/Header'
-=======
-import theme from "./assets/theme";
-import { ThemeProvider } from "@mui/material/styles";
->>>>>>> Stashed changes
 import Signup from "./pages/Signup"
 import SignupSuccess from './pages/SignupSuccess'
 import Login from "./pages/Login"
@@ -18,10 +12,6 @@ import Layout from './layouts/Layout'
 import Home from './pages/Home'
 import AboutUs from './pages/AboutUs'
 import OfferCounselling from "./pages/OfferCounselling"
-<<<<<<< Updated upstream
-import Admin from './pages/Admin'
-import Dashboard from './pages/Admin/Components/DashBoard/DashBoard';
-=======
 import AdminLayout from './dashboards/admin/layouts/Layout'
 import  DashBoard  from './dashboards/admin/pages/Index'
 import  ApproveBlogs  from './dashboards/admin/pages/ApproveBlogs'
@@ -29,13 +19,13 @@ import ApproveCounsellors  from './dashboards/admin/pages/ApproveCounsellors'
 import Profile  from './dashboards/admin/pages/Profile'
 import UserReport from './dashboards/admin/pages/UserReport'
 import ApproveReviews from './dashboards/admin/pages/ApproveReviews'
->>>>>>> Stashed changes
+
 
 
 export default function App() {
   return (
     <>
-    <ThemeProvider theme={theme}>
+   
       <BrowserRouter>
         <Routes>
 
@@ -59,11 +49,8 @@ export default function App() {
           <Route path="OfferCounselling" element={<OfferCounselling />} />
          
           <Route path="askCounsellor" element={<AskCounsellor/>}/>
-<<<<<<< Updated upstream
-          <Route path="admin" element={<Admin/>}/>
 
           
-=======
           {/* Admin DashBoard Routing  */}
           <Route path='/admin' element={<AdminLayout/>}>
            <Route path="dashboard" element={<DashBoard/>} />
@@ -74,11 +61,10 @@ export default function App() {
            <Route path="approveReviews" element={<ApproveReviews/>}/>
            
            </Route>
->>>>>>> Stashed changes
+
         </Routes>
       
       </BrowserRouter>
-      </ThemeProvider>
     </>
   )
 }

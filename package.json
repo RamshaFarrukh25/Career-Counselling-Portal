@@ -10,16 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.1",
-    "@mui/material": "^5.15.1",
-    "@reduxjs/toolkit": "^2.0.1",
-    "chart.js": "^4.4.1",
-    "chroma-js": "^2.4.2",
-    "prop-types": "^15.8.1",
-
-    "@emotion/react": "^11.11.3",
+  "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.15.2",
     "@mui/x-data-grid": "^6.18.6",
