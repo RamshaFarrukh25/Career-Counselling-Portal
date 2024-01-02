@@ -18,8 +18,18 @@ import Layout from './layouts/Layout'
 import Home from './pages/Home'
 import AboutUs from './pages/AboutUs'
 import OfferCounselling from "./pages/OfferCounselling"
+<<<<<<< Updated upstream
 import Admin from './pages/Admin'
 import Dashboard from './pages/Admin/Components/DashBoard/DashBoard';
+=======
+import AdminLayout from './dashboards/admin/layouts/Layout'
+import  DashBoard  from './dashboards/admin/pages/Index'
+import  ApproveBlogs  from './dashboards/admin/pages/ApproveBlogs'
+import ApproveCounsellors  from './dashboards/admin/pages/ApproveCounsellors'
+import Profile  from './dashboards/admin/pages/Profile'
+import UserReport from './dashboards/admin/pages/UserReport'
+import ApproveReviews from './dashboards/admin/pages/ApproveReviews'
+>>>>>>> Stashed changes
 
 
 export default function App() {
@@ -47,11 +57,26 @@ export default function App() {
           <Route path="signup" element={<Signup />} />
           <Route path="blogDetail" element={<BlogDetail />} />
           <Route path="OfferCounselling" element={<OfferCounselling />} />
+         
           <Route path="askCounsellor" element={<AskCounsellor/>}/>
+<<<<<<< Updated upstream
           <Route path="admin" element={<Admin/>}/>
 
           
+=======
+          {/* Admin DashBoard Routing  */}
+          <Route path='/admin' element={<AdminLayout/>}>
+           <Route path="dashboard" element={<DashBoard/>} />
+           <Route path="approveCounsellors" element={<ApproveCounsellors/>} />
+           <Route path="approveBlogs" element={<ApproveBlogs/>} />
+           <Route path="profile" element={<Profile/>} />
+           <Route path="userReport" element={<UserReport/>}></Route>
+           <Route path="approveReviews" element={<ApproveReviews/>}/>
+           
+           </Route>
+>>>>>>> Stashed changes
         </Routes>
+      
       </BrowserRouter>
       </ThemeProvider>
     </>

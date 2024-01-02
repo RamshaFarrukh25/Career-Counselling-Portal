@@ -1,0 +1,116 @@
+/* In ApproveBlogs.module.css */
+
+.deleteConfirmationModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  width: 80%;
+  max-width: 500px; /* Adjust the maximum width as needed */
+  border-radius: 8px;
+  overflow-y: auto;
+}
+
+.modalContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  width: 80%;
+  max-width: 500px; /* Adjust the maximum width as needed */
+  border-radius: 8px;
+  overflow-y: auto; /* Enable scrolling if content exceeds the height */
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Add space between content */
+  max-height: 400px; /* Set maximum height for scroll */
+  overflow-y: auto; /* Enable scrolling within the modal content */
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  margin-top: 20px;
+}
+
+.modalActions button {
+  margin-left: 10px;
+}
+
+.certImage {
+  display: flex;
+  width: 250px; /* Adjust the width of certification images */
+  height: auto;
+  margin-right: 5px;
+  align-items: center; 
+
+}
+.icon-eye {
+
+  color: #007bff; /* Change this to your preferred color */
+  font-size: 20px;
+}
+
+.icon-trash {
+  font-size: 20px;
+  color: #dc3545; /* Change this to your preferred color */
+  margin: 8px; /* Adjust the margin as needed */
+}
+
+.icon-approval {
+  font-size: 20px;
+  color: #28a745; /* Change this to your preferred color */
+ 
+}
+.imageModalContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 20px;
+}
+.imageModalContent {
+  height: 80vh; /* Adjust as needed */
+  overflow-y: scroll;
+  text-align: center;
+}
+
+.enlargedImage {
+  max-width: 100%;
+  height: auto;
+}
+.closeButton {
+  margin-top: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: #741ac2;
+  color: #fff;
+  border:yellowgreen;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.buttonStyle {
+  border-radius: 10px;
+  padding: 10px 20px;
+  background-color: #741ac2;
+  color: #fff;
+  border:yellowgreen;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}

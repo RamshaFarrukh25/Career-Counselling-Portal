@@ -1,0 +1,35 @@
+
+.icon-trash {
+  font-size: 20px;
+  color: #dc3545; /* Change this to your preferred color */
+  margin: 8px; /* Adjust the margin as needed */
+}
+
+.icon-approval {
+  font-size: 20px;
+  color: #28a745; /* Change this to your preferred color */
+ 
+}
+.deleteConfirmationModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent; /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 8px;
+}
+
+
+
+

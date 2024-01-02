@@ -1,0 +1,57 @@
+.iconSpacing {
+  margin-right: 8px; /* Adjust the margin as needed */
+}
+/* Header.module.css */
+
+.bellIconContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.notificationPanel {
+  position: absolute;
+  bottom: -1050%; /* Adjust this value to position the panel as needed */
+  left: 40%;
+  transform: translateX(-50%);
+  background-color: #de95ed;
+  border: 2px solid #0e061556;
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 1000;
+  width: auto;
+  box-shadow: 0px 2px 5px rgba(203, 43, 115, 0.2);
+  min-width: 200px;
+  max-width: 240px;
+  overflow-y: auto; /* Keep overflow-y as 'auto' for scrollbar if needed */
+  max-height: calc(100vh - 200px); /* Adjust the height as needed */
+}
+/* Beautified scrollbar */
+.notificationPanel {
+  /* ... (other styles) ... */
+  overflow-y: auto; /* Keep overflow-y as 'auto' for scrollbar */
+  max-height: calc(100vh - 200px); /* Adjust the height as needed */
+  width: 400px; /* Adjust the width as needed */
+}
+
+/* Beautify scrollbar */
+.notificationPanel::-webkit-scrollbar {
+  width: 15px; /* Width of the scrollbar */
+}
+
+.notificationPanel::-webkit-scrollbar-thumb {
+  background-color: #2e182b0c; /* Color of the scrollbar thumb */
+  border-radius: 6px; /* Roundness of the scrollbar thumb */
+}
+
+.notificationPanel::-webkit-scrollbar-thumb:hover {
+  background-color: #555555; /* Color of the scrollbar thumb on hover */
+}
+
+.notificationPanel::-webkit-scrollbar-track {
+  background-color: #dddddd; /* Color of the scrollbar track */
+  border-radius: 8px; /* Roundness of the scrollbar track */
+}
+
+.Background{
+  background-color: #44156cb5; /* Add your desired background color */
+}

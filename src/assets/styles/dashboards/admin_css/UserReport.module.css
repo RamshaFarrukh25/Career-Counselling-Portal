@@ -1,0 +1,45 @@
+    .wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .inner {
+    position: relative;
+    width: 900px;
+    padding: 30px 60px 40px;
+    background: #fff;
+    margin: 50px 0px;
+  }
+
+  .heading {
+    text-transform: uppercase;
+    font-size: 40px;
+    font-family: var(--fontHeading);
+    letter-spacing: 3px;
+    text-align: center;
+    margin-bottom: 33px;
+  }
+
+  .dataGrid{
+    height: 100%;
+    text-align: 'center';
+    background-color: white;
+  }
+
+  .columnHeader {
+    font-weight: bold;
+    font-family: var(--fontHeading);
+    font-size: 20px;
+}
+
+.rowData{
+  font-family: var(--fontHeading);
+  font-size: 15px;
+}
+
+.modal{
+  font-family: var(--fontHeading);
+  font-size: 20px;
+}
