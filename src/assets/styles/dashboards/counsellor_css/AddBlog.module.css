@@ -1,0 +1,78 @@
+.heading{
+    font-size: 25px;
+    color: #692D94;
+    font-weight: bold;
+    font-family: var(--fontHeading);
+}
+
+.formHolder {
+    margin-top: 10px;
+    margin-bottom: 21px;
+}
+
+.formControl {
+    border: none;
+    border-bottom: 1px solid #e6e6e6;
+    display: block;
+    width: 100%;
+    height: 38px;
+    background: none;
+    padding: 3px 5px 0px;
+    color: #666;
+    font-family: var(--fontHeading);
+    font-size: 18px;
+}
+  
+.formControl:focus {
+    border-bottom: 1px solid var(--purple);
+}
+
+.submitBtn {
+    border: none;
+    width: 100%;
+    height: 49px;
+    margin-top: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: #692D94;
+    color: white;
+    text-transform: uppercase;
+    font-family: var(--fontHeading);
+    font-size: 20px;
+    letter-spacing: 2px;
+    transition: all 0.5s;
+    position: relative;
+    overflow: hidden;
+}
+  
+.submitBtn span {
+    position: relative;
+    z-index: 2;
+}
+  
+.submitBtn:before,
+.submitBtn:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: var(--lavender);
+    transition: all 0.3s;
+    transform: translate(-100%, 0);
+    transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+}
+  
+.submitBtn:after {
+    transition-delay: 0.2s;
+}
+  
+.submitBtn:hover:before,
+.submitBtn:hover:after {
+    transform: translate(0, 0);
+}
