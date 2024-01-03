@@ -1,0 +1,57 @@
+
+.gr2 {
+  background: linear-gradient(170deg, red 0%, rgb(156, 21, 21) 100%);
+}
+
+.gr1 {
+  background: linear-gradient(170deg, #C86DD7 0%, #3023AE 100%);
+}
+.gr3 {
+    background: linear-gradient(170deg, #01E4F8 0%, #1D3EDE 100%);
+}
+
+.column {
+  padding-left: 2rem;
+  margin-top: 10px;
+}
+.column:hover {
+  padding-left: 0;
+}
+.column:hover .card .txt {
+  margin-left: 1rem;
+}
+
+.txt{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card  h1 {
+    font-size: 18px;
+    color: white;
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+.approvedblogsImg {
+    width: 50%;
+    margin-top: 20px;
+}
+.disapprovedblogsImg {
+    width: 45%;
+    margin-top: 20px;
+}
+.reviewsImg{
+    width: 40%;
+    margin-top: 20px;
+}
+
+.card {
+  min-height: 130px;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--fontHeading);
+  box-shadow: 0 0 21px rgba(0, 0, 0, 0.27);
+  width: 90%;
+}
