@@ -1,4 +1,7 @@
 /* In ApproveBlogs.module.css */
+.table{
+  background-color: var(--lightPink);
+}
 
 .deleteConfirmationModal {
     position: fixed;
@@ -24,6 +27,7 @@
     max-width: 500px; /* Adjust the maximum width as needed */
     border-radius: 8px;
     overflow-y: auto; /* Enable scrolling if content exceeds the height */
+    font-family: var(--fontHeading);
   }
   
   .modalContent {
@@ -53,14 +57,13 @@
   
   }
   .icon-eye {
-  
-    color: #007bff; /* Change this to your preferred color */
+    color: rgb(54, 4, 4); /* Change this to your preferred color */
     font-size: 20px;
   }
   
   .icon-trash {
     font-size: 20px;
-    color: #dc3545; /* Change this to your preferred color */
+    color: rgb(194, 4, 4); /* Change this to your preferred color */
     margin: 8px; /* Adjust the margin as needed */
   }
   

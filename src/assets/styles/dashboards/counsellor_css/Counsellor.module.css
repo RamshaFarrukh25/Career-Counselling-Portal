@@ -29,22 +29,21 @@
 }
 
 .burger{
-    color: #692D94;
     font-size: 20px;
 }
 
 .counsellorNavbar {
     padding: 15px 10px;
     background: #692D94;
-    border: none;
+    border: 0.5px solid white;
     border-radius: 0;
     margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); 
+    box-shadow: 1px 1px 3px var(--lavender); 
 }
 
 #sidebarCollapse{
     background: var(--purple);
-    border: none;
+    border: 1px solid white;;
 }
 
 #sidebar {
@@ -54,6 +53,8 @@
     color: #fff;
     transition: all 0.3s;
     font-family: var(--fontHeading);
+    border: 0.5px solid white;
+    box-shadow: 1px 1px 3px var(--lavender); 
 }
 
 #sidebar.active {
@@ -114,10 +115,20 @@
 
 .bellIcon{
     color: gold;
+    transition: transform 0.3s ease;
+}
+
+.bellIcon:hover{
+    transform: scale(1.2);
 }
 
 .pai{
     color: #01E4F8;
+    transition: transform 0.3s ease;
+}
+
+.pai:hover{
+    transform: scale(1.2);
 }
 
 .profileIcon{

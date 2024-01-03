@@ -17,6 +17,7 @@ import ShowBlogsCSS from "../../assets/styles/dashboards/counsellor_css/ShowBlog
 import Modal from '@mui/material/Modal';
 import { Editor } from '@tinymce/tinymce-react';
 import Tooltip from '@mui/material/Tooltip';
+import { Link } from 'react-router-dom';
 
 
 
@@ -135,9 +136,9 @@ export default function ShowBlogs() {
         variant="outlined"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        style={{ margin: '20px' }}
+        style={{ margin: '20px', borderBottom: '1px solid #692D94' }}
       />
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer className={ShowBlogsCSS.table} sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           {/* Table Header */}
           <TableHead>
@@ -166,12 +167,9 @@ export default function ShowBlogs() {
                         {column.id === 'actions' ? (
                           <>
                           <Tooltip title = "View Detail of Blog">
-                            <i
+                            <Link to="/blogDetail"><i
                               className={`fa fa-eye ${ShowBlogsCSS.icon} ${ShowBlogsCSS['icon-eye']}`}
-                              aria-hidden="true"
-                              onClick={() => handleOpenModal(row)}
-                             
-                            ></i>
+                            ></i></Link>
                             </Tooltip>
                             <Tooltip title = "Delete Blog">
                             <i
@@ -179,15 +177,6 @@ export default function ShowBlogs() {
                               aria-hidden="true"
                            
                               onClick={() => handleDeleteBlog(row)}
-                            ></i>
-                            </Tooltip>
-                            <Tooltip title = "Approve/Reject Blog">
-                            <i
-                              className={`fa-solid  ${
-                                row.blogApprovalStatus === 1 ? 'fa-check' : 'fa-times'
-                              } ${ShowBlogsCSS.icon} ${ShowBlogsCSS['icon-approval']}`}
-                              onClick={() => handleApprovalToggle(row)}
-                            
                             ></i>
                             </Tooltip>
                           </>
@@ -218,10 +207,10 @@ export default function ShowBlogs() {
         <DialogTitle>Blog Details</DialogTitle>
         <DialogContent>
           {selectedBlog && (
-            <div>
+            <div style={{backgroundColor: "#692D94"}}>
               <p><strong>Blog Name:</strong> {selectedBlog.blogName}</p>
               <p><strong>Author Name: </strong>{selectedBlog.authorName}</p>
-              <p><strong>Issue Date:</strong> {selectedBlog.issueDate}</p>
+              <p><strong>Created At:</strong> {selectedBlog.issueDate}</p>
               <img  className={ShowBlogsCSS.certImage} src={selectedBlog.image} alt="Blog Image" 
                   onClick={() => handleImageClick(selectedBlog.image)}/>
               <p style = {{marginTop: 20}}>{selectedBlog.content}</p>

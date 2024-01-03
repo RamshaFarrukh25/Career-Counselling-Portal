@@ -49,9 +49,9 @@
 
 .card {
   min-height: 130px;
-  border: none;
+  border: 1px solid white;
   border-radius: 10px;
   font-family: var(--fontHeading);
-  box-shadow: 0 0 21px rgba(0, 0, 0, 0.27);
+  box-shadow: 2px 2px 4px #692D94; 
   width: 90%;
 }

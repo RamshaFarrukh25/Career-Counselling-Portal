@@ -71,7 +71,7 @@ export default function Counsellor(){
                         <Link className={CounsellorCSS.links} to="profile"><span className="fa fa-user"></span>Profile</Link>
                     </li>
                     <li>
-                        <Link className={CounsellorCSS.links} to="addBlog"><span className="fa fa-cogs"></span>Add Blog</Link>
+                        <Link className={CounsellorCSS.links} to="addBlog"><span className="fa-solid fa-pen-to-square"></span>Add Blog</Link>
                     </li>
                     <li>
                         <Link className={CounsellorCSS.links} to="showBlogs"><span className="fa fa-sticky-note"></span>Show Blogs</Link>
@@ -85,7 +85,7 @@ export default function Counsellor(){
 
                 <button 
                     id={CounsellorCSS.sidebarCollapse} 
-                    className={`${CounsellorCSS.burger} btn`}
+                    className={`${CounsellorCSS.burger} btn btn-primary`}
                     onClick={handleClick}
                 >
                     <i className="fa fa-bars"></i>
