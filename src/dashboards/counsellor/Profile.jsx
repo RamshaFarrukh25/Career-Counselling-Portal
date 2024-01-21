@@ -26,7 +26,7 @@ export default function Profile() {
         <MDBRow>
           <MDBCol>
             <MDBBreadcrumb className={` ${ProfileCSS.header} rounded-3 p-3 mb-4 shadow` }>
-              <MDBBreadcrumbItem className={ProfileCSS.title}>User Profile</MDBBreadcrumbItem>
+              <MDBBreadcrumbItem className={ProfileCSS.title}>Profile</MDBBreadcrumbItem>
             </MDBBreadcrumb>
           </MDBCol>
         </MDBRow>
