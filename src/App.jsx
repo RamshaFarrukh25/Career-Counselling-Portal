@@ -16,10 +16,14 @@ import AdminLayout from './dashboards/admin/layouts/Layout'
 import  DashBoard  from './dashboards/admin/pages/Index'
 import  ApproveBlogs  from './dashboards/admin/pages/ApproveBlogs'
 import ApproveCounsellors  from './dashboards/admin/pages/ApproveCounsellors'
-import Profile  from './dashboards/admin/pages/Profile'
+import AdminProfile  from './dashboards/admin/pages/Profile'
 import UserReport from './dashboards/admin/pages/UserReport'
 import ApproveReviews from './dashboards/admin/pages/ApproveReviews'
-
+import Counsellor from './dashboards/counsellor/Counsellor'
+import Dashboard from './dashboards/counsellor/Dashboard'
+import CounsellorProfile from './dashboards/counsellor/Profile'
+import AddBlog from './dashboards/counsellor/AddBlog'
+import ShowBlogs from './dashboards/counsellor/ShowBlogs'
 
 
 export default function App() {
@@ -28,39 +32,33 @@ export default function App() {
    
       <BrowserRouter>
         <Routes>
-
-          <Route path="/" element={<Header/>} /> 
-          <Route path="/hero" element={<Hero/>}/>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/blogCards" element={<BlogCards/>}/>
-          <Route path="/blogDetail" element={<BlogDetail/>}/>
-          <Route path="/askCounsellor" element={<AskCounsellor/>}/>
-           
-
           <Route path="/" element={<Layout/>} > 
             <Route index element={<Home />} />
             <Route path="about" element={<AboutUs />} />
             <Route path="signupSuccess" element={<SignupSuccess />} />
-           </Route>
+          </Route>
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="blogDetail" element={<BlogDetail />} />
           <Route path="OfferCounselling" element={<OfferCounselling />} />
-         
           <Route path="askCounsellor" element={<AskCounsellor/>}/>
 
-          
           {/* Admin DashBoard Routing  */}
-          <Route path='/admin' element={<AdminLayout/>}>
+          <Route path="admin" element={<AdminLayout/>}>
            <Route path="dashboard" element={<DashBoard/>} />
            <Route path="approveCounsellors" element={<ApproveCounsellors/>} />
            <Route path="approveBlogs" element={<ApproveBlogs/>} />
-           <Route path="profile" element={<Profile/>} />
+           <Route path="profile" element={<AdminProfile/>} />
            <Route path="userReport" element={<UserReport/>}></Route>
            <Route path="approveReviews" element={<ApproveReviews/>}/>
-           
-           </Route>
+          </Route>
+
+          <Route path="counsellor" element={<Counsellor />}>
+            <Route index element={<Dashboard />} />
+            <Route path="profile" element={<CounsellorProfile />} />
+            <Route path="addBlog" element={<AddBlog />} />
+            <Route path="showBlogs" element={<ShowBlogs />}/>
+          </Route>
 
         </Routes>
       

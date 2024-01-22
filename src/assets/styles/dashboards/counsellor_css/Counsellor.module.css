@@ -1,0 +1,183 @@
+.wrapper {
+    width: 100%; 
+}
+
+.counsellorProfile{
+    margin-top: 20px;
+    text-align: center;
+}
+
+.counsellorName{
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+.links {
+    color: white;
+    text-decoration: none;
+    background-color: transparent; 
+    font-family: var(--fontHeading);
+}
+
+.links:hover {
+    color: white;
+    text-decoration: none; 
+}
+
+.ml-auto{
+    margin-left: auto !important; 
+}
+
+.burger{
+    font-size: 20px;
+}
+
+.counsellorNavbar {
+    padding: 15px 10px;
+    background: #692D94;
+    border: 0.5px solid white;
+    border-radius: 0;
+    margin-bottom: 40px;
+    box-shadow: 1px 1px 3px var(--lavender); 
+}
+
+#sidebarCollapse{
+    background: var(--purple);
+    border: 1px solid white;;
+}
+
+#sidebar {
+    min-width: 210px;
+    max-width: 210px;
+    background: #692D94;
+    color: #fff;
+    transition: all 0.3s;
+    font-family: var(--fontHeading);
+    border: 0.5px solid white;
+    box-shadow: 1px 1px 3px var(--lavender); 
+}
+
+#sidebar.active {
+    min-width: 90px;
+    max-width: 90px;
+    text-align: center; 
+}
+
+#sidebar.active ul.components li {
+    font-size: 14px; 
+}
+
+#sidebar.active ul.components li a {
+    padding: 10px 0; 
+}
+        
+#sidebar.active ul.components li a span {
+    margin-right: 0;
+    display: block;
+    font-size: 24px; 
+}
+
+#sidebar ul.components {
+    padding: 0;
+    transition: 0.3s; 
+}
+
+#sidebar ul li {
+    font-size: 16px; 
+}
+    
+#sidebar ul li > ul {
+    margin-left: 10px; 
+}
+
+#sidebar ul li > ul li {
+    font-size: 14px; 
+}
+
+#sidebar ul li a {
+    padding: 10px 30px;
+    display: block;
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+}
+
+#sidebar ul li a span {
+    margin-right: 15px; 
+}
+
+.icons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    font-size: 20px;
+}
+
+.bellIcon{
+    color: gold;
+    transition: transform 0.3s ease;
+}
+
+.bellIcon:hover{
+    transform: scale(1.2);
+}
+
+.pai{
+    color: #01E4F8;
+    transition: transform 0.3s ease;
+}
+
+.pai:hover{
+    transform: scale(1.2);
+}
+
+.profileIcon{
+    color: black;
+    text-decoration: none;
+    background-color: transparent; 
+    font-family: var(--fontHeading);
+}
+
+
+@media (max-width: 991.98px) {
+    #sidebar ul li a span {
+        display: block; 
+    } 
+}
+
+#sidebar ul li a:hover {
+    color: #fff; 
+}
+
+#sidebar ul li.active > a {
+    background: transparent;
+    color: #fff; 
+}
+
+@media (max-width: 991.98px) {
+    #sidebar {
+        min-width: 80px;
+        max-width: 80px;
+        text-align: center;
+        margin-left: -80px !important; 
+        overflow: hidden;
+    }
+        
+    #sidebar.active {
+        margin-left: 0 !important; 
+    } 
+}
+
+
+@media (max-width: 991.98px) {
+    #sidebarCollapse span {
+        display: none; 
+    } 
+}
+
+#content {
+    width: 100%;
+    padding: 0;
+    min-height: 100vh;
+    transition: all 0.3s; 
+}

@@ -1,0 +1,18 @@
+.header
+{
+    background-color: #692D94;
+}
+.title{
+    color:white;
+    font-size: 21px;
+}
+.peronsalDetails{
+    color:#692D94;
+    font-size:20px;
+    font-weight: bold;
+}
+.profileSection
+{
+    font-family: var(--fontHeading);
+    background-color: linear-gradient(to right, var(--blue), var(--lightPink))
+}
