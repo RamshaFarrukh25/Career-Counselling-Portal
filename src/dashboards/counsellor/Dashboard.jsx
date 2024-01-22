@@ -1,7 +1,7 @@
 import DashboardCSS from "../../assets/styles/dashboards/counsellor_css/Dashboard.module.css"
 import Reviews from "../../assets/images/Counsellor_Reviews.gif"
 import Blogs from "../../assets/images/Counsellor_Blogs.png"
-import Unapproved from "../../assets/images/Counsellor_Unapproved.png"
+import Unapproved from "../../assets/images/Counsellor_Unapproved2.png"
 
 export default function Dashboard(){
     return (
