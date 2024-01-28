@@ -1,0 +1,13 @@
+.avatarContainer{
+    height: 45px;
+    width: 45px;
+    border-radius: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.avatarRobot{
+    height: 45px;
+    width: 45px;
+    border-radius: 100%;
+}

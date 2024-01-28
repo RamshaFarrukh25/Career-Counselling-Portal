@@ -1,0 +1,29 @@
+.react-chatbot-kit-chat-container{
+    width: 400px;
+}
+
+.react-chatbot-kit-chat-bot-message{
+    background-color: var(--lightPink);
+    margin-left: 5px;
+    width: 250px;
+    padding: 12px;
+    color: #692D94;
+}
+
+.react-chatbot-kit-chat-bot-message-arrow{
+    border-right: 8px solid var(--lightPink);
+}
+
+.react-chatbot-kit-user-chat-message{
+    background-color: #692D94;
+    color: white;
+    margin-right: 12px;
+}
+
+.react-chatbot-kit-user-chat-message-arrow{
+    border-left: 8px solid #692D94;
+}
+
+.react-chatbot-kit-chat-btn-send{
+    background-color: #692D94;
+}

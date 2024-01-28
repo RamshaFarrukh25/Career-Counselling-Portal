@@ -4,7 +4,10 @@ import otpReducer from "./features/otp/otpSlice"
 import loginReducer from "./features/login/loginSlice"
 import reviewsReducer from "./features/reviews/reviewsSlice"
 import offerCounsellingReducer from "./features/offerCounselling/offerCounsellingSlice"
+
+//Admin Dashboard
 import profileReducer from './features/dashboards/admin/profile/profileSlice'
+
 
 export const store = configureStore({
     reducer: {
@@ -13,7 +16,7 @@ export const store = configureStore({
         otp: otpReducer,
         reviews: reviewsReducer,
         offerCounselling: offerCounsellingReducer,
-        profile:profileReducer
-        
+        //Admin Dashboard
+        profile:profileReducer  
     }
 })
