@@ -11,3 +11,6 @@ Create virtual Environment
 1) python -m venv env
 2) env\Scripts\activate
 3) pip install -r requirements.txt
+Migrations Command
+4) python manage.py makemigrations
+5) python manage.py migrate
