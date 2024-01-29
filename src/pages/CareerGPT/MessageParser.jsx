@@ -14,7 +14,7 @@ const MessageParser = ({ children, actions }) => {
     try {
       const resp = await axios({
         method: 'post',
-        url: 'https://cors-anywhere.herokuapp.com/http://0d60-35-247-13-128.ngrok-free.app/predict',
+        url: 'https://cors-anywhere.herokuapp.com/http://000f-35-196-149-33.ngrok-free.app/predict',
         data: JSON.stringify(jsonData),
         headers: {
           'Content-Type': 'application/json',

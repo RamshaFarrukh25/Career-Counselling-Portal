@@ -1,13 +1,25 @@
+.careerGPTContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    left: 50%;
+    right: 50%;
+    bottom: 0;
+    
+}
+
 .react-chatbot-kit-chat-container{
-    width: 400px;
+    width: 600px;
 }
 
 .react-chatbot-kit-chat-bot-message{
     background-color: var(--lightPink);
     margin-left: 5px;
-    width: 250px;
-    padding: 12px;
-    color: #692D94;
+    width: 350px;
+    padding: 14px;
+    color: #81689D;
+    font-size: 16px;
 }
 
 .react-chatbot-kit-chat-bot-message-arrow{
@@ -15,15 +27,18 @@
 }
 
 .react-chatbot-kit-user-chat-message{
-    background-color: #692D94;
+    background-color: #81689D;
     color: white;
-    margin-right: 12px;
+    margin-right: 5px;
+    font-size: 16px;
+    max-width: 320px;
 }
 
 .react-chatbot-kit-user-chat-message-arrow{
-    border-left: 8px solid #692D94;
+    border-left: 8px solid #81689D;
 }
 
 .react-chatbot-kit-chat-btn-send{
-    background-color: #692D94;
+    background-color: #81689D;
 }
+
