@@ -4,7 +4,7 @@ import {
   handleChange, 
   matchPasswords,
   handleSignup,
-  clearForm
+  clearForm,getOTP,checkEmail
 } from "../features/signup/signupSlice"
 import { Link } from "react-router-dom"
 import SignupCSS from "../assets/styles/Signup.module.css"
@@ -14,7 +14,7 @@ import OTP from "./OTP"
 
 export default function Signup() {
   const dispatch = useDispatch()
-  const { signupForm, passwordMatch, isSignup } = useSelector((store) => store.signup)
+  const { signupForm, passwordMatch, isSignup,otp ,isEmailExist} = useSelector((store) => store.signup)
 
   React.useEffect(() => {
     return () => {
@@ -132,10 +132,22 @@ export default function Signup() {
           </div>
           <button 
             className={SignupCSS.signupBtn}
+            onClick={async (event) => {
+              try {
+                await dispatch(checkEmail(signupForm.email));
+                if (!isEmailExist) {
+                   dispatch(getOTP(signupForm.email));
+                }
+              } catch (error) {
+                console.error('An error occurred:', error);
+              }
+            }}
           >
             <span>Signup</span>
           </button>
+
           <p className={SignupCSS.accountExist}>
+            {isEmailExist == true && <><span className={SignupCSS.emailExist}>Email Already Exist</span><br/></>}
             Already have an account?  
             <Link to="/login">Login</Link>
           </p>
@@ -143,7 +155,7 @@ export default function Signup() {
         <img src={Robo} alt="" className={SignupCSS.image2} />
       </div>
     </div>
-    {isSignup && <OTP />}
+    {isSignup && isEmailExist== false && <OTP  data ={signupForm} otp={otp} />}
     </>
   )
 }

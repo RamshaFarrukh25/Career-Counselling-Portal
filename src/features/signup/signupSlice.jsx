@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice ,createAsyncThunk} from "@reduxjs/toolkit"
+import axios from 'axios';
 
 const initialState = {
   signupForm: {
@@ -8,8 +9,38 @@ const initialState = {
     confirmPassword: "",
   },
   passwordMatch: "",
-  isSignup: false
+  isSignup: false,
+  otp:'',
+  isEmailExist:null
 }
+
+// API THAT SENDS OTP TO USER EMAIL
+const apiUrl = "http://127.0.0.1:8000/sendOTP";
+
+
+export const getOTP = createAsyncThunk('signupSlice/sendOTP', async (email) => {
+    try {
+      const response = await axios.post(apiUrl, {'email':email} );
+      return response.data;
+    } 
+    catch (error) {
+      throw error;
+    }
+});
+
+// API THAT SENDS OTP TO USER EMAIL
+const apiURL = "http://127.0.0.1:8000/checkEmail";
+
+
+export const checkEmail = createAsyncThunk('signupSlice/checkEmail', async (email) => {
+    try {
+      const response = await axios.post(apiURL, {'email':email} );
+      return response.data;
+    } 
+    catch (error) {
+      throw error;
+    }
+});
 
 const signupSlice = createSlice({
   name: "signup",
@@ -22,18 +53,18 @@ const signupSlice = createSlice({
       }
     },
     matchPasswords: (state) => {
-      if(state.signupForm.password !== state.signupForm.confirmPassword){
-        state.passwordMatch = "passwordError"
+      if (state.signupForm.password !== state.signupForm.confirmPassword) {
+        state.passwordMatch = "passwordError";
       } else {
-        state.passwordMatch = "passwordMatch"
+        state.passwordMatch = "passwordMatch";
       }
     },
     handleSignup: (state) => {
-      if(state.passwordMatch !== "passwordMatch"){
-        state.isSignup = false
-        return
-      }else {
-        state.isSignup = true
+      if (state.passwordMatch !== "passwordMatch") {
+        state.isSignup = false;
+        return;
+      } else {
+        state.isSignup = true;
       }
     },
     clearForm: (state) => {
@@ -42,12 +73,36 @@ const signupSlice = createSlice({
         email: "",
         password: "",
         confirmPassword: "",
-      }
-      state.passwordMatch = ""
-      state.isSignup = false
-    }
-  }
-})
+      };
+      state.passwordMatch = "";
+      state.isSignup = false;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getOTP.pending, (state) => {
+        console.log("pending otp ");
+      })
+      .addCase(getOTP.fulfilled, (state, action) => {
+        console.log("otp received");
+        state.otp = action.payload.otp;
+      })
+      .addCase(getOTP.rejected, (state, action) => {
+        console.log("rejected otp");
+      })
+      .addCase(checkEmail.pending, (state) => {
+        console.log("pending checking unique email");
+      })
+      .addCase(checkEmail.fulfilled, (state, action) => {
+        console.log("email uniquenesss checked");
+        state.isEmailExist = action.payload.isExist;
+      })
+      .addCase(checkEmail.rejected, (state, action) => {
+        console.log("rejected email uniqueness");
+      });
+  },
+});
 
-export const { handleChange, matchPasswords, handleSignup, clearForm } = signupSlice.actions
+
+export const { handleChange, matchPasswords, handleSignup, clearForm} = signupSlice.actions
 export default signupSlice.reducer

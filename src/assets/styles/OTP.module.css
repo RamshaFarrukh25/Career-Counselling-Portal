@@ -11,6 +11,11 @@
     font-size: 20px;
     max-width: 70px;
 }
+.errorMsg
+{
+    color:red;
+    text-align: center;
+}
 
 .validateBtn{
     font-family: var(--fontHeading);
