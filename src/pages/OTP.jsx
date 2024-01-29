@@ -3,19 +3,25 @@ import { useDispatch, useSelector } from "react-redux"
 import {
     decrementSeconds, 
     handleChange,
-    validateOTP,
+    setOtp,
+    setValidate,
     clearForm,
+    displayError,
+    registerUser
 } from "../features/otp/otpSlice"
 import React from "react"
 import { useNavigate } from "react-router-dom"
+import SignupSuccess from "./SignupSuccess"
 
-export default function OTP(){
+export default function OTP(props){
     const dispatch = useDispatch()
-    const { seconds, otp, validate } = useSelector((store) => store.otp)
+    const { seconds, otp, validate,enteredOTP,errorMsg } = useSelector((store) => store.otp)
     const buttonRef = React.useRef()
     const closeButtonRef = React.useRef()
     const inputRefs = [React.useRef(), React.useRef(), React.useRef(), React.useRef()]
     const navigate = useNavigate()
+    const signUpData= props.data
+    const otpCode = props.otp
 
     //The Modal should be closed whenever the component unmounts.
     
@@ -28,12 +34,23 @@ export default function OTP(){
             clearInterval(intervalId)
         }
     }, [])
-
-    React.useEffect(() => {
-        console.log("I am validate")
-        if(validate){
-            navigate("/signupSuccess", {replace : true})
+    function checkOTP(){
+        if(enteredOTP === otpCode){
+            return true
         }
+        else{
+            dispatch(displayError())
+            dispatch(setValidate())
+            return false
+        }
+    }
+    React.useEffect(() => {
+        if(validate && checkOTP()){
+            dispatch(registerUser(signUpData))
+            navigate("/signupSuccess", {replace : true})
+            window.location.reload()
+        }
+       
     }, [validate])
 
     function focusInput(index, event) {
@@ -42,7 +59,9 @@ export default function OTP(){
             return
         }
     }
-
+    function getEnteredOTP() {
+        return inputRefs.map((ref) => ref.current.value).join('');
+    }
     return (
         <>
              <button 
@@ -76,7 +95,9 @@ export default function OTP(){
                             <form 
                                 onSubmit={(event) => {
                                     event.preventDefault()
-                                    dispatch(validateOTP())
+                                    const enteredOTP = getEnteredOTP();
+                                    dispatch(setOtp(enteredOTP))
+                                    dispatch(setValidate())
                                 }}>
                                 <div className="d-flex flex-row justify-content-center mt-3">
                                     <input
@@ -148,13 +169,14 @@ export default function OTP(){
                                         value={otp[3]} 
                                         required />
                                 </div>
+                                {errorMsg && <div className={OTPCSS.errorMsg}>Entered otp is invalid</div>}
                                 <div className="mt-3 text-center pb-2">
                                     <button 
                                         className={`btn px-3 w-50 ${OTPCSS.validateBtn}`}
                                     >Validate</button>
                                 </div>
                             </form>
-                            {validate == false && <p className={OTPCSS.error}> Invalid OTP</p>}
+                            {/* {validate == false && <p className={OTPCSS.error}> Invalid OTP</p>} */}
                             {seconds === 0 && window.location.reload()}
                             <p 
                                 className={OTPCSS.time}>

@@ -13,6 +13,9 @@
     align-items: center;
     justify-content: center;
   }
+  .emailExist{
+    color:red
+  }
   
   .inner {
     position: relative;
