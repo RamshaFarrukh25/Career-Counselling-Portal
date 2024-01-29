@@ -38,6 +38,7 @@ export default function Reviews(){
         dispatch(setRating(newRating));
     };
 
+
     return(
         <>
         <div className={ReviewsCSS.wrapper}>
@@ -265,7 +266,7 @@ export default function Reviews(){
                         <div className={`card-body`}>
                             <h5 className={`card-title`}>Mehak Nadeem</h5>
                             <h6 className={`card-subtitle mb-3 text-muted`}>mehak483@gmail.com</h6>
-                            <p class={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p className={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
                     </div>
 
@@ -273,7 +274,7 @@ export default function Reviews(){
                         <div className={`card-body`}>
                             <h5 className={`card-title`}>Abdul Mateen</h5>
                             <h6 className={`card-subtitle mb-3 text-muted`}>abdulM@gmail.com</h6>
-                            <p class={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p className={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
                     </div>
 
@@ -281,7 +282,7 @@ export default function Reviews(){
                         <div className={`card-body`}>
                             <h5 className={`card-title`}>Laraib</h5>
                             <h6 className={`card-subtitle mb-3 text-muted`}>laraib99@gmail.com</h6>
-                            <p class={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p className={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
                     </div>
 
