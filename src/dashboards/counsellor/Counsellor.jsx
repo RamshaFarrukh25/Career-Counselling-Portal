@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet, useNavigate } from "react-router-dom"
 import CounsellorCSS from "../../assets/styles/dashboards/counsellor_css/Counsellor.module.css"
 import React from "react"
 import {
@@ -10,6 +10,8 @@ import {
 import ProfilePic from "../../assets/images/AboutUs_Team1.jpeg"
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+import { logOut} from "../../features/login/loginSlice"
+import { useDispatch } from "react-redux"
 
 export default function Counsellor(){
     const [sidebar, showSidebar] = React.useState(true)
@@ -17,6 +19,8 @@ export default function Counsellor(){
     const [notification, setNotification] = React.useState(null)
     const notificationOpen = Boolean(notification)
     const open = Boolean(anchorEl)
+    const dispatch= useDispatch()
+    const navigate = useNavigate()
     
     var fullHeight = function() {
 		$('.js-fullheight').css('height', $(window).height())
@@ -44,6 +48,9 @@ export default function Counsellor(){
 
     const handleIconClose = () => {
         setAnchorEl(null)
+        dispatch(logOut())
+        navigate("/")
+        window.location.reload()
     }
 
     return (
@@ -220,7 +227,9 @@ export default function Counsellor(){
                                 style={{  
                                     fontFamily: "var(--fontHeading)", 
                                 }}
+                            
                             >Logout</MenuItem>
+                            
                         </Link>
                     </Menu>
                 </div>

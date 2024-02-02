@@ -12,6 +12,10 @@
     align-items: center;
     justify-content: center;
   }
+  .successMsg{
+    text-align: center;
+    color:green;
+  }
   
   .inner {
     position: relative;
@@ -97,6 +101,7 @@
     transition: all 0.5s;
     position: relative;
     overflow: hidden;
+    text-decoration: none;
   }
   
   .submitBtn span {

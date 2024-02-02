@@ -12,4 +12,9 @@ urlpatterns = [
     path('checkCounsellorEmail', views.checkCounsellorEmail, name='checkCounsellorEmail'),
     path('registerCounsellor', views.registerCounsellor, name='registerCounsellor'),
     path('sendVerificationEmail', views.sendVerificationEmail, name='sendVerificationEmail')
+
+    path('loginUser',views.loginUser,name='loginUser'),
+    path('getTopCounsellors',views.getTopCounsellors,name='getTopCounsellors'),
+    path('saveReviews',views.saveReviews,name='saveReviews')
+
 ]
