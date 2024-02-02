@@ -151,7 +151,7 @@
 	display: block;
 	float: left;
 	clear: both;
-	width: 200px;
+	max-width: 200px;
 	margin-right: 10px;
 	font-family: var(--fontHeading);
 	font-size: 16px;
@@ -204,15 +204,15 @@
 	gap:20px;
 }
 .cnicImgTitles{
-color: rgb(190, 32, 32);
-font-size: 13px;
-font-family: var(--fontHeading);
-margin: 0px;
+	color: rgb(190, 32, 32);
+	font-size: 13px;
+	font-family: var(--fontHeading);
+	margin: 0px;
 }
 .errorMsg{
-color:red;
-font-family: var(--fontHeading);
-font-size: 15px;
+	color:red;
+	font-family: var(--fontHeading);
+	font-size: 15px;
 }
 #progressbar li:before {
 	content: counter(step);

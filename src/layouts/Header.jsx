@@ -22,7 +22,7 @@ export default function Header(){
                 <div className={` ${HeaderCSS.navbarCollapse} navbar-collapse collapse`} id="navbarNav">
                     <ul className={` ${HeaderCSS.navbarNav} navbar-nav ms-auto d-flex align-items-center`}>
                         <li className={`${HeaderCSS.navItem} nav-item`}>
-                            <Link to="/askCounsellor" className={`${HeaderCSS.navLink} nav-link`}  >Ask Counsellor</Link>
+                            <Link to="askCounsellor" className={`${HeaderCSS.navLink} nav-link`}  >Ask Counsellor</Link>
                         </li>
                         <li className={`${HeaderCSS.navItem} nav-item`}>
                             <Link to="OfferCounselling" className={`${HeaderCSS.navLink} nav-link`}
@@ -39,10 +39,10 @@ export default function Header(){
                             <Link className={`${HeaderCSS.navLink} nav-link`}  to="about">About Us</Link>
                         </li>
                         <li className={`${HeaderCSS.navItem} nav-item`}>
-                            <Link to="#" className={`${HeaderCSS.navLink} nav-link`}>Blogs</Link>
+                            <a href="#blogCards" className={`${HeaderCSS.navLink} nav-link`}>Blogs</a>
                         </li>
                         <li className={`${HeaderCSS.navItem} nav-item`}>
-                            <Link to="#" className={`${HeaderCSS.navLink} nav-link`}>Reviews</Link>
+                            <a href="#reviews" className={`${HeaderCSS.navLink} nav-link`}>Reviews</a>
                         </li>
                          
                     </ul>

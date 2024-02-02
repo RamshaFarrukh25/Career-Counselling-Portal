@@ -9,21 +9,19 @@ import {
     displayError,
     registerUser
 } from "../features/otp/otpSlice"
+import { registerCounsellor, sendVerificationEmail } from "../features/offerCounselling/offerCounsellingSlice"
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import SignupSuccess from "./SignupSuccess"
 
 export default function OTP(props){
     const dispatch = useDispatch()
-    const { seconds, otp, validate,enteredOTP,errorMsg } = useSelector((store) => store.otp)
+    const { seconds, otp, validate, enteredOTP, errorMsg } = useSelector((store) => store.otp)
     const buttonRef = React.useRef()
     const closeButtonRef = React.useRef()
     const inputRefs = [React.useRef(), React.useRef(), React.useRef(), React.useRef()]
     const navigate = useNavigate()
-    const signUpData= props.data
     const otpCode = props.otp
-
-    //The Modal should be closed whenever the component unmounts.
+    const role = props.role
     
     React.useEffect(() => {
         buttonRef.current.click()
@@ -34,6 +32,7 @@ export default function OTP(props){
             clearInterval(intervalId)
         }
     }, [])
+
     function checkOTP(){
         if(enteredOTP === otpCode){
             return true
@@ -44,13 +43,38 @@ export default function OTP(props){
             return false
         }
     }
+    
     React.useEffect(() => {
-        if(validate && checkOTP()){
-            dispatch(registerUser(signUpData))
-            navigate("/signupSuccess", {replace : true})
-            window.location.reload()
+        const fetchData = async () => {
+            if (validate && checkOTP()) {
+                if (role === "user") {
+                    const signUpData = props.data
+                    await dispatch(registerUser(signUpData))
+                } else {
+                    const offerCounsellorForm = props.offerCounsellorForm
+                    const images = props.images
+                    //console.log("Images", images)
+                    //console.log("OfferCounsellorForm", offerCounsellorForm)
+                    const formData = new FormData()
+    
+                    formData.append('offerCounsellorForm', JSON.stringify(offerCounsellorForm))
+                    formData.append('profilePic', images.profilePic)
+                    formData.append('cnicFrontImg', images.cnicFrontImg)
+                    formData.append('cnicBackImg', images.cnicBackImg)
+                    formData.append('transcript', images.transcript)
+                    //console.log("images.certificates", images.certificates)
+                    images.certificates.forEach((certificate, index) => {
+                        formData.append(`certificates[${index}]`, certificate)
+                    })
+                    await dispatch(registerCounsellor(formData))
+                    await dispatch(sendVerificationEmail(
+                        {'email': offerCounsellorForm.email, 'name': offerCounsellorForm.name}))
+                }
+                navigate("/signupSuccess", { replace: true })
+                window.location.reload()
+            }
         }
-       
+        fetchData()
     }, [validate])
 
     function focusInput(index, event) {
@@ -59,9 +83,11 @@ export default function OTP(props){
             return
         }
     }
+
     function getEnteredOTP() {
         return inputRefs.map((ref) => ref.current.value).join('');
     }
+    
     return (
         <>
              <button 

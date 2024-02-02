@@ -1,5 +1,5 @@
 import React from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector, useStore } from "react-redux"
 import { 
   handleChange, 
   matchPasswords,
@@ -14,6 +14,7 @@ import OTP from "./OTP"
 
 export default function Signup() {
   const dispatch = useDispatch()
+  const store = useStore()
   const { signupForm, passwordMatch, isSignup,otp ,isEmailExist} = useSelector((store) => store.signup)
 
   React.useEffect(() => {
@@ -135,7 +136,8 @@ export default function Signup() {
             onClick={async (event) => {
               try {
                 await dispatch(checkEmail(signupForm.email));
-                if (!isEmailExist) {
+                console.log("isEmailExist", store.getState().signup.isEmailExist)
+                if (!store.getState().signup.isEmailExist) {
                    dispatch(getOTP(signupForm.email));
                 }
               } catch (error) {
@@ -147,7 +149,7 @@ export default function Signup() {
           </button>
 
           <p className={SignupCSS.accountExist}>
-            {isEmailExist == true && <><span className={SignupCSS.emailExist}>Email Already Exist</span><br/></>}
+            {store.getState().signup.isEmailExist == true && <><span className={SignupCSS.emailExist}>Email Already Exist</span><br/></>}
             Already have an account?  
             <Link to="/login">Login</Link>
           </p>
@@ -155,7 +157,7 @@ export default function Signup() {
         <img src={Robo} alt="" className={SignupCSS.image2} />
       </div>
     </div>
-    {isSignup && isEmailExist== false && <OTP  data ={signupForm} otp={otp} />}
+    {isSignup && store.getState().signup.isEmailExist == false && <OTP  data={signupForm} otp={otp} role="user" />}
     </>
   )
 }

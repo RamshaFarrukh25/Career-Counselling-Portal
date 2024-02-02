@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 
 export default function BlogCards(){
     return (
-        <div className={`${BlogCardsCSS.overAll} mt-5`}>
+        <div id="blogCards" className={`${BlogCardsCSS.overAll} mt-5`}>
             <div className={`${BlogCardsCSS.mainHeading} text-center`}>
                 <h1>Popular Blogs</h1>
             </div>

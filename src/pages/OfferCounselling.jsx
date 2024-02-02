@@ -1,16 +1,23 @@
 import OfferCounsellingCSS from "../assets/styles/OfferCounselling.module.css"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector, useStore } from "react-redux"
 import 
 { handleChange,
-  handleSubmit,setCount,
-  ErrorMsg,resetCount,
-  handleFileChange, handleModelChange,addWorkingExperience,
-  updateWorkingExperience,removeWorkingExperience,updateWorkingExperienceFile,openOTPModal
-} 
-from "../features/offerCounselling/offerCounsellingSlice";
+  setCount,
+  ErrorMsg,
+  handleModelChange,
+  addWorkingExperience,
+  updateWorkingExperience,
+  removeWorkingExperience,
+  openOTPModal,
+  checkCounsellorEmail, 
+  sendOTP, 
+  registerCounsellor,
+  sendVerificationEmail
+} from "../features/offerCounselling/offerCounsellingSlice";
 import React from "react";
 import {useNavigate} from "react-router-dom"
 import OTP from "./OTP"
+
 
 export default function OfferCounselling(){
   //dispatch
@@ -18,11 +25,54 @@ export default function OfferCounselling(){
   //useRef to manipluate the DOM elements
   const buttonRef = React.useRef()
   const navigate = useNavigate();
+
+  //Access current state
+  const store = useStore()
+
+  //For Sending data to API
+  const formData = new FormData()
+
   React.useEffect(()=>{
     buttonRef.current.click()
   },[])
+
   //state parameters from offerCounselling State
-  const {offerCounsellorForm,stepCount,errorMsg, showModel,workingExperience, isOTPModal} = useSelector((store) => store.offerCounselling)
+  const {offerCounsellorForm,
+        stepCount,
+        errorMsg, 
+        showModel,
+        workingExperience, 
+        isOTPModal,
+        role,
+        isEmailExist,
+        otp
+      } = useSelector((store) => store.offerCounselling)
+
+  const [images, setImages] = React.useState({
+    profilePic: null,
+    cnicFrontImg: null,
+    cnicBackImg: null,
+    transcript: null,
+    certificates: [null]
+  })
+
+  function handleImages(name, fileObj){
+    setImages(prevImages => ({
+      ...prevImages,
+      [name]: fileObj
+    }))
+  }
+
+  function handleCertificateImage(name, index, fileObj) {
+    setImages(prevImages => {
+      const newCertificates = [...prevImages.certificates]
+      newCertificates[index] = fileObj
+      return {
+        ...prevImages,
+        certificates: newCertificates
+      }
+    })
+  }
 
   return (
     <> 
@@ -37,7 +87,7 @@ export default function OfferCounselling(){
       >
       </button>
 
-      <div className={` ${OfferCounsellingCSS.model} modal fade`} id="policies" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div className={` ${OfferCounsellingCSS.model} modal fade`} id="policies" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div className={` ${OfferCounsellingCSS.modelBody}  modal-content`}>
             <div className="modal-header">
@@ -80,8 +130,7 @@ export default function OfferCounselling(){
     <div className="form-container">
     <form id={OfferCounsellingCSS.msform}
      onSubmit={(event) => {
-      event.preventDefault()
-      dispatch(handleSubmit())
+        event.preventDefault()
       }}
     >
     <ul id= {OfferCounsellingCSS.progressbar}>
@@ -118,6 +167,24 @@ export default function OfferCounselling(){
           }}
           required
           />
+
+          <input className={OfferCounsellingCSS.input}
+          type="password" 
+          name="password" 
+          placeholder="................."
+          value={offerCounsellorForm.password}
+          onChange={(event) => {
+            dispatch(handleChange({
+                name: event.target.name,
+                value: event.target.value
+            }))
+          }}
+          minLength="8"
+          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+          title="Password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+          required
+          />
+
           <input className={OfferCounsellingCSS.input}
             type="tel"
             name="phoneNo"
@@ -196,59 +263,97 @@ export default function OfferCounselling(){
                 />
                 <label className={OfferCounsellingCSS.genderRadioLabel} htmlFor="female">Female</label>
             </div>
-           
-            <label htmlFor="cnicFrontImg" className={OfferCounsellingCSS.cnicImg}>Upload CNIC Front Image:</label><br/>
-            {offerCounsellorForm.cnicFrontImg && (
-              <span className={OfferCounsellingCSS.cnicImgTitles}>{offerCounsellorForm.cnicFrontImg}</span>
+            
+            <label htmlFor="profilePic" className={OfferCounsellingCSS.cnicImg}>Upload Profile Picture:</label>
+            <br/>
+            {images.profilePic && (
+              <span className={OfferCounsellingCSS.cnicImgTitles}>
+                {images.profilePic.name}
+              </span>
             )}
+
+            <input className={OfferCounsellingCSS.input}
+              type="file"
+              required
+              accept="image/png, image/jpeg, image/jpg"
+              name="profilePic"
+              onChange={(event) => {           
+                handleImages("profilePic", event.target.files[0])
+              }}
+            />
+
+            <label htmlFor="cnicFrontImg" className={OfferCounsellingCSS.cnicImg}>Upload CNIC Front Image:</label>
+            <br/><br/>
+            {images.cnicFrontImg && (
+              <span className={OfferCounsellingCSS.cnicImgTitles}>
+                {images.cnicFrontImg.name}
+              </span> 
+            )} 
+
             <input className={OfferCounsellingCSS.input}
               type="file"
               required
               accept="image/png, image/jpeg, image/jpg"
               name="cnicFrontImg"
               onChange={(event) => {           
-                dispatch(handleFileChange({
-                  name: event.target.name,
-                  file: event.target.files[0]
-                }));
+                handleImages("cnicFrontImg", event.target.files[0])
               }}
             />
              
             <label htmlFor="cnicBackImg" className={OfferCounsellingCSS.cnicImg}>Upload CNIC Back Image:</label>
             <br/><br/>
-            {offerCounsellorForm.cnicBackImg && (
-              <span className={OfferCounsellingCSS.cnicImgTitles}>{offerCounsellorForm.cnicBackImg}</span>
+            {images.cnicBackImg && (
+              <span className={OfferCounsellingCSS.cnicImgTitles}>
+                {images.cnicBackImg.name}
+              </span>
             )}
             <input className={OfferCounsellingCSS.input}
               type="file"
               required
               accept="image/png, image/jpeg, image/jpg"
               name="cnicBackImg"
-              onChange={(event) => {
-                dispatch(handleFileChange({
-                  name: event.target.name,
-                  file: event.target.files[0]
-                }));
+              onChange={(event) => {           
+                handleImages("cnicBackImg", event.target.files[0])
               }}
-              
             />
            
         <button className={`${OfferCounsellingCSS.actionButton} next action-button`}
-         onClick={(event)=>{
-          
+         onClick={async (event)=>{
+
           const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-          if(!emailPattern.test(offerCounsellorForm.email))
-          {
+          const emailVerify = emailPattern.test(offerCounsellorForm.email)
+
+          if(emailVerify){
+            await dispatch(checkCounsellorEmail(offerCounsellorForm.email))
+          } else {
             event.preventDefault()
             dispatch(ErrorMsg({
               msg:'Invalid email'
             }))
+            return
           }
-          else if ((emailPattern.test(offerCounsellorForm.email) && offerCounsellorForm.gender === "male" || offerCounsellorForm.gender === "female") &&
-             offerCounsellorForm.name !== "" &&
-             offerCounsellorForm.cnic !== "" && offerCounsellorForm.phoneNo !== "" &&
-             offerCounsellorForm.cnicFrontImg !== "" && offerCounsellorForm.cnicBackImg !== "")
-            {
+
+          let checkEmail = false
+          if(!store.getState().offerCounselling.isEmailExist){
+            checkEmail = true
+          } else if(store.getState().offerCounselling.isEmailExist 
+              && store.getState().offerCounselling.role === 'U')
+            checkEmail  = true
+          else {
+            checkEmail= false
+          }
+
+          if(!checkEmail){
+            dispatch(ErrorMsg({
+              msg:'Email Already in use'
+            }))
+            return
+          }
+
+          if ((offerCounsellorForm.gender === "male" || offerCounsellorForm.gender === "female") &&
+              offerCounsellorForm.name !== "" && offerCounsellorForm.password !== "" &&
+              offerCounsellorForm.cnic !== "" && offerCounsellorForm.phoneNo !== "" &&
+              images.cnicFrontImg !== null && images.cnicBackImg !== null && images.profilePic !== null){
               dispatch(ErrorMsg({
                 msg:''
               }))
@@ -282,8 +387,8 @@ export default function OfferCounselling(){
             }))
           }}
           required>
-            <option>M.Phil</option>
-            <option >PHD</option>
+            <option value="M.Phil">M.Phil</option>
+            <option value="PHD">PHD</option>
           </select>
         <input className={OfferCounsellingCSS.input}
             type="text" 
@@ -299,18 +404,17 @@ export default function OfferCounselling(){
             />
         <label htmlFor="transcriptImg" className={OfferCounsellingCSS.transcriptImg}>Upload Transcript Image according to qualification:</label>
         <br/><br/>
-        {offerCounsellorForm.transcript && (
-              <span className={OfferCounsellingCSS.cnicImgTitles}>{offerCounsellorForm.transcript}</span>
+        {images.transcript && (
+            <span className={OfferCounsellingCSS.cnicImgTitles}>
+              {images.transcript.name}
+            </span>
         )}
-        <input className= {OfferCounsellingCSS.input}
+        <input className={OfferCounsellingCSS.input}
           type="file"
           accept="image/png, image/jpeg, image/jpg"
           name="transcript"
-          onChange={(event) => {            
-            dispatch(handleFileChange({
-              name: event.target.name,
-              file: event.target.files[0]
-            }));
+          onChange={(event) => {           
+            handleImages("transcript", event.target.files[0])
           }}
         />
          <button className={`${OfferCounsellingCSS.actionButton} previous action-button`}
@@ -328,9 +432,9 @@ export default function OfferCounselling(){
         </button>
         <button className={`${OfferCounsellingCSS.actionButton} next action-button`}
          onClick={(event)=>{
-          console.log(offerCounsellorForm.transcript, offerCounsellorForm.qualification,
-            offerCounsellorForm.fieldOfStudy)
-          if (offerCounsellorForm.transcript !== "" && (offerCounsellorForm.qualification !== "M.Phil" || offerCounsellorForm.qualification !== "PHD" ) && offerCounsellorForm.fieldOfStudy !== "")
+          if (images.transcript !== null 
+            && (offerCounsellorForm.qualification !== "M.Phil" || offerCounsellorForm.qualification !== "PHD" ) 
+            && offerCounsellorForm.fieldOfStudy !== "")
           {
             event.preventDefault()
             dispatch(ErrorMsg({
@@ -380,7 +484,17 @@ export default function OfferCounselling(){
                     />
                     {index >=1 && (
                        <button type="button" className="btn btn-danger mb-2" id={`remove-${index}`}  
-                       onClick={() => dispatch(removeWorkingExperience({ index }))}>
+                       onClick={() => {
+                        dispatch(removeWorkingExperience({ index }) )
+                        setImages(prevImages => {
+                          const updatedCertificates = [...prevImages.certificates]
+                          updatedCertificates.splice(index, 1)
+                            return {
+                              ...prevImages,
+                              certificates: updatedCertificates
+                            }
+                        })
+                      }}>
                         <i className="fa fa-trash"></i>
                        </button>
                     )}
@@ -424,23 +538,19 @@ export default function OfferCounselling(){
                     </div>
                     <label htmlFor="certificateImg" className={OfferCounsellingCSS.certificateImg}>Upload Certificate Image according to your working experience:</label>
                     <br/>
-                    {offerCounsellorForm.workingExperience[index].certificates && (
-                          <span className={OfferCounsellingCSS.cnicImgTitles}>{offerCounsellorForm.workingExperience[index].certificates}</span>
+                    {images.certificates[index] !== null && (
+                        <span className={OfferCounsellingCSS.cnicImgTitles}>
+                          {images.certificates[index].name}
+                        </span>
                     )}
-                    <input  className={OfferCounsellingCSS.input}
+                    <input className={OfferCounsellingCSS.input}
                         type="file"
                         name="certificates"
                         id={`certificates-${index}`} 
                         accept="image/png, image/jpeg, image/jpg"
-                        onChange={(e) =>
-                            dispatch(
-                                updateWorkingExperienceFile({
-                                    index,
-                                    name: e.target.name,
-                                    file: e.target.files[0],
-                                })
-                            )
-                        }
+                        onChange={(event) => {           
+                          handleCertificateImage("certificates", index, event.target.files[0])
+                        }}
                         placeholder="Certificates"
                     />
                     
@@ -461,42 +571,79 @@ export default function OfferCounselling(){
         
         <button
           className={`${OfferCounsellingCSS.actionButton} next action-button`}
-          onClick={(event) => {
+          onClick={async (event) => {
             let allDetailsFilled = true; 
             offerCounsellorForm.workingExperience.forEach((workingExperienceData, index) => {
               console.log(workingExperienceData)
               if (
                 workingExperienceData.institute === "" ||
                 workingExperienceData.startingYear === "" ||
-                workingExperienceData.endingYear === "" ||
-                workingExperienceData.certificates === ""
+                workingExperienceData.endingYear === "" 
               ) {
                 allDetailsFilled = false
               }
             })
 
+            if(allDetailsFilled){
+              images.certificates.forEach((certificate, index) => {
+                if(certificate === null){
+                  allDetailsFilled = false
+                }
+              })
+            }
+
             if (allDetailsFilled) {
               dispatch(ErrorMsg({ msg: '' }))
-              dispatch(openOTPModal())
-              //alert("hello from Ramsha :)))))))))))")
+              if(!isEmailExist){
+                await dispatch(sendOTP(offerCounsellorForm.email))
+                dispatch(openOTPModal())
+              } else{
+                formData.append('offerCounsellorForm', JSON.stringify(offerCounsellorForm))
+                formData.append('profilePic', images.profilePic)
+                formData.append('cnicFrontImg', images.cnicFrontImg)
+                formData.append('cnicBackImg', images.cnicBackImg)
+                formData.append('transcript', images.transcript)
+                images.certificates.forEach((certificate, index) => {
+                  formData.append(`certificates[${index}]`, certificate);
+                })
+                await dispatch(registerCounsellor(formData))
+                await dispatch(sendVerificationEmail(
+                  {'email': offerCounsellorForm.email, 'name': offerCounsellorForm.name}))
+                navigate("/signupSuccess", {replace : true})
+                window.location.reload()
+              }
             } else {
               event.preventDefault();
-              dispatch(ErrorMsg({ msg: 'please fill all the required details' }))
+                dispatch(ErrorMsg({ msg: 'please fill all the required details' }))
             }
           }}
         >
         Next
         </button>
 
-       <button type="button"  className={` ${OfferCounsellingCSS.addBtn} btn `} onClick={(e) => {
-        dispatch(addWorkingExperience())}}>Add</button>
+       <button type="button"  className={` ${OfferCounsellingCSS.addBtn} btn `} 
+       onClick={(e) => {
+          dispatch(addWorkingExperience())
+          setImages(prevImages => ({
+            ...prevImages,
+            certificates: [...prevImages.certificates, null]
+          }))
+        }}
+        >Add</button>
         <p className={OfferCounsellingCSS.errorMsg}>{errorMsg}</p>
         </fieldset>
        
     </>)}
     </form>
    </div>
-   {isOTPModal && <OTP />}
+
+   {isOTPModal && 
+      <OTP 
+        offerCounsellorForm={offerCounsellorForm}
+        images={images} 
+        otp={otp} 
+        role="counsellor" />
+    }
   </>
   )
 }

@@ -11,8 +11,6 @@ const initialState = {
 
 // API THAT Registers User
 const apiUrl = "http://127.0.0.1:8000/registerUser";
-
-
 export const registerUser = createAsyncThunk('otpSlice/registerUser', async (signupData) => {
     try {
       const response = await axios.post(apiUrl, {'signupData':signupData} );
@@ -22,6 +20,7 @@ export const registerUser = createAsyncThunk('otpSlice/registerUser', async (sig
       throw error;
     }
 });
+
 
 const otpSlice = createSlice({
     name: 'otp',

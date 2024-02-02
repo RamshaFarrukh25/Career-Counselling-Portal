@@ -28,7 +28,7 @@ export const getOTP = createAsyncThunk('signupSlice/sendOTP', async (email) => {
     }
 });
 
-// API THAT SENDS OTP TO USER EMAIL
+// API THAT CHECK USER EMAIL
 const apiURL = "http://127.0.0.1:8000/checkEmail";
 
 
@@ -76,6 +76,8 @@ const signupSlice = createSlice({
       };
       state.passwordMatch = "";
       state.isSignup = false;
+      state.otp = '';
+      state.isEmailExist = null;
     },
   },
   extraReducers: (builder) => {
