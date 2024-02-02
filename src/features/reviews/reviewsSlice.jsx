@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import axios from 'axios'
 import RatingLogo from "../../assets/images/Reviews_RatingLogo.png"
 import RevLogoA from "../../assets/images/Reviews_reviewColored.png"
 
@@ -16,8 +17,23 @@ const initialState = {
         selectedOption: "",
         counsellorReview: "",
         rating: 0
-    }
+    },
+    isSave: null
 }
+
+// API THAT Saves Review
+const apiUrl = "http://127.0.0.1:8000/saveReviews";
+
+
+export const saveReviews = createAsyncThunk('reviewsSlice/saveReviews', async ({reviewsForm,user_id}) => {
+    try{
+      const response = await axios.post(apiUrl, {reviewsForm,user_id} );
+      return response.data;
+    } 
+    catch (error) {
+      throw error;
+    }
+});
 
 const reviewsSlice = createSlice({
     name: 'reviews',
@@ -28,9 +44,6 @@ const reviewsSlice = createSlice({
                 ...state.reviewsForm,
                 [payload.name]: payload.value
             }
-        },
-        handleSubmit: (state) => {
-            console.log(state.reviewsForm)
         },
         setShowReviewForm: (state, action) => {
             state.showReviewForm = action.payload;
@@ -46,15 +59,35 @@ const reviewsSlice = createSlice({
         },
         setChangeRatingImage: (state,action) => {
             state.changeRatingImage = action.payload;
+        },
+        clearReview: (state) => {
+            state.reviewsForm = {
+                name: "",
+                email: "",
+                comments: ""
+            }
         }
-    }
+    },
+    extraReducers: (builder) => {
+        builder
+          .addCase(saveReviews.pending, (state) => {
+            console.log("reviews pending");
+          })
+          .addCase(saveReviews.fulfilled, (state) => {
+            console.log("reviews saved successfully");
+            state.isSave = true
+          })
+          .addCase(saveReviews.rejected, (state) => {
+            console.log("reviews rejected");
+            state.isSave = false
+          });
+    },
 })
 
 
 export const{handleChange, 
-            handleSubmit, 
             setShowReviewForm, 
             setChangeReviewImage, 
             setChangeRatingImage,
-            setRating} = reviewsSlice.actions
+            setRating, clearReview} = reviewsSlice.actions
 export default reviewsSlice.reducer

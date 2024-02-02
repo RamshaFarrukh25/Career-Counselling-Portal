@@ -73,6 +73,36 @@
     box-shadow: 2px 4px 4px var(--purple);
 
 }
+.DashboardBtn{
+  width:100px;
+  cursor: pointer;
+  background-color: var(--lavender);
+  transition: background-color 0.3s var(--lightPink);
+  padding: 10px 10px 10px 10px;
+  border: 1px solid var(--blue);
+  font-family: var(--fontHeading);
+  box-shadow: 2px 4px 4px var(--purple);
+  
+}
+.BtnDiv{
+  margin-left: 250px;
+  gap:3px;
+}
+.UserLogoutButton
+{
+  cursor: pointer;
+  background-color: var(--lavender);
+  transition: background-color 0.3s var(--lightPink);
+  margin-left:100px;
+  padding: 10px 10px 10px 10px;
+  border: 1px solid var(--blue);
+  font-family: var(--fontHeading);
+  box-shadow: 2px 4px 4px var(--purple);
+
+}
+.DashboardBtn:hover {
+  background-color: var(--lavender );
+}
 
 .loginButton:hover {
   background-color: var(--lavender );
@@ -86,6 +116,10 @@
     .loginButton {
         margin-left: 180px; 
       }
+      .BtnDiv{
+        margin-left: 200px;
+      }
+      
 }
 @media screen  and (max-width: 854px) {
     .card {
@@ -116,9 +150,11 @@
       padding: 20px;
       order: -1;
     }
-  
-    .loginButton {
-      margin-left: 0;
+    .cardTitle{
+      font-size:30px;
+    }
+    .BtnDiv{
+      margin-left: 0px;
     }
 }
   

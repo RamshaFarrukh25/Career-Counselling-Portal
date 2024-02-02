@@ -1,34 +1,48 @@
-/* AskCounsellorCSS.css */
-.Body{
-  font-family: var(--fontHeading);
 
+.MainDiv{
+  font-family: var(--fontHeading);
 }
-.Heading {
+.CounsellorsHeading {
   font-weight: bold;
   color: azure;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), -2px -2px 4px rgba(255, 255, 255, 0.5);
-  /* Adjust values for your desired shadow effects and colors */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
-.Image {
-  width: 130px;
-  height: 150px;
-  box-shadow: 0px 0px 10px 0px rgb(6, 5, 5); /* Adjust values for your desired shadow effect */
+.image {
+  width:100%;
+  box-shadow: 2px 5px 10px 0px var(--blue);
+  border:1px solid black;
 }
-.Button {
-  font-family: 'Philosopher', sans-serif;
+.starsFilled{
+  color:var(--purple);
+  font-size:20px; 
+}
+.ChatButton {
   font-weight: bold;
-  padding: 10px 20px;
-  border: none;
+  padding: 10px;
+  border: 2px solid var(--blue);
   border-radius: 5px;
   text-decoration: none;
   background-color: var(--blue);
   color: azure;
+  box-shadow: 2px 2px 4px var(--lavender);
 }
-.CardWithBorderRadius {
-  border-radius: 20px; /* Adjust the value as needed for the desired border radius */
+.CounsellorCard {
+  border-radius: 20px;
+  border-color: 1px solid var(--blue);
+  box-shadow: 2px 2px 4px var(--lavender);
 }
 .mainHR {
-  border-top: 3px solid #2B3499; /* Use the blue variable for the border color */
-  width: 100%; /* Make the hr span the entire width of the container */
+  border-top: 3px solid #050a32;
+  width: 100%;
 }
-
+@media (max-width:765px)
+{
+  .image {
+    width:50%;
+    box-shadow: 0px 0px 10px 0px var(--blue);
+    border:1px solid black;
+  }
+  .CounsellorsHeading{
+    font-size:20px;
+  }
+}

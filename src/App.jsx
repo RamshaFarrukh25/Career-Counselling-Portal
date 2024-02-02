@@ -38,13 +38,13 @@ export default function App() {
             <Route index element={<Home />} />
             <Route path="about" element={<AboutUs />} />
             <Route path="signupSuccess" element={<SignupSuccess />} />
+            <Route path="OfferCounselling" element={<OfferCounselling />} />
+            <Route path="askCounsellor" element={<AskCounsellor/>}/>
             <Route path="careerGPT" element={<CareerGPT />} />
+            <Route path="login" element={<Login />} />  
+            <Route path="signup" element={<Signup />} />
+            <Route path="blogDetail" element={<BlogDetail />} />
           </Route>
-          <Route path="login" element={<Login />} />  
-          <Route path="signup" element={<Signup />} />
-          <Route path="blogDetail" element={<BlogDetail />} />
-          <Route path="OfferCounselling" element={<OfferCounselling />} />
-          <Route path="askCounsellor" element={<AskCounsellor/>}/>
 
           {/* Admin DashBoard Routing  */}
           <Route path="admin" element={<AdminLayout/>}>

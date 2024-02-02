@@ -1,23 +1,26 @@
 import { useDispatch, useSelector } from "react-redux"
 import { 
   handleChange,
-  handleSubmit,
   setChangeReviewImage,
   setShowReviewForm,
   setChangeRatingImage,
-  setRating
+  setRating,
+  saveReviews,
+  clearReview
 } from "../features/reviews/reviewsSlice"
 import ReviewsCSS from "../assets/styles/Reviews.module.css"
 import RevLogo from "../assets/images/Reviews_ReviewLogo.png"
 import RatingLogo from "../assets/images/Reviews_RatingLogo.png"
 import RevLogoA from "../assets/images/Reviews_reviewColored.png"
 import RatLogoA from "../assets/images/Reviews_ratingColored.png"
+import { Link, useNavigate } from "react-router-dom"
 
-//import { Rating } from 'react-simple-star-rating';
 
 export default function Reviews(){
     const dispatch = useDispatch()
-    const {reviewsForm} = useSelector((store) => store.reviews)
+    const navigate = useNavigate()
+    const {reviewsForm, isSave} = useSelector((store) => store.reviews)
+    const {user_id,isLogin} = useSelector((store)=>store.login)
     const showReviewForm = useSelector((store) => store.reviews.showReviewForm)
     const reviewImage = useSelector((store) => store.reviews.changeReviewImage)
     const ratingImage = useSelector((store) => store.reviews.changeRatingImage)
@@ -37,7 +40,6 @@ export default function Reviews(){
     const handleRatingChange = (newRating) => {
         dispatch(setRating(newRating));
     };
-
 
     return(
         <>
@@ -62,7 +64,13 @@ export default function Reviews(){
                             <form 
                                 onSubmit={(event) => {
                                     event.preventDefault()
-                                    dispatch(handleSubmit())
+                                    if(isLogin){
+                                        dispatch(saveReviews({'reviewsForm':reviewsForm,'user_id':user_id}))
+                                        dispatch(clearReview())
+                                    } else {
+                                        dispatch(clearReview())
+                                        navigate("/login")
+                                    }
                                 }}
                             >
             
@@ -128,6 +136,7 @@ export default function Reviews(){
                             <button className={ReviewsCSS.submitBtn}>
                                 <span>Submit</span>
                             </button>
+                            {isSave == true && <div><p className={`${ReviewsCSS.successMsg} mt-2`}>Review Saved Successully</p></div>}
 
                             </form>
                         ):(
@@ -138,6 +147,7 @@ export default function Reviews(){
                                     dispatch(handleSubmit())
                                 }}
                             >
+                                
                                 <div className={ReviewsCSS.formHolder}>
                                     <span>
                                         <i className="fa-regular fa-user"></i>
@@ -266,7 +276,7 @@ export default function Reviews(){
                         <div className={`card-body`}>
                             <h5 className={`card-title`}>Mehak Nadeem</h5>
                             <h6 className={`card-subtitle mb-3 text-muted`}>mehak483@gmail.com</h6>
-                            <p className={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
                     </div>
 
@@ -274,7 +284,7 @@ export default function Reviews(){
                         <div className={`card-body`}>
                             <h5 className={`card-title`}>Abdul Mateen</h5>
                             <h6 className={`card-subtitle mb-3 text-muted`}>abdulM@gmail.com</h6>
-                            <p className={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
                     </div>
 
@@ -282,7 +292,7 @@ export default function Reviews(){
                         <div className={`card-body`}>
                             <h5 className={`card-title`}>Laraib</h5>
                             <h6 className={`card-subtitle mb-3 text-muted`}>laraib99@gmail.com</h6>
-                            <p className={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
                     </div>
 

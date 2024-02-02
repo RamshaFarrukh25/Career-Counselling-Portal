@@ -1,9 +1,11 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom'
 import SidenavCSS from '../../../assets/styles/dashboards/admin_css/Sidenav.module.css'
 import { useState } from 'react';
-
+import { logOut } from '../../../features/login/loginSlice';
+import { useDispatch } from 'react-redux';
 export default function SidebarNav() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [showSidebar, setShowSidebar] = useState(true);
 
     const toggleSidebar = () => {
@@ -11,9 +13,9 @@ export default function SidebarNav() {
     };
 
   const handleLogout = () => {
-    // Perform logout actions here, such as clearing session/local storage, resetting state, etc.
-    // Redirect to the login page or perform any necessary actions after logout
-    navigate('/login'); // Redirect to the login page after logout
+    dispatch(logOut())
+    navigate('/')
+    window.location.reload()
   };
     return (
     <>
