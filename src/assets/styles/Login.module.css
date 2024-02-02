@@ -7,7 +7,7 @@
   }
   
   .wrapper {
-    min-height: 100vh;
+    min-height: 85vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,9 +21,9 @@
   .image1 {
     position: absolute;
     bottom: -12px;
-    left: -350px;
+    left: -300px;
     z-index: 99;
-    max-width: 100%;
+    max-width: 80%;
   }
   
   .form {
@@ -70,7 +70,7 @@
     font-family: var(--fontHeading);
     font-size: 18px;
   }
-  
+ 
   .formControl:focus {
     border-bottom: 1px solid var(--purple);
   }
@@ -95,7 +95,12 @@
     position: relative;
     overflow: hidden;
   }
-  
+  .errorMsg
+  {
+    font-family: var(--fontHeading);
+    color:red;
+    text-align: center;
+  }
   .loginBtn span {
     position: relative;
     z-index: 2;
