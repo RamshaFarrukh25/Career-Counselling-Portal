@@ -23,5 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 env
-migrations
+*.pyc
 .db.sqlite3
