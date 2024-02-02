@@ -10,7 +10,6 @@ class ACU(models.Model):
     def __str__(self):
         return f'{self.name} - {self.email}'
 
-
 class Counsellor(models.Model):
     counsellor_id =  models.ForeignKey(ACU,on_delete= models.CASCADE, related_name='counsellors')
     phone_no = models.TextField()
@@ -24,8 +23,7 @@ class Counsellor(models.Model):
     
     def __str__(self):
         return f'A counsellor with name: {self.counsellor_id.name}, email: {self.counsellor_id.email}'
-   
-
+    
 
 class Qualification(models.Model):
     counsellor_id = models.OneToOneField(Counsellor, on_delete=models.CASCADE, primary_key=True, related_name='qualification')
@@ -37,18 +35,17 @@ class Qualification(models.Model):
     def __str__(self):
         return f'A qualification of counsellor: {self.counsellor_id.counsellor_id.email} is {self.qualification}'
 
-
+      
 class WorkingExperience(models.Model):
     counsellor_id = models.ForeignKey(Counsellor, on_delete=models.CASCADE, related_name='working_experiences')
     institute_name = models.TextField()
-    starting_date = models.TextField()
-    ending_date = models.TextField()
+    starting_year = models.TextField()
+    ending_year = models.TextField()
     certificates_image = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'The working experience of counsellor: {self.counsellor_id.counsellor_id.email} is {self.institute_name}'
-
 
 class Ratings(models.Model):
     counsellor_id = models.ForeignKey(Counsellor, on_delete=models.CASCADE, related_name='ratings')

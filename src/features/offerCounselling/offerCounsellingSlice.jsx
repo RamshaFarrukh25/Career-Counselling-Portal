@@ -1,19 +1,19 @@
-import {createSlice} from "@reduxjs/toolkit"
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
+import axios from 'axios'
 
 const initialState = {
     offerCounsellorForm:{
         // first Form states
         name: "",
         email: "",
+        password: "",
         phoneNo:"",
         gender:"",
         cnic:"",
-        cnicFrontImg: "",
-        cnicBackImg:"",
+        
         // second Form states
-        qualification:"",
+        qualification:"M.Phil",
         fieldOfStudy:"",
-        transcript:"",
 
         // third Form states
         workingExperience: [
@@ -21,15 +21,80 @@ const initialState = {
                 institute: "",
                 startingYear: "",
                 endingYear: "",
-                certificates: ""
             }
         ]
     },
     stepCount:0,
     errorMsg:"",
     showModel:false,
+
+    role:'',
+    isEmailExist: null,
+    otp: '',
+
     isOTPModal: false
 }
+
+// API THAT CHECK UNIQUENESS OF COUNSELLOR'S EMAIL
+export const checkCounsellorEmail = createAsyncThunk('offerCounselling/checkCounsellorEmail', 
+    async(email) => {
+        try{
+            const response = await axios.post('http://127.0.0.1:8000/checkCounsellorEmail', {'email': email})
+            console.log(response.data)
+            return response.data
+        }
+        catch(error){
+            throw error
+        }
+})
+
+// API THAT SENDS OTP TO USER EMAIL
+const apiUrl = "http://127.0.0.1:8000/sendOTP"
+export const sendOTP = createAsyncThunk('offerCounselling/sendOTP', async (email) => {
+    try {
+      const response = await axios.post(apiUrl, {'email':email} );
+      return response.data;
+    } 
+    catch (error) {
+      throw error;
+    }
+});
+
+// API THAT REGISTER COUNSELLOR
+//It is the case when there is no need to send OTP, as user is already exist in the DB with the role='U'
+export const registerCounsellor = createAsyncThunk('offerCounselling/registerCounsellor',
+    async (data) => {
+        try{
+            const response = await axios.post(
+                'http://127.0.0.1:8000/registerCounsellor',
+                data,
+                {
+                  headers: {
+                    'Content-Type': 'multipart/form-data',
+                  },
+                }
+            );
+            return response.data
+    } catch(error) {
+        throw error
+    }
+})
+
+//API THAT SEND VERIFICATION EMAIL TO COUNSELLOR
+export const sendVerificationEmail = createAsyncThunk('offerCounselling/sendVerificationEmail',
+    async(data) => {
+        try{
+            const response = await axios.post(
+                'http://127.0.0.1:8000/sendVerificationEmail',
+                data
+            )
+            return response.data
+        }
+        catch(error){
+            throw error
+        }
+})
+
 const offerCounsellingSlice = createSlice({
     name:'offerCounselling',
     initialState,
@@ -40,15 +105,6 @@ const offerCounsellingSlice = createSlice({
                 [payload.name]:payload.value
             }
         },
-        handleSubmit: (state) =>{
-            // console.log(state.offerCounsellorForm.name)
-            // console.log(state.offerCounsellorForm.email)
-            // console.log(state.offerCounsellorForm.phoneNo)
-            // console.log(state.offerCounsellorForm.cnic)
-            // console.log(state.offerCounsellorForm.cnicFrontImg)
-            // console.log(state.offerCounsellorForm.cnicBackImg)
-            // console.log(state.offerCounsellorForm.gender)
-        },
         setCount: (state,{payload})=>{
             state.stepCount= payload.value
         },
@@ -58,13 +114,6 @@ const offerCounsellingSlice = createSlice({
         ErrorMsg:(state,{payload})=>{
             console.log(payload.msg)
             state.errorMsg = payload.msg   
-        },
-        handleFileChange: (state, {payload}) => {
-            console.log(payload.name, payload.file.name)
-            state.offerCounsellorForm = {
-                ...state.offerCounsellorForm,
-                [payload.name]:payload.file.name
-            }
         },
         handleModelChange:(state)=>{
             state.showModel = !state.showModel
@@ -80,7 +129,6 @@ const offerCounsellingSlice = createSlice({
                     institute: "",
                     startingYear: "",
                     endingYear: "",
-                    certificates: ""
                   }
                 ]
               }
@@ -93,19 +141,56 @@ const offerCounsellingSlice = createSlice({
             const { index, name, value} = payload;
             state.offerCounsellorForm.workingExperience[index][name] = value;
         },
-        updateWorkingExperienceFile: (state, { payload }) => {
-            const { index, name,file } = payload;
-            state.offerCounsellorForm.workingExperience[index][name] = file.name;
-        },
         openOTPModal: (state) => {
             state.isOTPModal = true
         }        
         
-    }
-
+    },
+    extraReducers: (builder) => {
+        builder 
+            .addCase(checkCounsellorEmail.pending, (state) =>{
+                console.log("Pending")
+            })
+            .addCase(checkCounsellorEmail.fulfilled, (state, action) => {
+                console.log("fulfilled")
+                state.role = action.payload.role
+                state.isEmailExist = action.payload.isExist
+            })
+            .addCase(checkCounsellorEmail.rejected, (state, action) => {
+                console.log("Rejected")
+            })
+            .addCase(sendOTP.pending, (state) => {
+                console.log("pending otp ");
+            })
+            .addCase(sendOTP.fulfilled, (state, action) => {
+                console.log("otp received");
+                state.otp = action.payload.otp;
+            })
+            .addCase(sendOTP.rejected, (state, action) => {
+                console.log("rejected otp");
+            })
+            .addCase(registerCounsellor.pending, (state) => {
+                console.log("Register Counsellor Pending ");
+            })
+            .addCase(registerCounsellor.fulfilled, (state, action) => {
+                console.log("Register Counsellor fulfilled");
+            })
+            .addCase(registerCounsellor.rejected, (state, action) => {
+                console.log("Register Counsellor Rejected");
+            })
+            .addCase(sendVerificationEmail.pending, (state) => {
+                console.log("Verification Email Pending")
+            })
+            .addCase(sendVerificationEmail.fulfilled, (state, action) => {
+                console.log("Verification Email Fulffilled")
+            })
+            .addCase(sendVerificationEmail.rejected, (state, action) => {
+                console.log("Verification Email Rejected")
+            })
+        }
 })
 
-export const{handleChange, handleSubmit,setCount,ErrorMsg,
-    resetCount,handleFileChange,handleModelChange,addWorkingExperience,
-    removeWorkingExperience,updateWorkingExperience,updateWorkingExperienceFile,openOTPModal} = offerCounsellingSlice.actions
+export const{handleChange, handleSubmit, setCount, ErrorMsg,
+    resetCount, handleModelChange, addWorkingExperience,
+    removeWorkingExperience, updateWorkingExperience, openOTPModal} = offerCounsellingSlice.actions
 export default offerCounsellingSlice.reducer

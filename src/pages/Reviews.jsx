@@ -43,7 +43,7 @@ export default function Reviews(){
 
     return(
         <>
-        <div className={ReviewsCSS.wrapper}>
+        <div id="reviews" className={ReviewsCSS.wrapper}>
 
             <div className={`${ReviewsCSS.inner} container`}>
 

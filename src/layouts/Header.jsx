@@ -42,10 +42,10 @@ export default function Header(){
                             <Link className={`${HeaderCSS.navLink} nav-link`}  to="about">About Us</Link>
                         </li>
                         <li className={`${HeaderCSS.navItem} nav-item`}>
-                            <Link to="#" className={`${HeaderCSS.navLink} nav-link`}>Blogs</Link>
+                            <a href="#blogCards" className={`${HeaderCSS.navLink} nav-link`}>Blogs</a>
                         </li>
                         <li className={`${HeaderCSS.navItem} nav-item`}>
-                            <Link to="#" className={`${HeaderCSS.navLink} nav-link`}>Reviews</Link>
+                            <a href="#reviews" className={`${HeaderCSS.navLink} nav-link`}>Reviews</a>
                         </li>
                          
                     </ul>
