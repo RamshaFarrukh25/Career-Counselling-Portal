@@ -79,7 +79,16 @@ class Blogs(models.Model):
     description = models.TextField()
     cover_image = models.TextField()
     is_approved = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f'The title for the blog of counsellor {self.counsellor_id} is {self.title}'
+    
+
+class CareerGPTHistory(models.Model):
+    user_id = models.OneToOneField(ACU, on_delete=models.CASCADE, primary_key=True, related_name='careerGPTHistory')
+    history = models.TextField()
+
+    def __str__(self):
+        return f'The user who used careerGPT is: {self.user_id.name}'
+

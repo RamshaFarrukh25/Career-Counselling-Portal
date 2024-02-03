@@ -1,56 +1,45 @@
 import BlogCardsCSS from "../assets/styles/BlogCards.module.css"
 import backgroundImage from "../assets/images/Blogs_BlogPic.jpg"
 import { Link } from "react-router-dom"
+import React, { useState, useEffect } from 'react';
+import { fetchBlogsData } from "../features/blogCards/blogCardsSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function BlogCards(){
+    const dispatch = useDispatch()
+    const {blogsDataList} = useSelector(state => state.blogsCard);
+    useEffect(() => {
+        return () => {
+          dispatch(fetchBlogsData())
+        }
+      }, [])
+
+
     return (
         <div id="blogCards" className={`${BlogCardsCSS.overAll} mt-5`}>
             <div className={`${BlogCardsCSS.mainHeading} text-center`}>
                 <h1>Popular Blogs</h1>
             </div>
             <section className={BlogCardsCSS.cardsWrapper}>
-                <div className={BlogCardsCSS.cardGridSpace}>
-                    <Link 
-                        className={BlogCardsCSS.card} 
-                        href="#" 
-                        style={{ backgroundImage: `url(${backgroundImage})` }}
-                    >
-                        <div>
-                            <h1>Blog Title</h1>
-                            <p>The syntax of a language is how it works. How to actually write it. Learn HTML syntax…</p>
-                            <div className={BlogCardsCSS.date}>Blog date</div>
-                        </div>
-                    </Link>
-                </div>
-
-                <div className={BlogCardsCSS.cardGridSpace}>
+            {blogsDataList ? (blogsDataList.map(item => (  
+                <div className={BlogCardsCSS.cardGridSpace} key={item.id}>
                     <Link
                         className={BlogCardsCSS.card} 
-                        href="#" 
+                        to={`${item.id}`}
                         style={{ backgroundImage: `url(${backgroundImage})` }}
                     >
                         <div>
-                            <h1>Blog Title</h1>
-                            <p>The syntax of a language is how it works. How to actually write it. Learn HTML syntax…</p>
-                            <div className={BlogCardsCSS.date}>Blog date</div>
+                            <h1>{item.title}</h1>
+                            <p>{item.description}</p>
+                            <div className={BlogCardsCSS.date}>{item.created_at}</div>
                         </div>
                     </Link>
                 </div>
-
-                <div className={BlogCardsCSS.cardGridSpace}>
-                    <Link
-                        className={BlogCardsCSS.card} 
-                        href="#" 
-                        style={{ backgroundImage: `url(${backgroundImage})` }}
-                    >
-                        <div>
-                            <h1>Blog Title</h1>
-                            <p>The syntax of a language is how it works. How to actually write it. Learn HTML syntax…</p>
-                            <div className={BlogCardsCSS.date}>Blog date</div>
-                        </div>
-                    </Link>
-                </div>
+            ))) : (
+                <p>Loading...</p>
+            )}
             </section>
+
         </div>
   );
 }

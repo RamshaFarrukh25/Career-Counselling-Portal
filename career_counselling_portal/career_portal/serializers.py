@@ -1,5 +1,10 @@
 from rest_framework import serializers
-from .models import Counsellor
+from .models import Counsellor, Blogs
+
+class BlogsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blogs
+        fields = '__all__'
 
 class TopCounsellorSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='counsellor_id.name')
