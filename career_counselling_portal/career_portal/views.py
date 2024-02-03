@@ -1,5 +1,5 @@
-
 import os
+from datetime import datetime
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
@@ -7,16 +7,15 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 import random,json,re
-from django.contrib.auth.hashers import check_password
-from .models import ACU,Counsellor,Ratings,Reviews,Qualification, WorkingExperience
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
+from .models import ACU, Counsellor, Ratings, Reviews, Qualification, WorkingExperience, Blogs, CareerGPTHistory
 from django.db.models import Q
 from rest_framework.decorators import api_view
-from .serializers import TopCounsellorSerializer
+from .serializers import BlogsSerializer, TopCounsellorSerializer
 import traceback
 
 
-from .counsellor import makeDirectoy, saveImage
+from .Utils.counsellor import makeDirectoy, saveImage
 
 # Send OTP
 def generate_otp():
@@ -113,7 +112,7 @@ def registerCounsellor(request):
             offerCounsellorFormData = json.loads(offerCounsellorFormJson)
             name = offerCounsellorFormData.get('name')
             email = offerCounsellorFormData.get('email')
-            password = offerCounsellorFormData.get('password')
+            password = make_password(offerCounsellorFormData.get('password'))
 
             # Store Data in ACU Table
             counsellor = None
@@ -224,7 +223,9 @@ def sendVerificationEmail(request):
 
 # Offer Counselling End
     
-    
+
+
+# Login    
 @csrf_exempt
 def loginUser(request):
     if request.method == 'POST':
@@ -246,7 +247,9 @@ def loginUser(request):
     else:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
         
-        
+# Login End
+
+# Ask Counsellor Page           
 def get_truncated_review(description,max_lines=3):
         pattern = r'\.|\n'
         lines = re.split(pattern, description)
@@ -273,7 +276,10 @@ def getTopCounsellors(request):
     else:
         return HttpResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
+# Ask Counsellor Page End
+    
 
+# Save Reviews
 @csrf_exempt
 def saveReviews(request):
     if request.method == 'POST':
@@ -301,3 +307,51 @@ def saveReviews(request):
     else:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405)
 
+# Save Reviews End
+    
+# Blogs Data
+def fetchBlogsData(request):
+    if request.method == 'GET':
+        try:
+            blogsData = Blogs.objects.all()
+            serializer = BlogsSerializer(blogsData, many=True)
+            for data in serializer.data:
+                if data["description"]:
+                    data["description"] =  get_truncated_review(data["description"], 1) + "..."
+            return HttpResponse(json.dumps({'blogsData':serializer.data}))
+        except Exception as e:
+            return HttpResponse(json.dumps({'status': 'error'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}),status=405)
+    
+
+@csrf_exempt
+def blogDetails(request):
+    if request.method == 'POST':
+            data = json.loads(request.body.decode('utf-8'))
+            id = data.get('id')
+            print(id)
+            blogDetails = Blogs.objects.get(id= id)
+            serializer= BlogsSerializer(blogDetails)
+            return HttpResponse(json.dumps({'blogDetails':serializer.data}))   
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')    
+# Blogs Data End    
+
+
+# CareerGPT History 
+@csrf_exempt
+def storeCareerGPTHistory(request):
+    if request.method == 'POST':
+        try:
+            data = request.body.decode('utf-8')
+            print("Data in JSON Received", data)
+            # history = CareerGPTHistory()
+            return JsonResponse({'status': 'success'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+    
+    
+# CareerGPT History End    

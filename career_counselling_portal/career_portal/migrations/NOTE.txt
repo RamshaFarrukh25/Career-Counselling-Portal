@@ -1,0 +1,1 @@
+Please add empty __init__.py file in the migrations folder
