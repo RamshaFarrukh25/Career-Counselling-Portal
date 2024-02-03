@@ -1,4 +1,3 @@
-
 import os
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
@@ -8,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 import random,json,re
 from django.contrib.auth.hashers import check_password
-from .models import ACU,Counsellor,Ratings,Reviews,Qualification, WorkingExperience
+from .models import ACU, Counsellor, Ratings, Reviews, Qualification, WorkingExperience
 from django.contrib.auth.hashers import make_password
 from django.db.models import Q
 from rest_framework.decorators import api_view
@@ -16,7 +15,7 @@ from .serializers import TopCounsellorSerializer
 import traceback
 
 
-from .counsellor import makeDirectoy, saveImage
+from .Utils.counsellor import makeDirectoy, saveImage
 
 # Send OTP
 def generate_otp():
@@ -113,7 +112,7 @@ def registerCounsellor(request):
             offerCounsellorFormData = json.loads(offerCounsellorFormJson)
             name = offerCounsellorFormData.get('name')
             email = offerCounsellorFormData.get('email')
-            password = offerCounsellorFormData.get('password')
+            password = make_password(offerCounsellorFormData.get('password'))
 
             # Store Data in ACU Table
             counsellor = None

@@ -70,10 +70,8 @@ TEMPLATES = [
         },
     },
 ]
-CORS_ALLOW_CREDENTIALS = True
 
 WSGI_APPLICATION = 'career_counselling_portal.wsgi.application'
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 
 # Database
@@ -81,10 +79,8 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'CareerCounsellingPortal',
-        'USER':'BotGuidedPathways',
-        'PASSWORD':'BotGuidedPathways123'      
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 CORS_ALLOWED_ORIGINS = [

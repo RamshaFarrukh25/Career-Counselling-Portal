@@ -9,7 +9,8 @@ import Layout from './layouts/Layout'
 import Home from './pages/Home'
 import AboutUs from './pages/AboutUs'
 import OfferCounselling from "./pages/OfferCounselling"
-
+import CareerGPT from './pages/CareerGPT/CareerGPT'
+import Authentication from './layouts/Authentication'
 //Admin Dashboard
 import AdminLayout from './dashboards/admin/layouts/Layout'
 import  DashBoard  from './dashboards/admin/pages/Index'
@@ -24,8 +25,6 @@ import Dashboard from './dashboards/counsellor/Dashboard'
 import CounsellorProfile from './dashboards/counsellor/Profile'
 import AddBlog from './dashboards/counsellor/AddBlog'
 import ShowBlogs from './dashboards/counsellor/ShowBlogs'
-import CareerGPT from './pages/CareerGPT/CareerGPT'
-
 
 
 export default function App() {
@@ -40,7 +39,11 @@ export default function App() {
             <Route path="signupSuccess" element={<SignupSuccess />} />
             <Route path="OfferCounselling" element={<OfferCounselling />} />
             <Route path="askCounsellor" element={<AskCounsellor/>}/>
-            <Route path="careerGPT" element={<CareerGPT />} />
+
+            <Route element={<Authentication />} >
+              <Route path="careerGPT" element={<CareerGPT />} />
+            </Route>
+
             <Route path="login" element={<Login />} />  
             <Route path="signup" element={<Signup />} />
             <Route path="blogDetail" element={<BlogDetail />} />
