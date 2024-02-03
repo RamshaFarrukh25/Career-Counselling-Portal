@@ -79,19 +79,12 @@ WSGI_APPLICATION = 'career_counselling_portal.wsgi.application'
 
 DATABASES = {
     'default': {
-<<<<<<< Updated upstream:CareerCounsellingPortal/career_counselling_portal/career_counselling_portal/settings.py
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'CareerCounsellingPortal',
-        'USER': 'BotGuidedPathways',
-        'PASSWORD': 'BotGuidedPathways123'
-=======
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
         # 'ENGINE': 'django.db.backends.postgresql',
         # 'NAME': 'CareerGPT',
         # 'USER': 'BotGuidedPathways',
         # 'PASSWORD': 'BotGuided@123'
->>>>>>> Stashed changes:career_counselling_portal/career_counselling_portal/settings.py
     }
 }
 CORS_ALLOWED_ORIGINS = [
