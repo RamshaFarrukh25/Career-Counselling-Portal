@@ -32,7 +32,11 @@ export default function BlogDetail(){
 
                     <hr className={BlogDetailsCSS.mainHR}/>
 
+<<<<<<< Updated upstream:CareerCounsellingPortal/src/pages/BlogDetail.jsx
                     <p className="lead">{blogDetailsData.description}</p>
+=======
+                    <pre className="lead">{blogDetailsData.description}</pre>
+>>>>>>> Stashed changes:src/pages/BlogDetail.jsx
                     {/* <p className="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati,
                         aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos
                         magni recusandae laborum minus inventore?</p>

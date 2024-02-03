@@ -81,6 +81,7 @@ class Blogs(models.Model):
     area_of_field = models.TextField()
     description = models.TextField()
     cover_image = models.TextField()
+<<<<<<< Updated upstream:CareerCounsellingPortal/career_counselling_portal/career_portal/models.py
     is_approved= models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True)
     
@@ -100,3 +101,18 @@ class Blogs(models.Model):
     
 
     
+=======
+    is_approved = models.BooleanField(default=False)
+    created_at = models.DateField(auto_now_add=True)
+
+    def _str_(self):
+        return f'The title for the blog of counsellor {self.counsellor_id} is {self.title}'
+
+class CareerGPTHistory(models.Model):
+    user_id = models.OneToOneField(ACU, on_delete=models.CASCADE, primary_key=True, related_name='careerGPTHistory')
+    history = models.TextField()
+
+    def __str__(self):
+        return f'The user who used careerGPT is: {self.user_id.name}'
+
+>>>>>>> Stashed changes:career_counselling_portal/career_portal/models.py

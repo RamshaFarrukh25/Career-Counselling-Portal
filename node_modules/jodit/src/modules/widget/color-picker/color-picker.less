@@ -1,0 +1,72 @@
+/*!
+ * Jodit Editor (https://xdsoft.net/jodit/)
+ * Released under MIT see LICENSE.txt in the project root for license information.
+ * Copyright (c) 2013-2023 Valeriy Chupurnov. All rights reserved. https://xdsoft.net
+ */
+
+@import (reference) '../../../styles/variables';
+@import (reference) '../../../styles/mixins';
+
+:root {
+	--color-picker-cell-size: 24px;
+}
+
+.jodit-color-picker {
+	margin: 0;
+	text-align: left;
+	user-select: none;
+
+	&__group {
+		display: flex;
+		max-width: calc(var(--color-picker-cell-size) * 10);
+		flex-wrap: wrap;
+		margin-bottom: calc(var(--padding-default) / 2);
+		white-space: normal;
+	}
+
+	&__color-item {
+		display: block;
+
+		width: var(--color-picker-cell-size);
+		height: var(--color-picker-cell-size);
+
+		border: 1px solid transparent;
+		text-align: center;
+		text-decoration: none;
+		vertical-align: middle;
+
+		&:hover {
+			border-color: #000;
+		}
+
+		&_active_true,
+		&:active {
+			border: 2px solid var(--color-border-selected);
+		}
+	}
+
+	&__native {
+		svg {
+			display: inline-block;
+			width: 16px;
+			height: 16px;
+			margin-right: 4px;
+		}
+
+		input {
+			width: 18px;
+			height: 18px;
+			padding: 0;
+			border: none;
+			appearance: none;
+
+			&[type='color']::-webkit-color-swatch-wrapper {
+				padding: 0;
+			}
+
+			input[type='color']::-webkit-color-swatch {
+				border: none;
+			}
+		}
+	}
+}

@@ -1,0 +1,62 @@
+/*!
+ * Jodit Editor (https://xdsoft.net/jodit/)
+ * Released under MIT see LICENSE.txt in the project root for license information.
+ * Copyright (c) 2013-2023 Valeriy Chupurnov. All rights reserved. https://xdsoft.net
+ */
+
+@import (reference) '../../../styles/variables';
+@import (reference) '../../../styles/mixins';
+@import (reference) '../../../styles/modules/icon';
+
+:root {
+	--first_column: 31%;
+	--cols: 4;
+	--info-background: rgb(233, 233, 233);
+	--icon-size: @icon-small-size;
+	--col_size: 150px;
+}
+
+.jodit-filebrowser {
+	display: flex;
+	height: 100%;
+	font-family: var(--font-default);
+
+	&_no-files_true {
+		padding: var(--padding-default);
+	}
+
+	@media (max-width: @screen-xs) {
+		flex-flow: column-reverse;
+	}
+}
+
+.jodit-dialog .jodit-dialog__header-title {
+	&.jodit-filebrowser__title-box {
+		display: flex;
+		align-items: center;
+		padding-left: var(--padding-default);
+	}
+}
+
+.file-browser-loader() {
+	&:before {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		content: '';
+	}
+
+	&:after {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-top: calc(var(--icon-loader-size) / -2);
+		margin-left: calc(var(--icon-loader-size) / -2);
+		content: '';
+		opacity: 0.7;
+
+		.jodit-icon_loader();
+	}
+}

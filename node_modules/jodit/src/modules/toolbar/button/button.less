@@ -1,0 +1,84 @@
+/*!
+ * Jodit Editor (https://xdsoft.net/jodit/)
+ * Released under MIT see LICENSE.txt in the project root for license information.
+ * Copyright (c) 2013-2023 Valeriy Chupurnov. All rights reserved. https://xdsoft.net
+ */
+
+@import (reference) '../../../styles/variables';
+@import (reference) '../../../styles/mixins';
+@import (reference) 'jodit/core/ui/button/button/button';
+
+.trigger-size(@size) {
+	width: @size;
+
+	svg {
+		width: @size - 4px;
+	}
+}
+
+.jodit-toolbar-button {
+	display: flex;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid transparent;
+	border-radius: var(--border-radius-default);
+
+	.jodit-ui-button-icon-text();
+
+	&__icon:empty + &__text:not(:empty) {
+		padding: 0;
+	}
+
+	.jodit-ui-button-sizes();
+
+	&__button {
+		.jodit-ui-button-interaction();
+		.jodit-ui-button_clear();
+		.jodit-ui-button-style();
+	}
+
+	&__trigger {
+		display: flex;
+		height: 100%;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0 var(--border-radius-default)
+			var(--border-radius-default) 0;
+		opacity: 0.4;
+
+		.jodit-ui-button-interaction();
+		.trigger-size(@icon-middle-size);
+	}
+
+	&_size_tiny &__trigger {
+		.trigger-size(@icon-tiny-size);
+	}
+
+	&_size_xsmall &__trigger {
+		.trigger-size(@icon-xsmall-size);
+	}
+
+	&_size_small &__trigger {
+		.trigger-size(@icon-small-size);
+	}
+
+	&_size_large &__trigger {
+		.trigger-size(@icon-large-size);
+	}
+
+	&_with-trigger_true {
+		.jodit-toolbar-button__button {
+			border-radius: var(--border-radius-default) 0 0
+				var(--border-radius-default);
+		}
+
+		&:hover:not([disabled]) {
+			border-color: var(--color-border);
+		}
+	}
+
+	&_stroke_false svg {
+		stroke: none;
+	}
+}

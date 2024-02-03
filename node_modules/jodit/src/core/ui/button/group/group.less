@@ -1,0 +1,40 @@
+@import (reference) '../../form/inputs/input/input';
+
+.jodit-ui-button-group {
+	margin-bottom: var(--padding-default);
+
+	&__label {
+		.jodit-ui-label();
+	}
+
+	&__options {
+		display: flex;
+		justify-content: flex-start;
+	}
+
+	.jodit-ui-button {
+		&:not(:last-child) {
+			border-bottom-right-radius: 0;
+			border-top-right-radius: 0;
+		}
+
+		& + .jodit-ui-button {
+			border-left: 1px solid
+				var(--color-button-background-hover_opacity40);
+			border-bottom-left-radius: 0;
+			border-top-left-radius: 0;
+		}
+
+		&[aria-pressed='true']:not([disabled]) {
+			border-left: 0;
+			background-color: var(--color-button-background-hover);
+			box-shadow: inset 0 0 3px 0 var(--color-dark);
+			color: var(--color-dark);
+			outline: 0;
+		}
+
+		&[aria-pressed='true']:not([disabled]) + .jodit-ui-button {
+			border: 0;
+		}
+	}
+}

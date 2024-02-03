@@ -1,0 +1,108 @@
+@import (reference) '../../../../../styles/form';
+@import (reference) '../../../../../styles/mixins';
+@import (reference) '../../../../../styles/variables';
+
+.jodit-ui-label {
+	display: block;
+	margin-bottom: calc(var(--padding-default) / 4);
+	color: var(--color-label);
+	font-size: 0.8em;
+}
+
+.jodit-ui-input {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: var(--padding-default);
+
+	&__input {
+		.jodit-input-mx();
+		border: 0;
+
+		&:focus {
+			outline: 0;
+		}
+	}
+
+	&_theme_dark &__input {
+		background-color: var(--color-gray);
+	}
+
+	&_has-error_true &__input {
+		border-color: var(--color-red);
+	}
+
+	&__error,
+	&__label {
+		.jodit-ui-label();
+	}
+
+	&_has-error_true &__label,
+	&__error {
+		color: var(--color-error);
+	}
+
+	&__wrapper {
+		display: flex;
+
+		min-width: 200px;
+		align-items: center;
+		justify-content: stretch;
+
+		border: 1px solid var(--color-border);
+		background-color: var(--color-white);
+
+		@media (max-width: @screen-xs) {
+			min-width: 140px;
+		}
+	}
+
+	&_theme_dark &__wrapper {
+		border-color: var(--color-border);
+		background-color: var(--color-gray);
+	}
+
+	&_focused_true &__wrapper {
+		border-color: var(--color-border-selected);
+	}
+
+	&__icon:not(:empty) {
+		display: flex;
+		align-items: center;
+		padding: 0 var(--padding-default);
+
+		svg {
+			.size(16px);
+			fill: var(--color-border);
+		}
+	}
+
+	&__icon:not(:empty) + &__input {
+		padding-left: 0;
+	}
+
+	&__clear {
+		display: flex;
+		align-items: center;
+		padding: 0 var(--padding-default) 0 0;
+		opacity: 0.8;
+
+		&:active {
+			opacity: 1;
+			transform: scale(1.1, 1.1);
+		}
+
+		svg {
+			.size(12px);
+			fill: var(--color-border);
+		}
+	}
+
+	&_theme_dark &__icon svg,
+	&_theme_dark &__clear svg {
+		fill: var(--color-dark);
+	}
+}
+
+.jodit-ui-block .jodit-ui-input {
+	margin-bottom: 0;
+}

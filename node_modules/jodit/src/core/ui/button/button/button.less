@@ -1,0 +1,199 @@
+/*!
+ * Jodit Editor (https://xdsoft.net/jodit/)
+ * Released under MIT see LICENSE.txt in the project root for license information.
+ * Copyright (c) 2013-2023 Valeriy Chupurnov. All rights reserved. https://xdsoft.net
+ */
+
+@import (reference) '../../../../styles/variables';
+@import (reference) '../../../../styles/mixins';
+
+.button-size(@size) {
+	@plus: (@size - 4px) * 2;
+
+	min-width: @size + @plus;
+	height: @size + @plus;
+
+	.jodit-icon {
+		width: @size;
+		height: @size;
+	}
+
+	button {
+		min-width: @size + @plus;
+		height: @size + @plus;
+		padding: 0;
+		appearance: none;
+	}
+
+	&_text-icons_true button {
+		padding: 0 var(--padding-default);
+	}
+}
+
+.jodit-ui-button-interaction() {
+	cursor: pointer;
+
+	&:hover:not([disabled]),
+	&:focus-visible:not([disabled]) {
+		background-color: var(--color-button-background-hover);
+		opacity: 1;
+		outline: 0;
+	}
+
+	&:active:not([disabled]),
+	&[aria-pressed='true']:not([disabled]) {
+		background-color: var(--color-button-background-hover_opacity40);
+		outline: 0;
+	}
+
+	&[aria-pressed='true']:hover:not([disabled]) {
+		background-color: var(--color-button-background-hover_opacity60);
+	}
+
+	&[disabled] {
+		opacity: 0.3;
+		pointer-events: none;
+	}
+}
+
+.jodit-ui-button-icon-text {
+	&__icon {
+		display: none;
+
+		&:not(:empty) {
+			display: inline-flex;
+		}
+	}
+
+	&__text {
+		display: none;
+
+		&:not(:empty) {
+			.font();
+
+			display: inline-flex;
+			flex-grow: 1; // ? TODO Need screenshot testing
+			justify-content: center;
+		}
+	}
+
+	&_context_menu &__text {
+		position: relative;
+		justify-content: left;
+		padding-left: var(--padding-default);
+
+		&::before {
+			position: absolute;
+			top: calc(var(--padding-default) * -1);
+			left: 0;
+			height: 35px;
+			border-left: 1px solid var(--color-border);
+			content: '';
+		}
+	}
+
+	&__icon:not(:empty) + &__text:not(:empty) {
+		margin-left: var(--padding-default);
+	}
+
+	&__icon:empty + &__text:not(:empty) {
+		padding: 0 var(--padding-default);
+	}
+}
+
+.jodit-ui-button-clear {
+	position: relative;
+	box-sizing: border-box;
+	padding: 0;
+	border: 0;
+	appearance: none;
+	background: 0 0;
+	box-shadow: none;
+	font-style: normal;
+	outline: 0;
+	text-align: center;
+	text-decoration: none;
+	text-transform: none;
+	user-select: none;
+}
+
+.jodit-ui-button_clear {
+	.jodit-ui-button-clear();
+}
+
+.jodit-ui-button-sizes {
+	.button-size(@icon-middle-size);
+
+	&_size {
+		&_tiny {
+			.button-size(@icon-tiny-size);
+		}
+
+		&_xsmall {
+			.button-size(@icon-xsmall-size);
+		}
+
+		&_small {
+			.button-size(@icon-small-size);
+		}
+
+		&_large {
+			.button-size(@icon-large-size);
+		}
+	}
+}
+
+.jodit-ui-button-variants {
+	&_variant_initial {
+	}
+
+	&_variant_default {
+		.jodit_status(#e3e3e3, #212529, #c9cdd1, #212529, #dae0e5, #212529);
+	}
+
+	&_variant_primary {
+		.jodit_status(#007bff, #fff, #0069d9, #fff, #0062cc, #fff);
+	}
+
+	&_variant_secondary {
+		.jodit_status(#d8d8d8, #212529, #c9cdd1, #212529, #dae0e5, #212529);
+		border-radius: 0;
+	}
+
+	&_variant_success {
+		.jodit_status(#28a745, #fff, #218838, #fff, #1e7e34, #fff);
+	}
+
+	&_variant_danger {
+		.jodit_status(#dc3545, #fff, #c82333, #fff, #bd2130, #fff);
+	}
+}
+
+.jodit-ui-button-style {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 0 var(--padding-default);
+	border-radius: var(--border-radius-default);
+
+	color: var(--color-text-icons);
+}
+
+.jodit-ui-button {
+	.jodit-ui-button-clear();
+
+	.jodit-ui-button-style();
+
+	.jodit-ui-button-interaction();
+
+	.jodit-ui-button-sizes();
+
+	.jodit-ui-button-icon-text();
+
+	&:focus:not([disabled]) {
+		outline: 1px dashed var(--color-background-selection);
+	}
+
+	.jodit-ui-button-variants();
+}

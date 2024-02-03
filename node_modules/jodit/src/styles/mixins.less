@@ -1,0 +1,150 @@
+/*!
+ * Jodit Editor (https://xdsoft.net/jodit/)
+ * Released under MIT see LICENSE.txt in the project root for license information.
+ * Copyright (c) 2013-2023 Valeriy Chupurnov. All rights reserved. https://xdsoft.net
+ */
+
+@import (reference) './variables';
+
+.size (@size) {
+	width: @size;
+	height: @size;
+}
+
+.font() {
+	font-family: var(--font-default);
+	font-size: var(--font-size-default);
+}
+
+.active() {
+	background-image: none;
+	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3),
+		0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.jodit_status(
+@background,
+@color,
+@background_hover,
+@color_hover,
+@background_active,
+@color_active
+) {
+	background-color: @background;
+	color: @color;
+
+	svg {
+		fill: @color;
+		stroke: @color;
+	}
+
+	[disabled] {
+		opacity: 0.7;
+	}
+
+	&:hover:not([disabled]) {
+		background-color: @background_hover;
+		color: @color_hover;
+
+		svg {
+			fill: @color_hover;
+			stroke: @color_hover;
+		}
+	}
+
+	&:active:not([disabled]) {
+		background-color: @background_active;
+		color: @color_active;
+
+		svg {
+			fill: @color_active;
+			stroke: @color_active;
+		}
+	}
+
+	&:focus:not([disabled]) {
+		outline: 1px dashed @background_active;
+	}
+}
+
+.jodit-box() {
+	position: static;
+	width: auto;
+	max-width: none;
+	height: auto;
+	padding: 0;
+	border: 0;
+	margin: 0;
+	background: 0 0;
+	float: none;
+	outline: 0;
+}
+
+.scrollbarSlim() {
+	&::-webkit-scrollbar {
+		width: calc(var(--padding-default) / 2);
+	}
+
+	&::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: darkgrey;
+		outline: 1px solid slategrey;
+	}
+
+	overflow-anchor: auto;
+}
+
+.resize-handle() {
+	position: relative;
+
+	svg {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		overflow: hidden;
+
+		width: 12px;
+		height: 12px;
+
+		cursor: nwse-resize;
+
+		fill: var(--color-gray-dark);
+
+		user-select: none;
+	}
+}
+
+.jodit-tablet-style() {
+	max-width: 100%;
+	border: none;
+
+	margin-top: 1em;
+	margin-bottom: 1em;
+
+	border-collapse: collapse;
+	empty-cells: show;
+
+	tr {
+		user-select: none;
+
+		th,
+		td {
+			min-width: 2em;
+			padding: 0.4em;
+			border: 1px solid var(--color-border);
+			user-select: text;
+			vertical-align: middle;
+
+			/**
+			// In some circumstances, because of this rule,
+			// the borders of the table are not shown - you need to find out under what
+			&[style*='border'] {
+				border-style: double !important;
+			}
+			*/
+		}
+	}
+}

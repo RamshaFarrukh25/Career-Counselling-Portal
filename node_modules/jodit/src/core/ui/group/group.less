@@ -1,0 +1,33 @@
+/*!
+ * Jodit Editor (https://xdsoft.net/jodit/)
+ * Released under MIT see LICENSE.txt in the project root for license information.
+ * Copyright (c) 2013-2023 Valeriy Chupurnov. All rights reserved. https://xdsoft.net
+ */
+
+@import (reference) '../../../styles/variables';
+@import (reference) './list';
+
+.jodit-ui-group {
+	display: inline-flex;
+	max-width: 100%;
+
+	flex: 0 0 auto;
+	flex-shrink: 0;
+	flex-wrap: wrap;
+
+	&_line_true {
+		display: flex;
+		justify-content: stretch;
+	}
+
+	&_separated_true:not(:last-child):not(&_before-spacer_true) {
+		&:after {
+			content: '';
+			.jodit-ui-separator-func();
+		}
+	}
+
+	&:last-child {
+		border-bottom: 0;
+	}
+}

@@ -1,0 +1,144 @@
+/*!
+ * Jodit Editor (https://xdsoft.net/jodit/)
+ * Released under MIT see LICENSE.txt in the project root for license information.
+ * Copyright (c) 2013-2023 Valeriy Chupurnov. All rights reserved. https://xdsoft.net
+ */
+
+/**
+ * [[include:plugins/format-block/README.md]]
+ * @packageDocumentation
+ * @module plugins/format-block
+ */
+
+import type {
+	HTMLTagNames,
+	IJodit,
+	IControlType,
+	IDictionary
+} from 'jodit/types';
+import { Config } from 'jodit/config';
+import { Dom } from 'jodit/modules/';
+import { memorizeExec } from 'jodit/core/helpers';
+import { pluginSystem } from 'jodit/core/global';
+import { Icon } from 'jodit/core/ui/icon';
+
+Icon.set('paragraph', require('./paragraph.svg'));
+
+Config.prototype.controls.paragraph = {
+	command: 'formatBlock',
+	update(button, editor: IJodit): boolean {
+		const control = button.control,
+			current = editor.s.current();
+
+		if (current && editor.o.textIcons) {
+			const currentBox =
+					Dom.closest(current, Dom.isBlock, editor.editor) ||
+					editor.editor,
+				currentValue = currentBox.nodeName.toLowerCase(),
+				list = control.list as IDictionary;
+
+			if (
+				button &&
+				control.data &&
+				control.data.currentValue !== currentValue &&
+				list &&
+				list[currentValue]
+			) {
+				if (editor.o.textIcons) {
+					button.state.text = currentValue;
+				} else {
+					button.state.icon.name = currentValue;
+				}
+
+				control.data.currentValue = currentValue;
+			}
+		}
+
+		return false;
+	},
+
+	exec: memorizeExec,
+
+	data: {
+		currentValue: 'left'
+	},
+
+	list: {
+		p: 'Normal',
+		h1: 'Heading 1',
+		h2: 'Heading 2',
+		h3: 'Heading 3',
+		h4: 'Heading 4',
+		blockquote: 'Quote',
+		pre: 'Code'
+	},
+
+	isChildActive: (editor: IJodit, control: IControlType): boolean => {
+		const current = editor.s.current();
+
+		if (current) {
+			const currentBox = Dom.closest(current, Dom.isBlock, editor.editor);
+
+			return Boolean(
+				currentBox &&
+					currentBox !== editor.editor &&
+					control.args !== undefined &&
+					currentBox.nodeName.toLowerCase() === control.args[0]
+			);
+		}
+
+		return false;
+	},
+
+	isActive: (editor: IJodit, control: IControlType): boolean => {
+		const current = editor.s.current();
+
+		if (current) {
+			const currentBpx = Dom.closest(current, Dom.isBlock, editor.editor);
+
+			return Boolean(
+				currentBpx &&
+					currentBpx !== editor.editor &&
+					control.list !== undefined &&
+					!Dom.isTag(currentBpx, 'p') &&
+					((control.list as any)[
+						currentBpx.nodeName.toLowerCase()
+					] as any) !== undefined
+			);
+		}
+
+		return false;
+	},
+
+	childTemplate: (e: IJodit, key: string, value: string) =>
+		`<${key} style="margin:0;padding:0"><span>${e.i18n(
+			value
+		)}</span></${key}>`,
+
+	tooltip: 'Insert format block'
+} as IControlType;
+
+/**
+ * Process command - `formatblock`
+ */
+export function formatBlock(editor: IJodit): void {
+	editor.registerButton({
+		name: 'paragraph',
+		group: 'font'
+	});
+
+	editor.registerCommand(
+		'formatblock',
+		(command: string, second: string, third: string): false | void => {
+			editor.s.applyStyle(undefined, {
+				element: third as HTMLTagNames
+			});
+
+			editor.synchronizeValues();
+
+			return false;
+		}
+	);
+}
+
+pluginSystem.add('formatBlock', formatBlock);
