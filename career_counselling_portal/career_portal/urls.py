@@ -14,10 +14,14 @@ urlpatterns = [
     path('loginUser',views.loginUser,name='loginUser'),
     # Ask Counsellor
     path('getTopCounsellors',views.getTopCounsellors,name='getTopCounsellors'),
-    # Reviews
+    # Reviews/Ratings
     path('saveReviews',views.saveReviews,name='saveReviews'),
+    path('getReviews', views.getReviews, name = 'getReviwes'),
+    path('getCounsellorsByUID', views.getCounsellorsByUID,  name="getCounsellorsByUID"),
+    path('saveRatings', views.saveRatings, name="saveRatings"),
     # CareerGPT History
-    path('storeCareerGPTHistory', views.storeCareerGPTHistory, name='storeCareerGPTHistory'),
+    #path('storeCareerGPTHistory', views.storeCareerGPTHistory, name='storeCareerGPTHistory'),
+    #path('loadCareerGPTHistory', views.loadCareerGPTHistory, name='loadCareerGPTHistory'),
     # Blog Cards
     path('fetchBlogsData', views.fetchBlogsData, name='fetchBlogsData'),
     # Blog Details

@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
 import { 
   handleChange,
   setChangeReviewImage,
@@ -6,7 +7,11 @@ import {
   setChangeRatingImage,
   setRating,
   saveReviews,
-  clearReview
+  clearReview,
+  getReviews,
+  getCounsellorsByUID,
+  saveRatings,
+  clearRatings
 } from "../features/reviews/reviewsSlice"
 import ReviewsCSS from "../assets/styles/Reviews.module.css"
 import RevLogo from "../assets/images/Reviews_ReviewLogo.png"
@@ -14,6 +19,7 @@ import RatingLogo from "../assets/images/Reviews_RatingLogo.png"
 import RevLogoA from "../assets/images/Reviews_reviewColored.png"
 import RatLogoA from "../assets/images/Reviews_ratingColored.png"
 import { Link, useNavigate } from "react-router-dom"
+import { ListItem } from "@mui/material"
 
 
 export default function Reviews(){
@@ -24,6 +30,9 @@ export default function Reviews(){
     const showReviewForm = useSelector((store) => store.reviews.showReviewForm)
     const reviewImage = useSelector((store) => store.reviews.changeReviewImage)
     const ratingImage = useSelector((store) => store.reviews.changeRatingImage)
+    const latestReviews = useSelector((store) => store.reviews.latestReviews)
+    const counsellorList = useSelector((store) => store.reviews.counsellorList)
+    // const ratingForm = useSelector((store) => store.reviews.ratingForm)
 
     const handleReviewImageClick = () => {
         dispatch(setShowReviewForm(true)); // Show review form
@@ -40,6 +49,13 @@ export default function Reviews(){
     const handleRatingChange = (newRating) => {
         dispatch(setRating(newRating));
     };
+
+    useEffect(() => {
+        return () => {
+          dispatch(getReviews())
+          dispatch(getCounsellorsByUID(user_id))
+        }
+      }, [])
 
     return(
         <>
@@ -144,7 +160,13 @@ export default function Reviews(){
                             <form
                                 onSubmit={(event) => {
                                     event.preventDefault()
-                                    dispatch(handleSubmit())
+                                    if(isLogin){
+                                        dispatch(saveRatings({'reviewsForm':reviewsForm,'user_id':user_id}))
+                                        dispatch(clearRatings())
+                                    } else {
+                                        dispatch(clearRatings())
+                                        navigate("/login")
+                                    }
                                 }}
                             >
                                 
@@ -165,9 +187,12 @@ export default function Reviews(){
                                         required
                                     >
                                         <option selected disabled>Select Counsellor</option>
-                                        <option value={reviewsForm.selectedOption}>John</option>
-                                        <option value={reviewsForm.selectedOption}>Smith</option>
-                                        <option value={reviewsForm.selectedOption}>Mark</option>
+                                        {counsellorList ? counsellorList.map(item => (
+                                        <option key={item.counsellor_id} value={reviewsForm.selectedOption}>{item.counsellor_name}</option>
+                                        )) : (
+                                            <option disabled>Please Login to Rate Counsellors</option>
+                                        )
+                                        }
                                     </select>
                                 </div>
 
@@ -201,7 +226,12 @@ export default function Reviews(){
                                             dispatch(setRating({
                                                 rating : 5
                                             }))
+                                            dispatch(handleChange({
+                                                name: event.target.name,
+                                                value: 5
+                                            }))
                                         }}
+                                        required
                                     />
                                     <label for="star5"></label> 
                                     <input 
@@ -212,7 +242,12 @@ export default function Reviews(){
                                             dispatch(setRating({
                                                 rating : 4
                                             }))
+                                            dispatch(handleChange({
+                                                name: event.target.name,
+                                                value: 4
+                                            }))
                                         }} 
+                                        required
                                     />
                                     <label for="star4"></label> 
                                     <input 
@@ -223,7 +258,12 @@ export default function Reviews(){
                                             dispatch(setRating({
                                                 rating : 3
                                             }))
+                                            dispatch(handleChange({
+                                                name: event.target.name,
+                                                value: 3
+                                            }))
                                         }}
+                                        required
                                     />
                                     <label for="star3"></label> 
                                     <input 
@@ -234,7 +274,12 @@ export default function Reviews(){
                                             dispatch(setRating({
                                                 rating : 2
                                             }))
+                                            dispatch(handleChange({
+                                                name: event.target.name,
+                                                value: 2
+                                            }))
                                         }}
+                                        required
                                     />
                                     <label for="star2"></label> 
                                     <input 
@@ -245,7 +290,12 @@ export default function Reviews(){
                                             dispatch(setRating({
                                                 rating : 1
                                             }))
-                                        }}  
+                                            dispatch(handleChange({
+                                                name: event.target.name,
+                                                value: 1
+                                            }))
+                                        }}
+                                        required  
                                     />
                                     <label for="star1"></label> 
                                 </div> 
@@ -253,6 +303,7 @@ export default function Reviews(){
                                 <button className={ReviewsCSS.submitBtn}>
                                     <span>Submit</span>
                                 </button>
+                                {isSave == true && <div><p className={`${ReviewsCSS.successMsg} mt-2`}>Ratings Saved Successully</p></div>}
                                 
                             </form>
                         )}
@@ -271,33 +322,17 @@ export default function Reviews(){
             
             <div className={`container-fluid mt-4 ${ReviewsCSS.reviewCards}`}>
                 <div className={`row justify-content-center `}>
-
-                    <div className={`col-md-3 card ${ReviewsCSS.singleCard} mx-3 mb-2`}>
+                {latestReviews && Array.isArray(latestReviews) ? (latestReviews.map(item => (
+                (item.is_approved == true && <div className={`col-md-3 card ${ReviewsCSS.singleCard} mx-3 mb-3`} key={item.id}>
                         <div className={`card-body`}>
-                            <h5 className={`card-title`}>Mehak Nadeem</h5>
-                            <h6 className={`card-subtitle mb-3 text-muted`}>mehak483@gmail.com</h6>
-                            <p class={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <h5 className={`card-title`}>{item.reviewer_name}</h5>
+                            <h6 className={`card-subtitle mb-3 text-muted`}>{item.reviewer_email}</h6>
+                            <p className={`card-text`}>{item.reviewer_description}</p>
                         </div>
-                    </div>
-
-                    <div className={`col-md-3 col-sm-12 card ${ReviewsCSS.singleCard} mx-3 mb-2`}>
-                        <div className={`card-body`}>
-                            <h5 className={`card-title`}>Abdul Mateen</h5>
-                            <h6 className={`card-subtitle mb-3 text-muted`}>abdulM@gmail.com</h6>
-                            <p class={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-
-                    <div className={`col-md-3 col-sm-12 card ${ReviewsCSS.singleCard} mx-3 mb-2`}>
-                        <div className={`card-body`}>
-                            <h5 className={`card-title`}>Laraib</h5>
-                            <h6 className={`card-subtitle mb-3 text-muted`}>laraib99@gmail.com</h6>
-                            <p class={`card-text`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-
+                    </div>)))) : (
+                    <p>Loading...</p>
+                )}
                 </div>
-                
             </div>
         </div>
     </>

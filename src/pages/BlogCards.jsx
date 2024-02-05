@@ -22,7 +22,7 @@ export default function BlogCards(){
             </div>
             <section className={BlogCardsCSS.cardsWrapper}>
             {blogsDataList ? (blogsDataList.map(item => (  
-                <div className={BlogCardsCSS.cardGridSpace} key={item.id}>
+                (item.is_approved == true && <div className={BlogCardsCSS.cardGridSpace} key={item.id}>
                     <Link
                         className={BlogCardsCSS.card} 
                         to={`${item.id}`}
@@ -35,7 +35,7 @@ export default function BlogCards(){
                         </div>
                     </Link>
                 </div>
-            ))) : (
+            )))) : (
                 <p>Loading...</p>
             )}
             </section>

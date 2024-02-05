@@ -54,7 +54,6 @@ class Ratings(models.Model):
     user_id = models.ForeignKey(ACU, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     
-
     def __str__(self):
         return f'The rating for counsellor: {self.counsellor_id} is {self.rating}'
 
@@ -91,4 +90,11 @@ class CareerGPTHistory(models.Model):
 
     def __str__(self):
         return f'The user who used careerGPT is: {self.user_id.name}'
+    
 
+class UserChatWithCounsellors(models.Model):
+    user_id = models.ForeignKey(ACU, on_delete=models.CASCADE)
+    counsellor_id = models.ForeignKey(Counsellor, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user_id.name} chats with {self.counsellor_id}.'

@@ -1,1 +1,1 @@
-Please add empty __init__.py file in the migrations folder
+Please don't delete __init__.py file.
