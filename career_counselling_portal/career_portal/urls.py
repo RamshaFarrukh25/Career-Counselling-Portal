@@ -26,4 +26,8 @@ urlpatterns = [
     path('fetchBlogsData', views.fetchBlogsData, name='fetchBlogsData'),
     # Blog Details
     path('blogDetails',views.blogDetails,name='blogDetails'),
+
+    # Admin Profile
+    path('getAdminProfile', views.getAdminProfile, name='getAdminProfile'),
+    path('updateAdminProfile', views.updateAdminProfile, name='updateAdminProfile'),
 ]

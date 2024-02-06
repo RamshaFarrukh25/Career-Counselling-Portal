@@ -11,7 +11,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from .models import ACU, Counsellor, Ratings, Reviews, Qualification, WorkingExperience, Blogs, CareerGPTHistory, UserChatWithCounsellors
 from django.db.models import Q
 from rest_framework.decorators import api_view
-from .serializers import BlogsSerializer, TopCounsellorSerializer, ReviewsSerializer, UserChatWithCounsellorsSerializer
+from .serializers import ACUSerializer, BlogsSerializer, TopCounsellorSerializer, ReviewsSerializer, UserChatWithCounsellorsSerializer
 import traceback
 
 
@@ -390,6 +390,33 @@ def blogDetails(request):
         return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
 # Blogs Data End    
 
+# Admin Profile
+def getAdminProfile(request):
+    if request.method == 'GET':
+        try:
+            profileData = ACU.objects.get(role = 'A')
+            serializer = ACUSerializer(profileData)
+            return HttpResponse(json.dumps({'profileData' : serializer.data}))
+        except Exception as e:
+            return HttpResponse(json.dumps({'status': 'error'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}),status=405)
+
+@csrf_exempt
+def updateAdminProfile(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body.decode('utf-8'))
+        profile_data = data.get('profileForm', {})
+        name = profile_data.get('name')
+        password = profile_data.get('password')
+        admin = ACU.objects.get(role = 'A')
+        admin.name = name
+        admin.password = make_password(password)
+        admin.save()
+        return HttpResponse(json.dumps({'status' : 'profile updated successfully'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
+# Admin Profile End 
 
 # CareerGPT History 
 # @csrf_exempt
