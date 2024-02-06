@@ -7,7 +7,6 @@ import offerCounsellingReducer from "./features/offerCounselling/offerCounsellin
 import askCounsellorReducer from "./features/askCounsellor/askCounsellorSlice"
 import blogCardsReducer from "./features/blogCards/blogCardsSlice"
 import blogDetailsReducer from "./features/blogCards/blogDetailsSlice"
-import careerGPTReducer from "./features/careerGPT/careerGPTSlice"
 
 //Admin Dashboard
 import profileReducer from './features/dashboards/admin/profile/profileSlice'
@@ -23,7 +22,6 @@ export const store = configureStore({
         askCounsellor: askCounsellorReducer,
         blogsCard: blogCardsReducer,
         blogDetails: blogDetailsReducer,
-        careerGPT: careerGPTReducer,
         //Admin Dashboard
         profile:profileReducer,
     }

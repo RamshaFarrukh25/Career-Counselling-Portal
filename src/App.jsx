@@ -50,6 +50,7 @@ export default function App() {
             <Route path="blogDetail" element={<BlogDetail />} />
           </Route>
 
+
           {/* Admin DashBoard Routing  */}
           <Route path="admin" element={<AdminLayout/>}>
            <Route path="dashboard" element={<DashBoard/>} />
@@ -60,6 +61,7 @@ export default function App() {
            <Route path="approveReviews" element={<ApproveReviews/>}/>
           </Route>
 
+         
           <Route path="counsellor" element={<Counsellor />}>
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<CounsellorProfile />} />

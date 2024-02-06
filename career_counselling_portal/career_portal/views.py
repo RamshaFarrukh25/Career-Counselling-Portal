@@ -8,10 +8,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 import random,json,re
 from django.contrib.auth.hashers import make_password, check_password
-from .models import ACU, Counsellor, Ratings, Reviews, Qualification, WorkingExperience, Blogs, CareerGPTHistory
+from .models import ACU, Counsellor, Ratings, Reviews, Qualification, WorkingExperience, Blogs, CareerGPTHistory, UserChatWithCounsellors
 from django.db.models import Q
 from rest_framework.decorators import api_view
-from .serializers import BlogsSerializer, TopCounsellorSerializer
+from .serializers import BlogsSerializer, TopCounsellorSerializer, ReviewsSerializer, UserChatWithCounsellorsSerializer
 import traceback
 
 
@@ -102,7 +102,8 @@ def checkCounsellorEmail(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     else:
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
-    
+
+
 # Register Counsellor    
 @csrf_exempt
 def registerCounsellor(request):
@@ -279,7 +280,7 @@ def getTopCounsellors(request):
 # Ask Counsellor Page End
     
 
-# Save Reviews
+# Reviews / Ratings
 @csrf_exempt
 def saveReviews(request):
     if request.method == 'POST':
@@ -307,7 +308,59 @@ def saveReviews(request):
     else:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405)
 
-# Save Reviews End
+
+# Show Latest Reviews
+def getReviews(request):
+    if request.method == 'GET':
+        try:
+            reviewsData = Reviews.objects.all()
+            serializer = ReviewsSerializer(reviewsData, many = True)
+            for data in serializer.data:
+                if data["reviewer_description"]:
+                    data["reviewer_description"] =  get_truncated_review(data["reviewer_description"], 2)
+            return HttpResponse(json.dumps({'reviewsData':serializer.data}))
+        except Exception as e:
+            return HttpResponse(json.dumps({'status': 'error'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}),status=405)
+    
+
+@csrf_exempt
+def getCounsellorsByUID(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        uid = data.get('uid')
+        counsellorList = UserChatWithCounsellors.objects.filter(user_id = uid)
+        serializer = UserChatWithCounsellorsSerializer(counsellorList, many = True)
+        return HttpResponse(json.dumps({"counsellorsList" : serializer.data}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
+
+
+@csrf_exempt
+def saveRatings(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            if data.get('user_id') is not None:
+                ratings_data = data.get('reviewsForm', {})
+                counsellor_name = ratings_data.get('selectedOption')
+                user_id = data.get('user_id')
+                review_description = ratings_data.get('counsellorReview')
+                rate = ratings_data.get('rating')
+                user = ACU.objects.get(id = user_id)
+                cu = ACU.objects.get(name =  counsellor_name)
+                counsellor = Counsellor.objects.get(counsellor_id =  cu.id)
+                rating = Ratings(counsellor_id = counsellor, rating = rate, review_description = review_description, user_id = user)
+                rating.save()
+                return HttpResponse(json.dumps({'status': 'success'}))
+            else:
+                return HttpResponse(json.dumps({'status': 'error'}),status=500)
+        except Exception as e:
+            traceback.print_exc()
+            return HttpResponse(json.dumps({'status': 'error', 'message': str(e)}), status=500)
+
+# Reviews/Ratings End
     
 # Blogs Data
 def fetchBlogsData(request):
@@ -328,30 +381,47 @@ def fetchBlogsData(request):
 @csrf_exempt
 def blogDetails(request):
     if request.method == 'POST':
-            data = json.loads(request.body.decode('utf-8'))
-            id = data.get('id')
-            print(id)
-            blogDetails = Blogs.objects.get(id= id)
-            serializer= BlogsSerializer(blogDetails)
-            return HttpResponse(json.dumps({'blogDetails':serializer.data}))   
+        data = json.loads(request.body.decode('utf-8'))
+        id = data.get('id')
+        blogDetails = Blogs.objects.get(id= id)
+        serializer= BlogsSerializer(blogDetails)
+        return HttpResponse(json.dumps({'blogDetails':serializer.data}))   
     else:
-        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')    
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
 # Blogs Data End    
 
 
 # CareerGPT History 
-@csrf_exempt
-def storeCareerGPTHistory(request):
-    if request.method == 'POST':
-        try:
-            data = request.body.decode('utf-8')
-            print("Data in JSON Received", data)
-            # history = CareerGPTHistory()
-            return JsonResponse({'status': 'success'})
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-    else:
-        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+# @csrf_exempt
+# def storeCareerGPTHistory(request):
+#     if request.method == 'POST':
+#         try:
+#             data = json.loads(request.body.decode('utf-8'))
+#             user_id = data.get('id')
+#             messages = data.get('messages')
+#             print("Messages in store", messages)
+#             user = ACU.objects.get(id=user_id)
+#             history = CareerGPTHistory(user_id=user, history=messages)
+#             history.save()
+#             return JsonResponse({'status': 'success'})
+#         except Exception as e:
+#             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+#     else:
+#         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
     
-    
+
+# @csrf_exempt
+# def loadCareerGPTHistory(request):
+#     if request.method == 'POST':
+#         try:
+#             data = json.loads(request.body.decode('utf-8'))
+#             id = data.get('id')
+#             history = CareerGPTHistory.objects.get(user_id=id)
+#             print("History in Load", history.history)
+#             return JsonResponse({'history': history.history})
+#         except Exception as e:
+#             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+#     else:
+#         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+ 
 # CareerGPT History End    

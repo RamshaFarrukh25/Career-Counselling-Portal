@@ -8,6 +8,7 @@ const initialState = {
     showReviewForm: true, // State to track which form to show
     changeReviewImage: RevLogoA,
     changeRatingImage: RatingLogo,
+    latestReviews: "",
     reviewsForm: {
         name: "",
         email: "",
@@ -18,7 +19,8 @@ const initialState = {
         counsellorReview: "",
         rating: 0
     },
-    isSave: null
+    isSave: null,
+    counsellorList: ""
 }
 
 // API THAT Saves Review
@@ -28,6 +30,47 @@ const apiUrl = "http://127.0.0.1:8000/saveReviews";
 export const saveReviews = createAsyncThunk('reviewsSlice/saveReviews', async ({reviewsForm,user_id}) => {
     try{
       const response = await axios.post(apiUrl, {reviewsForm,user_id} );
+      return response.data;
+    } 
+    catch (error) {
+      throw error;
+    }
+});
+
+// API THAT GETS LATEST REVIEWS
+const  getLatestReviewsApi = "http://127.0.0.1:8000/getReviews";
+
+
+export const getReviews = createAsyncThunk('reviewsSlice/getReviews', async() =>{
+    try{
+        const response = await axios.get(getLatestReviewsApi);
+        return response.data;
+    }
+    catch (error){
+        throw error;
+    }
+});
+
+// API THAT GETS COUNSELLORS LIST
+const getApiUrl = "http://127.0.0.1:8000/getCounsellorsByUID";
+
+export const getCounsellorsByUID = createAsyncThunk("reviewsSlice/getCounsellorsByUID", async (user_id)=>{
+    try{
+        const response = await axios.post(getApiUrl,  {"uid": user_id });
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+});
+
+// API THAT SAVES RATINGS
+const saveRatingsAPI = "http://127.0.0.1:8000/saveRatings";
+
+
+export const saveRatings = createAsyncThunk('reviewsSlice/saveRatings', async ({reviewsForm,user_id}) => {
+    try{
+      const response = await axios.post(saveRatingsAPI, {reviewsForm,user_id} );
       return response.data;
     } 
     catch (error) {
@@ -66,6 +109,13 @@ const reviewsSlice = createSlice({
                 email: "",
                 comments: ""
             }
+        },
+        clearRatings: (state) => {
+            state.reviewsForm = {
+                selectedOption: "",
+                counsellorReview: "",
+                rating: 0
+            }
         }
     },
     extraReducers: (builder) => {
@@ -80,7 +130,39 @@ const reviewsSlice = createSlice({
           .addCase(saveReviews.rejected, (state) => {
             console.log("reviews rejected");
             state.isSave = false
-          });
+          })
+          .addCase(getReviews.pending, (state) => {
+            console.log("latest reviews pending");
+          })
+          .addCase(getReviews.fulfilled, (state,action) => {
+            console.log("latest reviews recieved")
+            state.latestReviews = action.payload.reviewsData
+          })
+          .addCase(getReviews.rejected, (state) => {
+            console.log("latest reviews rejected");
+          })
+          .addCase(getCounsellorsByUID.pending, (state) => {
+            console.log("counsellors list pending");
+          })
+          .addCase(getCounsellorsByUID.fulfilled, (state,action) => {
+            console.log("counsellors list recieved")
+            state.counsellorList = action.payload.counsellorsList
+            console.log("counsellors: ", state.counsellorList)
+          })
+          .addCase(getCounsellorsByUID.rejected, (state) => {
+            console.log("counsellors list rejected");
+          })
+          .addCase(saveRatings.pending, (state) => {
+            console.log("ratings pending");
+          })
+          .addCase(saveRatings.fulfilled, (state) => {
+            console.log("ratings saved successfully");
+            state.isSave = true
+          })
+          .addCase(saveRatings.rejected, (state) => {
+            console.log("ratings rejected");
+            state.isSave = false
+          })
     },
 })
 
@@ -89,5 +171,6 @@ export const{handleChange,
             setShowReviewForm, 
             setChangeReviewImage, 
             setChangeRatingImage,
-            setRating, clearReview} = reviewsSlice.actions
+            setRating, clearReview,
+            clearRatings} = reviewsSlice.actions
 export default reviewsSlice.reducer
