@@ -10,7 +10,7 @@ import blogDetailsReducer from "./features/blogCards/blogDetailsSlice"
 
 //Admin Dashboard
 import profileReducer from './features/dashboards/admin/profile/profileSlice'
-
+import userReportReducer from './features/dashboards/admin/userReport/userReportSlice'
 
 export const store = configureStore({
     reducer: {
@@ -24,5 +24,6 @@ export const store = configureStore({
         blogDetails: blogDetailsReducer,
         //Admin Dashboard
         profile:profileReducer,
+        userReport: userReportReducer
     }
 })

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Counsellor, Blogs, UserChatWithCounsellors, Reviews
+from .models import Counsellor, Blogs, UserChatWithCounsellors, Reviews, ACU
 
 class BlogsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,5 +31,11 @@ class UserChatWithCounsellorsSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserChatWithCounsellors
         fields = ["counsellor_id", "counsellor_name"]
+
+
+class ACUSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ACU
+        fields = '__all__'
 
     
