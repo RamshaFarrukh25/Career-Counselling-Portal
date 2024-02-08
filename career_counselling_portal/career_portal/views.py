@@ -449,6 +449,48 @@ def deleteUser(request):
     else:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
 # User Report End
+    
+# Approve Reviews
+def getUnapprovedReviews(request):
+    if request.method == 'GET':
+        try:
+            reviewsData = Reviews.objects.filter(is_approved = False)
+            serializer = ReviewsSerializer(reviewsData, many = True)
+            return HttpResponse(json.dumps({'unapprovedReviews' : serializer.data}))
+        except Exception as e:
+            return HttpResponse(json.dumps({'status': 'error'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}),status=405)
+
+
+@csrf_exempt
+def deleteReview(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            review_id = data.get('selectedRow')
+            review = Reviews.objects.get(id= review_id)
+            review.delete()
+            return HttpResponse(json.dumps({'status': 'user deleted successfully'}))
+        except ACU.DoesNotExist:
+            return HttpResponse(json.dumps({'status': 'error', 'message': 'User not found'}), status=404, content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
+    
+
+@csrf_exempt
+def approveReview(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body.decode('utf-8'))
+        reviewer_id = data.get('selectedRow')
+        print(reviewer_id)
+        review = Reviews.objects.get(id= reviewer_id)
+        review.is_approved = True
+        review.save()
+        return HttpResponse(json.dumps({'status' : 'review approved successfully'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
+# Approve Reviews End
 
 # CareerGPT History 
 # @csrf_exempt
