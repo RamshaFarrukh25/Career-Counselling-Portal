@@ -44,4 +44,8 @@ urlpatterns = [
     # Users Report
     path('getUsers', views.getUsers,  name='getUsers'),
     path('deleteUser', views.deleteUser, name='deleteUser'),
+    # Approve Reviews
+    path('getUnapprovedReviews', views.getUnapprovedReviews, name='getUnapprovedReviews'),
+    path('deleteReview', views.deleteReview,  name='deleteReview'),
+    path('approveReview', views.approveReview, name='approveReview'),
 ]

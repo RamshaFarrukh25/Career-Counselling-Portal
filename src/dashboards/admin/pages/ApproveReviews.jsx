@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,33 +12,48 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import Modal from '@mui/material/Modal';
 import ApproveReviewsCSS from '../../../assets/styles/dashboards/admin_css/ApproveReviews.module.css'
+import { useDispatch, useSelector } from "react-redux";
+import { getUnapprovedReviews, 
+        setSelectedRow, 
+        handleDeleteReview, 
+        handleConfirmDelete, 
+        handleCancelDelete,
+        deleteReview,
+        handleApproveModal,
+        approveReview} from '../../../features/dashboards/admin/approveReviews/approveReviewsSlice';
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 50 },
-  { id: 'userName', label: 'User Name', minWidth: 150 },
-  { id: 'gmail', label: 'Gmail', minWidth: 150 },
-  { id: 'reviews', label: 'Reviews', minWidth: 200 },
+  { id: 'reviewer_name', label: 'User Name', minWidth: 150 },
+  { id: 'reviewer_email', label: 'Gmail', minWidth: 150 },
+  { id: 'reviewer_description', label: 'Reviews', minWidth: 200 },
   { id: 'actions', label: 'Actions', minWidth: 150 },
 ];
 
-// Sample data for the table (reviews)
-const initialRows = [
-  { id: 1, userName: 'John Doe', gmail: 'johndoe@gmail.com', reviews: 'Great service!', reviewApprovalStatus: 0 },
-  { id: 2, userName: 'Jane Smith', gmail: 'janesmith@gmail.com', reviews: 'Awesome experience!', reviewApprovalStatus: 1 },
-  // Add more rows as needed...
-];
+
 
 export default function ApproveReviews() {
+
+  const dispatch = useDispatch()
+  const {rows, selectedRow, deleteConfirmationOpen, approveModalOpen} = useSelector((store) => store.approveReviews)
+
+  useEffect(() => {
+    return () => {
+      dispatch(getUnapprovedReviews())
+    }
+  }, [dispatch])
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchQuery, setSearchQuery] = useState('');
-  const [rows, setRows] = useState(initialRows);
-  const [selectedReview, setSelectedReview] = useState(null);
-  const [approveRejectModalOpen, setApproveRejectModalOpen] = useState(false);
-  const [editorContent, setEditorContent] = useState('');
-  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
 
-  const editorRef = useRef(null);
+  const handlingCancelDelete = () => {
+    dispatch(handleCancelDelete());
+  }
+
+  const handlingApproveModal = () => {
+    dispatch(handleApproveModal(false));
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -48,19 +63,6 @@ export default function ApproveReviews() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
-  const handleApprovalToggle = (review) => {
-    const updatedRows = rows.map((row) => {
-      if (row.id === review.id) {
-        return {
-          ...row,
-          reviewApprovalStatus: row.reviewApprovalStatus === 1 ? 0 : 1,
-        };
-      }
-      return row;
-    });
-    setRows(updatedRows);
-  };
   
   const filteredRows = rows.filter((row) =>
     Object.values(row).some(
@@ -69,23 +71,6 @@ export default function ApproveReviews() {
         value.toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
-  const handleDeleteReview = (row) => {
-    setSelectedReview(row);
-    setDeleteConfirmationOpen(true);
-  };
-
-  const handleConfirmDelete = () => {
-    if (selectedReview) {
-      const updatedRows = rows.filter((row) => row.id !== selectedReview.id);
-      setRows(updatedRows);
-      setSelectedReview(null);
-      setDeleteConfirmationOpen(false);
-    }
-  };
-
-  const handleCancelDelete = () => {
-    setDeleteConfirmationOpen(false);
-  };
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -128,16 +113,37 @@ export default function ApproveReviews() {
                               <i
                                 className={`fa fa-trash mx-2 ${ApproveReviewsCSS.icon} ${ApproveReviewsCSS['icon-trash']}`}
                                 aria-hidden="true"
-                                onClick={() => handleDeleteReview(row)}
-                              ></i>
+                                onClick={() => { 
+                                  dispatch(
+                                    setSelectedRow(row.id)
+                                  )
+                                  dispatch(
+                                    handleDeleteReview(true)
+                                  )
+                                }}>
+                              </i>
                             </Tooltip>
-                            <Tooltip title="Approve/Reject Review">
+                            <Tooltip title="Click Here To Approve Review">
                               <i
-                                className={`fa-solid ${
-                                  row.reviewApprovalStatus === 1 ? 'fa-check' : 'fa-times'
-                                } ${ApproveReviewsCSS.icon} ${ApproveReviewsCSS['icon-approval']}`}
-                                onClick={() => handleApprovalToggle(row)}
-                              ></i>
+                                className={`fa-solid fa-check 
+                                ${ApproveReviewsCSS.icon} ${ApproveReviewsCSS['icon-approval']}`}
+                                onClick={() => {
+                                  dispatch(
+                                    setSelectedRow(row.id)
+                                  )
+                                  dispatch(
+                                    approveReview(
+                                      { 'selectedRow' : row.id }
+                                    )
+                                  )
+                                  dispatch(
+                                    handleConfirmDelete()
+                                  )
+                                  dispatch(
+                                    handleApproveModal(true)
+                                  )
+                                }}>
+                              </i>
                             </Tooltip>
                           </>
                         ) : (
@@ -153,7 +159,7 @@ export default function ApproveReviews() {
       </TableContainer>
       {/* Table Pagination */}
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={filteredRows.length}
         rowsPerPage={rowsPerPage}
@@ -165,17 +171,21 @@ export default function ApproveReviews() {
          {/* Delete Confirmation Modal */}
          <Modal
   open={deleteConfirmationOpen}
-  onClose={handleCancelDelete}
+  onClose={handlingCancelDelete}
   className={ApproveReviewsCSS.deleteConfirmationModal}
 >
   <div className={ApproveReviewsCSS.modalContent}>
-    {selectedReview && (
+    {selectedRow && (
       <div>
         <h2>Delete Confirmation</h2>
         <p>Are you sure you want to delete this review?</p>
         
             <Button
-                onClick={handleCancelDelete}
+                onClick={() => {
+                  dispatch(
+                    handleCancelDelete()
+                  )}
+                }
             style={{
                 margin: '10px',
                 padding: '8px 16px',
@@ -192,7 +202,22 @@ export default function ApproveReviews() {
                 
                 </Button>
 
-        <Button onClick={handleConfirmDelete}
+        <Button 
+          onClick={() => {
+            dispatch(
+              handleConfirmDelete()
+            )
+            dispatch(
+              handleCancelDelete()
+            )
+            dispatch(
+              deleteReview(
+                {
+                  'selectedRow' : selectedRow
+                }
+              )
+            )
+          }}
         style={{
             margin: '10px',
             padding: '8px 16px',
@@ -209,6 +234,43 @@ export default function ApproveReviews() {
         </Button>
       </div>
     )}
+  </div>
+</Modal>
+
+{/* Approve Confirmation Modal */}
+<Modal
+  open={approveModalOpen}
+  onClose={handlingApproveModal}
+  className={ApproveReviewsCSS.deleteConfirmationModal}
+>
+  <div className={ApproveReviewsCSS.modalContent}>
+    
+      <div>
+        <h2>Review Approved Successfully!!</h2>
+            <Button
+                onClick={() => {
+                  dispatch(
+                    handleApproveModal(false)
+                  )}
+                }
+            style={{
+                margin: '10px',
+                padding: '8px 16px',
+                cursor: 'pointer',
+                borderRadius: '4px',
+                fontSize: '16px',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                transition: 'background-color 0.3s ease, transform 0.3s ease',
+                backgroundColor: '#741ac2',
+                color: '#fff',
+                border: '1px solid yellowgreen',
+            }}>
+              Close
+                  {/* <i className="fa-solid fa-undo" aria-hidden="true" style={{marginRight: '10px'}}></i>
+                  Undo Approval */}
+            </Button>
+      </div>
+    
   </div>
 </Modal>
     </Paper>

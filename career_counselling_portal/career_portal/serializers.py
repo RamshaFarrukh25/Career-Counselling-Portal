@@ -48,7 +48,7 @@ class CounsellorDataSerializer(serializers.ModelSerializer):
         fields = ['name', 'email', 'phone_no', 'profile_pic']
     
     
- class ACUSerializer(serializers.ModelSerializer):
+class ACUSerializer(serializers.ModelSerializer):
     class Meta:
         model = ACU
         fields = '__all__'

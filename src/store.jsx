@@ -21,6 +21,7 @@ import settingsReducer from "./features/dashboards/counsellor/settingsSlice"
 //Admin Dashboard
 import profileReducer from './features/dashboards/admin/profile/profileSlice'
 import userReportReducer from './features/dashboards/admin/userReport/userReportSlice'
+import approveReviewsReducer from './features/dashboards/admin/approveReviews/approveReviewsSlice'
 
 export const store = configureStore({
     reducer: {
@@ -41,6 +42,7 @@ export const store = configureStore({
         settings: settingsReducer,
         //Admin Dashboard
         profile:profileReducer,
-        userReport: userReportReducer
+        userReport: userReportReducer,
+        approveReviews: approveReviewsReducer
     }
 })
