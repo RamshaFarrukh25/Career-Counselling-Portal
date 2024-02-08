@@ -9,6 +9,7 @@ const initialState = {
     phoneNo:"",
     password: "",
     confirmPassword: "",
+    updatedPassword:null
   },
   passwordMatch: "",
   isLoading: null
@@ -50,16 +51,22 @@ const settingsSlice = createSlice({
         [payload.name]: payload.value
       }
     },
+    setUpdatedPassword:(state)=>{
+      state.settings.password = state.settings.updatedPassword
+    },
     clearForm: (state) => {
       state.settings = {         
         password: "",
         confirmPassword: "",
+        updatedPassword:null
       } 
       state.passwordMatch= ""
-      state.isLoading = null 
+      state.isLoading = null
     },
     matchPasswords: (state) => {
-      if(state.settings.password !== state.settings.confirmPassword){
+      console.log('password',state.settings.updatedPassword)
+      console.log('confim',state.settings.confirmPassword)
+      if(state.settings.updatedPassword !== state.settings.confirmPassword){
         state.passwordMatch = "passwordError"
       } else {
         state.passwordMatch = "passwordMatch"
@@ -77,6 +84,7 @@ const settingsSlice = createSlice({
             state.settings.profilePic = action.payload.counsellorData.profile_pic
             state.settings.email = action.payload.counsellorData.email
             state.settings.phoneNo = action.payload.counsellorData.phone_no
+            state.settings.password= action.payload.counsellorData.password
         })
         .addCase(getCounsellorSettings.rejected, (state, action) => {
             //console.log("getCounsellorSettings rejected")
@@ -95,5 +103,5 @@ const settingsSlice = createSlice({
   }
 })
 
-export const { handleChange, clearForm, matchPasswords } = settingsSlice.actions
+export const { handleChange, clearForm, matchPasswords,setUpdatedPassword } = settingsSlice.actions
 export default settingsSlice.reducer

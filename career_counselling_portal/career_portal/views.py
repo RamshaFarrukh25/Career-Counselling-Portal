@@ -17,6 +17,9 @@ import traceback
 from .Utils.counsellor import makeDirectoy, saveImage, deleteImage, removeDirectory
 
 
+def hello(request):
+    print(make_password("Ramsha.123"))
+    return HttpResponse("hello")
 # Send OTP
 def generate_otp():
     return str(random.randrange(1000, 10000))
@@ -547,8 +550,9 @@ def updateCounsellorSettings(request):
         password = request.POST.get('password')
         counsellor = Counsellor.objects.select_related('counsellor_id').get(counsellor_id=uid)
         counsellor.phone_no = phoneNo
-        counsellor.counsellor_id.password = make_password(password)
-
+        if password != counsellor.counsellor_id.password:
+           counsellor.counsellor_id.password = make_password(password)
+           
         profilePic = request.FILES.get('profilePic', None)
         if profilePic:
             originalImage = counsellor.profile_pic
@@ -662,6 +666,9 @@ def deleteBlog(request, bid):
     if request.method == 'DELETE':
         try:
             blog = Blogs.objects.get(id=bid)
+            originalImage = blog.cover_image
+            path = os.path.join(settings.BASE_DIR, 'Counsellors', blog.counsellor_id.counsellor_id.email,'Blogs')
+            deleteImage(path, originalImage[1:])
             blog.delete()
             return JsonResponse({"message": "Blog deleted successfully"}, status=200)
         except Exception as e:

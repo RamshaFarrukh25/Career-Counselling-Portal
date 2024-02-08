@@ -11,7 +11,10 @@
     font-size: 18px;
     margin-top: 5px;
 }
-
+.homeIcon{
+    color:var(--lavender);
+    font-size: 22px;
+}
 .links {
     color: white;
     text-decoration: none;

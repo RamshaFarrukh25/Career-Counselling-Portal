@@ -110,10 +110,16 @@ export default function Counsellor(){
                     onClick={handleClick}
                 >
                     <i className="fa fa-bars"></i>
-                    
                 </button>
+               
 
                 <div className={CounsellorCSS.icons}>
+                    <Link 
+                        className={CounsellorCSS.gear}        
+                        to="/"
+                    >
+                        <span> <i className={`fa fa-home ${CounsellorCSS.homeIcon}`} aria-hidden="true"></i></span>
+                    </Link>
                     {/* Bell Icon for notification */}
                     <Link 
                         className={CounsellorCSS.links} 
@@ -246,12 +252,16 @@ export default function Counsellor(){
                             
                         </Link>
                     </Menu>
+                
                     <Link 
                         className={CounsellorCSS.gear}        
                         to="/counsellor/settings"
                     >
                         <span><i className="fa-solid fa-gear"></i></span>
                     </Link>
+                    
+
+                   
                 </div>
             </div>
             </div>

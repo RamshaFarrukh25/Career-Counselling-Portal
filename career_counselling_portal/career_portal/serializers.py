@@ -42,13 +42,14 @@ class UserChatWithCounsellorsSerializer(serializers.ModelSerializer):
 class CounsellorDataSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='counsellor_id.name')
     email = serializers.CharField(source='counsellor_id.email')
+    password = serializers.CharField(source='counsellor_id.password')
     
     class Meta:
         model = Counsellor
-        fields = ['name', 'email', 'phone_no', 'profile_pic']
+        fields = ['name', 'email', 'phone_no', 'profile_pic','password']
     
     
- class ACUSerializer(serializers.ModelSerializer):
+class ACUSerializer(serializers.ModelSerializer):
     class Meta:
         model = ACU
         fields = '__all__'

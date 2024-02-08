@@ -1,17 +1,21 @@
 import SettingsCSS from "../../assets/styles/dashboards/counsellor_css/Settings.module.css"
 import Loading from "../../assets/images/Loading.gif"
 import { useDispatch, useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
+import { useEffect } from "react"
+
 import { 
   handleChange,  
   clearForm,
   matchPasswords,
   getCounsellorSettings,
-  updateCounsellorSettings
+  updateCounsellorSettings,setUpdatedPassword
 } from "../../features/dashboards/counsellor/settingsSlice"
 import React from 'react'
 
 
 export default function Settings() {
+   const params = useParams()
   const dispatch = useDispatch()
   const { settings, passwordMatch, isLoading } = useSelector((store) => store.settings)
   const [pic, setPic] = React.useState(null)
@@ -30,6 +34,11 @@ export default function Settings() {
     setPicURL(URL.createObjectURL(fileObj))
     setPic(fileObj)
   }
+  useEffect(() => {
+    return () => {
+        dispatch(clearForm())
+    }
+}, [dispatch, params.id])
 
   return (
     <div className={SettingsCSS.wrapper}>
@@ -59,8 +68,16 @@ export default function Settings() {
                             formData.append('uId', user_id)
                             formData.append('email', settings.email)
                             formData.append('phoneNo', settings.phoneNo)
-                            formData.append('password', settings.password)
                             formData.append('profilePic', pic)
+                            if(settings.updatedPassword == null)
+                            {
+                                formData.append('password', settings.password)
+                            }
+                            else{
+                                dispatch(setUpdatedPassword())
+                                formData.append('password', settings.updatedPassword)
+                            }
+                           
                             await dispatch(updateCounsellorSettings(formData))
                             window.location.reload()
                         }
@@ -114,8 +131,8 @@ export default function Settings() {
                         type="password"
                         className={`${SettingsCSS.formControl} ${SettingsCSS[passwordMatch]}`}
                         placeholder="Password"
-                        name="password"
-                        value={settings.password}
+                        name="updatedPassword"
+                        value={settings.updatedPassword}
                         onChange={(event) =>
                             dispatch(
                               handleChange({
@@ -127,7 +144,7 @@ export default function Settings() {
                         minLength="8"
                         pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                         title="Password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-                        required
+                        
                     />
                 </div>
 
@@ -150,7 +167,7 @@ export default function Settings() {
                             )
                         }
                         onKeyUp={(event) => dispatch(matchPasswords())}
-                        required
+                        
                     />
                 </div>
 
