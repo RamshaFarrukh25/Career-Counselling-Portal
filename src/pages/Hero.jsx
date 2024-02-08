@@ -19,7 +19,7 @@ export default function Hero(){
                     </div>
                     <div className={`col-md-6 ${HeroCSS.card__col}`}>
                     <div className={`card__content ${HeroCSS.card__content}`}>
-                        {isLogin== null && <Link to="signup" className={`btn ${HeroCSS.loginButton} `}>Login/Register</Link>}
+                        {isLogin== null && <Link to="login" className={`btn ${HeroCSS.loginButton} `}>Login/Register</Link>}
                         <div className={` ${HeroCSS.BtnDiv} d-flex`}>
                            
                             {isLogin== true && role == 'A' && <Link to="admin" className={`btn ${HeroCSS.DashboardBtn}`}>Dashboard</Link>}

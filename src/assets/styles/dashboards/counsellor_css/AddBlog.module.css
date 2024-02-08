@@ -27,6 +27,21 @@
     border-bottom: 1px solid var(--purple);
 }
 
+
+.coverImageDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.coverImage{
+    height: 350px;
+    width: 600px;
+    box-shadow: 2px 2px 8px #888888;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
 .submitBtn {
     border: none;
     width: 100%;

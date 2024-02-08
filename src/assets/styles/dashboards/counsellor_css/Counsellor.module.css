@@ -131,6 +131,15 @@
     transform: scale(1.2);
 }
 
+.gear{
+    color: var(--lightPink);
+    transition: transform 0.3s ease;
+}
+
+.gear:hover{
+    transform: scale(1.2);
+}
+
 .profileIcon{
     color: black;
     text-decoration: none;

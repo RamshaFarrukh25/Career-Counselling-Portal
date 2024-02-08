@@ -14,3 +14,8 @@ def saveImage(path, requiredName, actualName, fileContent):
     fileUrl = fs.url(savedFile)
     return fileUrl
 
+def deleteImage(path, name):
+    path = os.path.join(path, name)
+    os.remove(path)
+    
+

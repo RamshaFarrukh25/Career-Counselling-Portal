@@ -12,6 +12,7 @@ import {
 import { registerCounsellor, sendVerificationEmail } from "../features/offerCounselling/offerCounsellingSlice"
 import React from "react"
 import { useNavigate } from "react-router-dom"
+import Loading from "../assets/images/Loading.gif"
 
 export default function OTP(props){
     const dispatch = useDispatch()
@@ -22,6 +23,7 @@ export default function OTP(props){
     const navigate = useNavigate()
     const otpCode = props.otp
     const role = props.role
+    const { isLoading } = useSelector((store) => store.offerCounselling)
     
     React.useEffect(() => {
         buttonRef.current.click()
@@ -199,8 +201,15 @@ export default function OTP(props){
                                 <div className="mt-3 text-center pb-2">
                                     <button 
                                         className={`btn px-3 w-50 ${OTPCSS.validateBtn}`}
-                                    >Validate</button>
+                                        disabled={isLoading && true} 
+                                    >Validate
+                                    </button>
                                 </div>
+                                {isLoading && 
+                                    <div className={OTPCSS.loadingDiv}>
+                                        <img src={Loading} className={OTPCSS.loading} alt="loading"/>
+                                    </div>
+                                }
                             </form>
                             {/* {validate == false && <p className={OTPCSS.error}> Invalid OTP</p>} */}
                             {seconds === 0 && window.location.reload()}

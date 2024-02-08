@@ -11,6 +11,13 @@ import blogDetailsReducer from "./features/blogCards/blogDetailsSlice"
 //Admin Dashboard
 import profileReducer from './features/dashboards/admin/profile/profileSlice'
 
+//Counsellor Dashboard
+import counsellorReducer from "./features/dashboards/counsellor/counsellorSlice"
+import counsellorDashboardReducer from "./features/dashboards/counsellor/dashboardSlice"
+import counsellorProfileReducer from "./features/dashboards/counsellor/counsellorProfileSlice"
+import addBlogReducer from "./features/dashboards/counsellor/addBlogSlice"
+import showBlogsReducer from "./features/dashboards/counsellor/showBlogsSlice"
+import settingsReducer from "./features/dashboards/counsellor/settingsSlice"
 
 export const store = configureStore({
     reducer: {
@@ -24,5 +31,12 @@ export const store = configureStore({
         blogDetails: blogDetailsReducer,
         //Admin Dashboard
         profile:profileReducer,
+        //Counsellor Dashboard
+        counsellor: counsellorReducer,
+        counsellorDashboard: counsellorDashboardReducer,
+        counsellorProfile: counsellorProfileReducer,
+        addBlog: addBlogReducer,
+        showBlogs: showBlogsReducer,
+        settings: settingsReducer,
     }
 })

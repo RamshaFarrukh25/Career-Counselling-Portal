@@ -6,7 +6,7 @@ const initialState = {
     otp: ['', '', '', ''],
     validate: false,
     enteredOTP:'',
-    errorMsg:false
+    errorMsg:false,
 }
 
 // API THAT Registers User

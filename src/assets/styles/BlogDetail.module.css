@@ -1,41 +1,99 @@
 .mainHeading {
   font-family: var(--fontHeading);
-  color: white;
-  text-shadow: 2px 2px 4px #2B3499;
+  color: var(--blue);
+  text-shadow: 2px 2px 2px var(--lavender);
+  font-size: 23px;
 
+}
+.Blogtitle{
+  color:var(--blue);
+  text-shadow: 1px 1px 1px var(--purple);
+  font-size: 22px;
 }
 
 .container {
-  width: 80%; /* Set the width of the container */
-  margin: 0 auto; /* Center the container */
+  width: 50%;
+  margin: 0 auto;
+  background-color: #EBEDEF;
+  margin-top: 8px;
+  border-radius: 5px;
+  box-shadow: 2px 5px 2px var(--blue);
+  border: 2px solid var(--blue);
 }
 
 .mainHR {
-  border-top: 3px solid #2B3499; /* Use the blue variable for the border color */
-  width: 100%; /* Make the hr span the entire width of the container */
+  border-top: 2px solid purple; 
+  width: 100%; 
 }
 
 .BlogImageClass {
-  width: 100%; /* Make the image span the entire width of the container */
-  border-radius: 10px; /* Adding border-radius for rounded corners */
-  box-shadow: 5px 5px 10px black; /* Modifying box-shadow with horizontal and vertical offset, blur radius, and color */
-  display: block; /* Ensure the image behaves as a block-level element */
-  margin-top: 20px; /* Adjust margin as needed */
-  /* Other styles as required */
+  width: 80%;
+  border-radius: 5px; 
+  box-shadow: 5px 5px 10px var(--lavender); 
+  /* display: block; Ensure the image behaves as a block-level element */
+  margin-top: 20px;
+  margin-left: 40px;
 }
 
 .date{
-  text-shadow: 2px 2px 4px #2B3499;
+  text-shadow: 2px 2px 2px var(--lavender);
   font-size: 18px;
+  color:var(--blue)
 }
 
-.author
+.article
 {
-  font-style: italic;
-  text-shadow: 2px 2px 4px #2B3499;
+  color:var(--blue);
+  font-family: var(--fontHeading);
+  text-shadow: 2px 2px 2px var(--lavender);
+  font-size: 20px;
+  
+}
+@media (max-width:900px){
+  
+.container {
+  width: 90%;
+  margin: 0 auto;
+  background-color: #EBEDEF;
+  margin-top: 30px;
+  border-radius: 5px;
+  box-shadow: 2px 5px 2px var(--blue);
+}
+.mainHeading {
+  font-family: var(--fontHeading);
+  color: var(--blue);
+  text-shadow: 2px 2px 2px var(--lavender);
+  font-size: 20px;
+
+}
+.Blogtitle{
+  color:var(--blue);
+  text-shadow: 1px 1px 1px var(--purple);
+  font-size: 18px;
+  margin-left: 5px;
+}
+
+.date{
+  text-shadow: 2px 2px 2px var(--lavender);
+  font-size: 15px;
+  color:var(--blue);
+  margin-left: 5px;
 }
 .article
 {
+  color:var(--blue);
   font-family: var(--fontHeading);
-  color:white;
+  text-shadow: 2px 2px 2px var(--lavender);
+  font-size: 14px;
+  margin-left: 5px;
+  
+}
+.BlogImageClass {
+  width: 50%;
+  border-radius: 5px; 
+  box-shadow: 5px 5px 10px var(--lavender); 
+  /* display: block; Ensure the image behaves as a block-level element */
+  margin-top: 20px;
+  /* margin-left: 70px; */
+}
 }
