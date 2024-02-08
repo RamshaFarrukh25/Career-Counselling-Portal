@@ -16,10 +16,6 @@ import traceback
 
 from .Utils.counsellor import makeDirectoy, saveImage, deleteImage, removeDirectory
 
-
-def hello(request):
-    print(make_password("Ramsha.123"))
-    return HttpResponse("hello")
 # Send OTP
 def generate_otp():
     return str(random.randrange(1000, 10000))

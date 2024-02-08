@@ -44,5 +44,4 @@ urlpatterns = [
     # Users Report
     path('getUsers', views.getUsers,  name='getUsers'),
     path('deleteUser', views.deleteUser, name='deleteUser'),
-    path('hello',views.hello,name='hello')
 ]
