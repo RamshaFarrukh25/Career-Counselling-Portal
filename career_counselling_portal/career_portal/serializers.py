@@ -46,6 +46,12 @@ class CounsellorDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Counsellor
         fields = ['name', 'email', 'phone_no', 'profile_pic']
+    
+    
+ class ACUSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ACU
+        fields = '__all__'
 
 
 class WorkingExperienceSerializer(serializers.ModelSerializer):
@@ -58,10 +64,6 @@ class QualificationSerializer(serializers.ModelSerializer):
         model = Qualification
         fields = '__all__'
 
-class ACUSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ACU
-        fields = ('name', 'email')
 
 class CounsellorSerializer(serializers.ModelSerializer):
     counsellor_id = ACUSerializer()

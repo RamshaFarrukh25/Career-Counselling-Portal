@@ -1,4 +1,5 @@
 import os
+import shutil
 from django.core.files.storage import FileSystemStorage
 
 def makeDirectoy(path, name):
@@ -18,4 +19,13 @@ def deleteImage(path, name):
     path = os.path.join(path, name)
     os.remove(path)
     
+    
+def removeDirectory(path, name):
+    path = os.path.join(path, name)
+    try:
+        shutil.rmtree(path)
+        print(f"Directory '{path}' and its contents successfully removed.")
+    except OSError as e:
+        print(f"Error: {e}")
+
 

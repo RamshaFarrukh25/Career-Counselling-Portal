@@ -1,25 +1,33 @@
 import ProfileCSS from "../../../assets/styles/dashboards/admin_css/Profile.module.css"
 import Avatar from "../../../assets/images/Dr. Samantha Williams_Image.jpg"
 import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
 import { 
   handleChange, 
-  handleSubmit, 
   clearForm,
-  matchPasswords
+  matchPasswords,
+  getAdminProfile,
+  updateAdminProfile
 } from "../../../features/dashboards/admin/profile/profileSlice"
 
 
 export default function Profile() {
   const dispatch = useDispatch()
-  const { profileForm, passwordMatch } = useSelector((store) => store.profile)
+  const { profileForm, passwordMatch} = useSelector((store) => store.profile)
+
+  useEffect(() => {
+    return () => {
+      dispatch(getAdminProfile())
+    }
+  }, [])
+
   return (
     <div className={ProfileCSS.wrapper}>
         <div className={`${ProfileCSS.inner} container`}>
             <div className="row">
-            {/* <h2 className={ProfileCSS.profileHeading}>Profile</h2> */}
                 <div className={`col-md-4 col-sm-12 ${ProfileCSS.form}`}>
                     <img src={Avatar} className={`rounded-circle mb-3 ${ProfileCSS.avatarImage}`} alt="Avatar" />
-                    <h5 className={`mb-2 mx-4`}><strong>M.L.R.H</strong></h5>
+                    <h5 className={`mb-2 mx-4`}><strong>{profileForm.name}</strong></h5>
                     <h5><span className={`badge bg-primary mx-4`}>Admin</span></h5>
                 </div>
 
@@ -27,7 +35,7 @@ export default function Profile() {
                     <form
                      onSubmit={(event) => { 
                         event.preventDefault()
-                        dispatch(handleSubmit())
+                        dispatch(updateAdminProfile({'profileForm' : profileForm}))
                         dispatch(clearForm())
                       }} 
                     >

@@ -37,4 +37,11 @@ urlpatterns = [
     path('addBlog', views.addBlog, name='addBlog'),
     path('editBlog', views.editBlog, name='editBlog'),
     path('deleteBlog/<int:bid>', views.deleteBlog, name='deleteBlog'),
+
+    # Admin Profile
+    path('getAdminProfile', views.getAdminProfile, name='getAdminProfile'),
+    path('updateAdminProfile', views.updateAdminProfile, name='updateAdminProfile'),
+    # Users Report
+    path('getUsers', views.getUsers,  name='getUsers'),
+    path('deleteUser', views.deleteUser, name='deleteUser'),
 ]
