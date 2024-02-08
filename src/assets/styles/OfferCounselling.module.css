@@ -214,6 +214,10 @@
 	font-family: var(--fontHeading);
 	font-size: 15px;
 }
+.loading{
+	width: 90px;
+	text-align: center;
+}
 #progressbar li:before {
 	content: counter(step);
 	counter-increment: step;

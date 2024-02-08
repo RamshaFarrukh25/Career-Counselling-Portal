@@ -7,11 +7,11 @@ import {
     MDBRow,
     MDBCardImage
 } from 'mdb-react-ui-kit'
-import ProfilePic from "../../assets/images/AboutUs_Team1.jpeg"
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { logOut} from "../../features/login/loginSlice"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import {getCounsellorData} from "../../features/dashboards/counsellor/counsellorSlice"
 
 export default function Counsellor(){
     const [sidebar, showSidebar] = React.useState(true)
@@ -21,6 +21,16 @@ export default function Counsellor(){
     const open = Boolean(anchorEl)
     const dispatch= useDispatch()
     const navigate = useNavigate()
+    const {user_id} = useSelector((store) => store.login)
+    //console.log("User_ID", user_id)
+    const {name, email, profilePic} = useSelector((store) => store.counsellor)
+
+    React.useEffect(() => {
+        async function getData (){
+            await dispatch(getCounsellorData(user_id))
+        }
+        getData()
+    }, [])
     
     var fullHeight = function() {
 		$('.js-fullheight').css('height', $(window).height())
@@ -48,6 +58,10 @@ export default function Counsellor(){
 
     const handleIconClose = () => {
         setAnchorEl(null)
+    }
+
+    const handleLogout = () => {
+        setAnchorEl(null)
         dispatch(logOut())
         navigate("/")
         window.location.reload()
@@ -61,12 +75,12 @@ export default function Counsellor(){
                     <MDBRow>
                         <MDBCol lg="12">
                             <MDBCardImage
-                            src={ProfilePic}
+                            src={`../../../career_counselling_portal/Counsellors/${email}${profilePic}`}
                             alt="avatar"
                             className="rounded-circle"
                             style={{ width: "150px" }}
                             fluid />
-                            <p className={`${CounsellorCSS.counsellorName} mb-4`}>Ramsha Farrukh</p>
+                            <p className={`${CounsellorCSS.counsellorName} mb-4`}>{name}</p>
                         </MDBCol>
                     </MDBRow>
                 </MDBContainer>
@@ -223,7 +237,7 @@ export default function Counsellor(){
                         </Link>
                         <Link className={CounsellorCSS.profileIcon}> 
                             <MenuItem 
-                                onClick={handleIconClose}
+                                onClick={handleLogout}
                                 style={{  
                                     fontFamily: "var(--fontHeading)", 
                                 }}
@@ -232,6 +246,12 @@ export default function Counsellor(){
                             
                         </Link>
                     </Menu>
+                    <Link 
+                        className={CounsellorCSS.gear}        
+                        to="/counsellor/settings"
+                    >
+                        <span><i className="fa-solid fa-gear"></i></span>
+                    </Link>
                 </div>
             </div>
             </div>

@@ -15,6 +15,11 @@ def saveImage(path, requiredName, actualName, fileContent):
     fileUrl = fs.url(savedFile)
     return fileUrl
 
+def deleteImage(path, name):
+    path = os.path.join(path, name)
+    os.remove(path)
+    
+    
 def removeDirectory(path, name):
     path = os.path.join(path, name)
     try:
@@ -22,4 +27,5 @@ def removeDirectory(path, name):
         print(f"Directory '{path}' and its contents successfully removed.")
     except OSError as e:
         print(f"Error: {e}")
+
 

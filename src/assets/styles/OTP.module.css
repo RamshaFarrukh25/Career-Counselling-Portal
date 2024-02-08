@@ -17,6 +17,17 @@
     text-align: center;
 }
 
+.loadingDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading{
+    width: 70px;    
+    margin-top: 10px;
+}
+
 .validateBtn{
     font-family: var(--fontHeading);
     background-color: #AA4A44;

@@ -121,46 +121,46 @@ const reviewsSlice = createSlice({
     extraReducers: (builder) => {
         builder
           .addCase(saveReviews.pending, (state) => {
-            console.log("reviews pending");
+            //console.log("reviews pending");
           })
           .addCase(saveReviews.fulfilled, (state) => {
-            console.log("reviews saved successfully");
+            //console.log("reviews saved successfully");
             state.isSave = true
           })
           .addCase(saveReviews.rejected, (state) => {
-            console.log("reviews rejected");
+            //console.log("reviews rejected");
             state.isSave = false
           })
           .addCase(getReviews.pending, (state) => {
-            console.log("latest reviews pending");
+            //console.log("latest reviews pending");
           })
           .addCase(getReviews.fulfilled, (state,action) => {
-            console.log("latest reviews recieved")
+            //console.log("latest reviews recieved")
             state.latestReviews = action.payload.reviewsData
           })
           .addCase(getReviews.rejected, (state) => {
-            console.log("latest reviews rejected");
+            //console.log("latest reviews rejected");
           })
           .addCase(getCounsellorsByUID.pending, (state) => {
-            console.log("counsellors list pending");
+            //console.log("counsellors list pending");
           })
           .addCase(getCounsellorsByUID.fulfilled, (state,action) => {
-            console.log("counsellors list recieved")
+            //console.log("counsellors list recieved")
             state.counsellorList = action.payload.counsellorsList
-            console.log("counsellors: ", state.counsellorList)
+            //console.log("counsellors: ", state.counsellorList)
           })
           .addCase(getCounsellorsByUID.rejected, (state) => {
-            console.log("counsellors list rejected");
+            //console.log("counsellors list rejected");
           })
           .addCase(saveRatings.pending, (state) => {
-            console.log("ratings pending");
+            //console.log("ratings pending");
           })
           .addCase(saveRatings.fulfilled, (state) => {
-            console.log("ratings saved successfully");
+            //console.log("ratings saved successfully");
             state.isSave = true
           })
           .addCase(saveRatings.rejected, (state) => {
-            console.log("ratings rejected");
+            //console.log("ratings rejected");
             state.isSave = false
           })
     },

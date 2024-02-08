@@ -27,6 +27,17 @@ urlpatterns = [
     # Blog Details
     path('blogDetails',views.blogDetails,name='blogDetails'),
 
+    # Counsellor Dashboard 
+    path('getCounsellorData/<int:uid>', views.getCounsellorData, name='getCounsellorData'),
+    path('getCounsellorCardsData/<int:uid>', views.getCounsellorCardsData, name='getCounsellorCardsData'),
+    path('getCounsellorProfileData/<int:uid>', views.getCounsellorProfileData, name='getCounsellorProfileData'),
+    path('getCounsellorSettings/<int:uid>', views.getCounsellorSettings, name='getCounsellorSettings'),
+    path('updateCounsellorSettings', views.updateCounsellorSettings, name='updateCounsellorSettings'),
+    path('getCounsellorBlogs/<int:uid>', views.getCounsellorBlogs, name='getCounsellorBlogs'),
+    path('addBlog', views.addBlog, name='addBlog'),
+    path('editBlog', views.editBlog, name='editBlog'),
+    path('deleteBlog/<int:bid>', views.deleteBlog, name='deleteBlog'),
+
     # Admin Profile
     path('getAdminProfile', views.getAdminProfile, name='getAdminProfile'),
     path('updateAdminProfile', views.updateAdminProfile, name='updateAdminProfile'),

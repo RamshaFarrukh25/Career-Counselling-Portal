@@ -31,6 +31,7 @@ const initialState = {
     role:'',
     isEmailExist: null,
     otp: '',
+    isLoading: null,
 
     isOTPModal: false
 }
@@ -149,43 +150,51 @@ const offerCounsellingSlice = createSlice({
     extraReducers: (builder) => {
         builder 
             .addCase(checkCounsellorEmail.pending, (state) =>{
-                console.log("Pending")
+                //console.log("Pending")
             })
             .addCase(checkCounsellorEmail.fulfilled, (state, action) => {
-                console.log("fulfilled")
+                //console.log("fulfilled")
                 state.role = action.payload.role
                 state.isEmailExist = action.payload.isExist
             })
             .addCase(checkCounsellorEmail.rejected, (state, action) => {
-                console.log("Rejected")
+                //console.log("Rejected")
             })
             .addCase(sendOTP.pending, (state) => {
-                console.log("pending otp ");
+                //console.log("pending otp ");
+                state.isLoading = true
             })
             .addCase(sendOTP.fulfilled, (state, action) => {
-                console.log("otp received");
+                //console.log("otp received");
+                state.isLoading = false
                 state.otp = action.payload.otp;
             })
             .addCase(sendOTP.rejected, (state, action) => {
-                console.log("rejected otp");
+                //console.log("rejected otp");
             })
             .addCase(registerCounsellor.pending, (state) => {
-                console.log("Register Counsellor Pending ");
+                //console.log("Register Counsellor Pending ");
+                state.isLoading = true;
             })
             .addCase(registerCounsellor.fulfilled, (state, action) => {
-                console.log("Register Counsellor fulfilled");
+                //console.log("Register Counsellor fulfilled");
+                state.isLoading = false;
             })
             .addCase(registerCounsellor.rejected, (state, action) => {
-                console.log("Register Counsellor Rejected");
+                //console.log("Register Counsellor Rejected");
+                state.isLoading = false;
             })
             .addCase(sendVerificationEmail.pending, (state) => {
-                console.log("Verification Email Pending")
+                //console.log("Verification Email Pending")
+                state.isLoading = true;
             })
             .addCase(sendVerificationEmail.fulfilled, (state, action) => {
-                console.log("Verification Email Fulffilled")
+                //console.log("Verification Email Fulffilled")
+                state.isLoading = false;
             })
             .addCase(sendVerificationEmail.rejected, (state, action) => {
-                console.log("Verification Email Rejected")
+                //console.log("Verification Email Rejected")
+                state.isLoading = false;
             })
         }
 })

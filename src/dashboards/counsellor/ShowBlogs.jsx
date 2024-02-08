@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,70 +12,35 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import CounsellorsImage from "../../assets/images/Dr. Samantha Williams_Image.jpg"
 import ShowBlogsCSS from "../../assets/styles/dashboards/counsellor_css/ShowBlogs.module.css"
-import Modal from '@mui/material/Modal';
-import { Editor } from '@tinymce/tinymce-react';
 import Tooltip from '@mui/material/Tooltip';
 import { Link } from 'react-router-dom';
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import {getCounsellorBlogs, handleDeleteBlog, deleteBlog, handleCancelDelete} from "../../features/dashboards/counsellor/showBlogsSlice"
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 50 },
-  { id: 'blogName', label: 'Blog Name', minWidth: 200 },
-  { id: 'authorName', label: 'Author Name', minWidth: 150 },
-  { id: 'issueDate', label: 'Issue Date', minWidth: 150 },
+  { id: 'title', label: 'Blog Title', minWidth: 200 },
+  { id: 'author_name', label: 'Author Name', minWidth: 150 },
+  { id: 'created_at', label: 'Issue Date', minWidth: 150 },
   { id: 'actions', label: 'Actions', minWidth: 150 },
 ];
 
-// Sample data for the table
-const initialRows = [
-  { id: 1, blogName: 'Sample Blog 1', authorName: 'Author A', issueDate: '2023-01-01', image: CounsellorsImage, content: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.', blogApprovalStatus:0},
-  { id: 2, blogName: 'Sample Blog 2', authorName: 'Author B', issueDate: '2023-01-05', image: CounsellorsImage, content: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.' , blogApprovalStatus :1},
-  // Add more rows as needed...
-];
-
 export default function ShowBlogs() {
+  const {user_id} = useSelector((store) => store.login)
+  //console.log("User_IDin Show Blogs", user_id)
+  const dispatch = useDispatch();
+  const { selectedBlog, deleteConfirmationOpen, rows } = useSelector((store) => store.showBlogs);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchQuery, setSearchQuery] = useState('');
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedBlog, setSelectedBlog] = useState(null);
-  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
-  const [rows, setRows] = useState(initialRows);
-  const [openApproveModal, setApproveOpenModal] = useState(false);
-  const editorRef = useRef(null);
-  const [openImageModal, setOpenImageModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState('');
 
-  const handleOpenModal = (row) => {
-    setSelectedBlog(row);
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
-  const handleDeleteBlog = (row) => {
-    setSelectedBlog(row);
-    setDeleteConfirmationOpen(true);
-  };
-
-  const handleConfirmDelete = () => {
-    if (selectedBlog) {
-      const updatedRows = rows.filter((row) => row.id !== selectedBlog.id);
-      setRows(updatedRows);
-      setSelectedBlog(null);
+  React.useEffect(() => {
+    async function fetchCounsellorBlogs() {
+      await dispatch(getCounsellorBlogs(user_id))
     }
-    setDeleteConfirmationOpen(false);
-  };
-
-  const handleCancelDelete = () => {
-    // Close delete confirmation modal without deleting
-    setDeleteConfirmationOpen(false);
-  };
+    fetchCounsellorBlogs()
+  }, [])
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -86,50 +51,17 @@ export default function ShowBlogs() {
     setPage(0);
   };
 
-  const handleApprovalToggle = (blog) => {
-    setSelectedBlog(blog);
-    setApproveOpenModal(true)
-    const updatedRows = rows.map((row) => {
-      if (row.id === blog.id) {
-        return {
-          ...row,
-          blogApprovalStatus: row.blogApprovalStatus === 1 ? 0 : 1,
-        };
-      }
-      return row;
-    });
-    setRows(updatedRows);
-  };
-  const handleApproveClose = () => {
-    setApproveOpenModal(false);
-  };
+  const filteredRows = rows
+    ? rows.filter((row) =>
+        Object.values(row).some(
+          (value) =>
+            typeof value === 'string' &&
+            value.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      )
+    : [];
 
-  const sendMessage = (data) =>
-  {
-   if (editorRef.current) {
-          console.log(editorRef.current.getContent());
-        }
-        setApproveOpenModal(false);
-  }
-
-  const filteredRows = rows.filter((row) =>
-    Object.values(row).some(
-      (value) =>
-        typeof value === 'string' &&
-        value.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  );
-  const handleImageClick = (imageUrl) => {
-    setSelectedImage(imageUrl);
-    setOpenImageModal(true);
-  };
-
-  const handleCloseImageModal = () => {
-    setOpenImageModal(false);
-    setSelectedImage('');
-  };
   return (
-    
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TextField
         label="Search"
@@ -138,59 +70,75 @@ export default function ShowBlogs() {
         onChange={(e) => setSearchQuery(e.target.value)}
         style={{ margin: '20px', borderBottom: '1px solid #692D94' }}
       />
-      <TableContainer className={ShowBlogsCSS.table} sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          {/* Table Header */}
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align="center"
-                  style={{ minWidth: column.minWidth, fontWeight: "bold", fontSize: 17 }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+      {rows && ( 
+        <TableContainer className={ShowBlogsCSS.table} sx={{ maxHeight: 440 }}>
+          <Table stickyHeader aria-label="sticky table">
+            {/* Table Header */}
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align="center"
+                    style={{
+                      minWidth: column.minWidth,
+                      fontWeight: 'bold',
+                      fontSize: 17,
+                    }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
 
-          {/* Table Body */}
-          <TableBody>
-            {filteredRows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                  {columns.map((column) => {
-                    return (
-                      <TableCell key={column.id} align="center">
-                        {column.id === 'actions' ? (
-                          <>
-                          <Tooltip title = "View Detail of Blog">
-                            <Link to="/blogDetail"><i
-                              className={`fa fa-eye ${ShowBlogsCSS.icon} ${ShowBlogsCSS['icon-eye']}`}
-                            ></i></Link>
-                            </Tooltip>
-                            <Tooltip title = "Delete Blog">
-                            <i
-                              className={`fa fa-trash mx-2 ${ShowBlogsCSS.icon} ${ShowBlogsCSS['icon-trash']}`}
-                              aria-hidden="true"
-                           
-                              onClick={() => handleDeleteBlog(row)}
-                            ></i>
-                            </Tooltip>
-                          </>
-                        ) : (
-                          row[column.id]
-                        )}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            {/* Table Body */}
+            <TableBody>
+              {filteredRows
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                    {columns.map((column) => {
+                      return (
+                        <TableCell key={column.id} align="center">
+                          {column.id === 'actions' ? (
+                            <>
+                              <Tooltip title="View Detail of Blog">
+                                <Link to={`/counsellor/showBlogs/${row.id}`}>
+                                  <i
+                                    className={`fa fa-eye ${ShowBlogsCSS.icon} ${ShowBlogsCSS['icon-eye']}`}
+                                  ></i>
+                                </Link>
+                              </Tooltip>
+                              <Tooltip title="Delete Blog">
+                                <i
+                                  className={`fa fa-trash mx-2 ${ShowBlogsCSS.icon} ${ShowBlogsCSS['icon-trash']}`}
+                                  aria-hidden="true"
+                                  onClick={(event) =>
+                                    dispatch(handleDeleteBlog({ data: row }))
+                                  }
+                                ></i>
+                              </Tooltip>
+                              <Tooltip title="Edit Blog">
+                                <Link to={`/counsellor/addBlog/${row.id}`}>
+                                  <i
+                                    className={`fa-solid fa-pen-to-square ${ShowBlogsCSS.icon} ${ShowBlogsCSS['icon-eye']}`}
+                                  ></i>
+                                </Link>
+                              </Tooltip>
+                            </>
+                          ) : (
+                            row[column.id]
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
       {/* Table Pagination */}
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
@@ -202,67 +150,18 @@ export default function ShowBlogs() {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
 
-      {/* Blog Details Modal */}
-      <Dialog open={openModal} onClose={handleCloseModal}>
-        <DialogTitle>Blog Details</DialogTitle>
-        <DialogContent>
-          {selectedBlog && (
-            <div style={{backgroundColor: "#692D94"}}>
-              <p><strong>Blog Name:</strong> {selectedBlog.blogName}</p>
-              <p><strong>Author Name: </strong>{selectedBlog.authorName}</p>
-              <p><strong>Created At:</strong> {selectedBlog.issueDate}</p>
-              <img  className={ShowBlogsCSS.certImage} src={selectedBlog.image} alt="Blog Image" 
-                  onClick={() => handleImageClick(selectedBlog.image)}/>
-              <p style = {{marginTop: 20}}>{selectedBlog.content}</p>
-            </div>
-          )}
-          <Button onClick={handleCloseModal}
-            style={{
-              marginTop: '10px',
-              padding: '8px 16px',
-              cursor: 'pointer',
-              borderRadius: '4px',
-              backgroundColor: '#741ac2',
-              color: '#fff',
-              border: '1px solid yellowgreen',
-              fontSize: '16px',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-              transition: 'background-color 0.3s ease, transform 0.3s ease',
-            }}>Close</Button>
-        </DialogContent>
-      </Dialog>
-      {/* Modal for Image */}
-      <Modal
-      open={openImageModal}
-      onClose={handleCloseImageModal}
-      aria-labelledby="image-modal-title"
-      aria-describedby="image-modal-description"
-    >
-      <div className={ShowBlogsCSS.imageModalContainer}>
-        <div className={ShowBlogsCSS.imageModalContent}>
-          <img src={selectedImage} alt="Enlarged Image" className={ShowBlogsCSS.enlargedImage} />
-        </div>
-        <button onClick={handleCloseImageModal} className={ShowBlogsCSS.closeButton}>
-          Close
-        </button>
-      </div>
-    </Modal>
-
       {/* Delete Confirmation Modal */}
-      <Dialog open={deleteConfirmationOpen} onClose={handleCancelDelete}>
+      <Dialog open={deleteConfirmationOpen} onClose={(event) => dispatch(handleCancelDelete())}>
         <DialogTitle>Delete Confirmation</DialogTitle>
         <DialogContent>
           {selectedBlog && (
-            
-
             <div>
               <p>Are you sure you want to delete this blog?</p>
               <p><strong>ID:</strong> {selectedBlog.id}</p>
-              <p><strong>Blog Name: </strong>{selectedBlog.blogName}</p>
-             
+              <p><strong>Blog Name: </strong>{selectedBlog.title}</p>
             </div>
           )}
-          <Button onClick={handleConfirmDelete} style={{
+          <Button onClick={(event) => dispatch(deleteBlog(selectedBlog.id))} style={{
               margin: '10px',
               padding: '8px 16px',
               cursor: 'pointer',
@@ -274,7 +173,8 @@ export default function ShowBlogs() {
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
               transition: 'background-color 0.3s ease, transform 0.3s ease',
             }}>Delete</Button>
-          <Button onClick={handleCancelDelete}style={{
+
+          <Button onClick={(event) => dispatch(handleCancelDelete())} style={{
               margin: '10px',
               padding: '8px 16px',
               cursor: 'pointer',
@@ -288,50 +188,7 @@ export default function ShowBlogs() {
             }}>Cancel</Button>
         </DialogContent>
       </Dialog>
-
-       {/*for Approval or Rejection Modal*/ }
-       <Modal
-  open={openApproveModal}
-  onClose={handleApproveClose}
-  aria-labelledby="modal-modal-title1"
-  aria-describedby="modal-modal-description1"
->
-  {/* The modal content */}
-  <div className={ShowBlogsCSS.modalContainer}>
-    {selectedBlog && (
-      <div className={ShowBlogsCSS.modalContent}>
-        <h2>{selectedBlog.blogName}</h2>
-        <p>Author Name: {selectedBlog.authorName}</p>
-        <hr />
-        <div>
-          <Editor
-              onInit={(evt, editor) => editorRef.current = editor}
-      apiKey='5ywgvw0w1l7a1mchsxqbpmi62o54vmb0bss3bo4020kxre28'
-         init={{
-           height: 200,
-           menubar: false,
-           plugins: [
-             'advlist autolink lists link image charmap print preview anchor',
-             'searchreplace visualblocks code fullscreen',
-             'insertdatetime media table paste code help wordcount'
-           ],
-           toolbar: 'undo redo | formatselect | ' +
-           'bold italic backcolor | alignleft aligncenter ' +
-           'alignright alignjustify | bullist numlist outdent indent | ' +
-           'removeformat | help',
-           content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-         }}
-       />
-        </div>
-        <div className={ShowBlogsCSS.modalActions}>
-          <button onClick={handleApproveClose} className= {ShowBlogsCSS.buttonStyle}>Close</button>
-          <button onClick={() => sendMessage(selectedBlog)} className= {`${ShowBlogsCSS.buttonStyle} mx-2`} >Submit</button>
-        </div>
-      </div>
-    )}
-  </div>
-</Modal>
-
     </Paper>
   );
 }
+

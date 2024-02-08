@@ -1,18 +1,19 @@
 import BlogCardsCSS from "../assets/styles/BlogCards.module.css"
-import backgroundImage from "../assets/images/Blogs_BlogPic.jpg"
 import { Link } from "react-router-dom"
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { fetchBlogsData } from "../features/blogCards/blogCardsSlice";
 import { useDispatch, useSelector } from "react-redux";
+
 
 export default function BlogCards(){
     const dispatch = useDispatch()
     const {blogsDataList} = useSelector(state => state.blogsCard);
     useEffect(() => {
-        return () => {
-          dispatch(fetchBlogsData())
+        async function fetch () {
+            await dispatch(fetchBlogsData())
         }
-      }, [])
+        fetch()
+    }, [])
 
 
     return (
@@ -26,11 +27,13 @@ export default function BlogCards(){
                     <Link
                         className={BlogCardsCSS.card} 
                         to={`${item.id}`}
-                        style={{ backgroundImage: `url(${backgroundImage})` }}
+                        style= {{ backgroundImage:
+                             `url("../../career_counselling_portal/Counsellors/${item.counsellor_email}/Blogs/${item.cover_image}")` 
+                            }}
                     >
                         <div>
                             <h1>{item.title}</h1>
-                            <p>{item.description}</p>
+                            <p dangerouslySetInnerHTML={{ __html: item.description }}></p>
                             <div className={BlogCardsCSS.date}>{item.created_at}</div>
                         </div>
                     </Link>

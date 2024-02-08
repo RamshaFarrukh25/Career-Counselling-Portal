@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   MDBCol,
   MDBContainer,
@@ -13,13 +13,19 @@ import {
   MDBListGroupItem
 } from 'mdb-react-ui-kit'
 import ProfileCSS from "../../assets/styles/dashboards/counsellor_css/Profile.module.css"
-import profile from  "../../assets/images/Profile_ProfilePic.jpeg"
-import cnicFront from "../../assets/images/Profile_Cnic_Front.jpg"
-import cnicBack from  "../../assets/images/Profile_Cnic_Back.jpeg"
-import working_experience from "../../assets/images/Profile_Working_Experience.png"
-import transcript from "../../assets/images/Profile_Transcript.jpg"
+import {getCounsellorProfileData} from "../../features/dashboards/counsellor/counsellorProfileSlice"
+import { useDispatch,useSelector } from 'react-redux';
 
 export default function Profile() {
+
+  const dispatch = useDispatch()
+  const {counsellorProfileData} = useSelector((store)=>store.counsellorProfile)
+  const {user_id} = useSelector((store)=>store.login)
+  // console.log("User_ID", user_id)
+  useEffect(() => {
+    dispatch(getCounsellorProfileData(user_id))
+  }, [])
+
   return (
     <section className={ProfileCSS.profileSection}>
       <MDBContainer>
@@ -30,28 +36,28 @@ export default function Profile() {
             </MDBBreadcrumb>
           </MDBCol>
         </MDBRow>
-
-        <MDBRow>
+        
+        {counsellorProfileData && <MDBRow>
           <MDBCol lg="4">
             <MDBCard className="mb-4">
               <MDBCardBody className="text-center">
                 <MDBCardImage
-                  src={profile}
+                  src={`../../career_counselling_portal/Counsellors/${counsellorProfileData['counsellor_id']['email']}/${counsellorProfileData['profile_pic']}`}
                   alt="avatar"
                   className="rounded-circle"
                   style={{ width: '200px' }}
                   fluid />
                 <p className="text-muted mb-1">Counsellor</p>
-                <p className="text-muted mb-4">Ramsha Farrukh</p>
+                <p className="text-muted mb-4">{counsellorProfileData['counsellor_id']['name']}</p>
               </MDBCardBody>
             </MDBCard>
 
             <MDBCard className="mb-4 mb-lg-0">
               <MDBCardBody className="p-0">
-                <MDBListGroup flush className="rounded-3">
+                <MDBListGroup flush="true" className="rounded-3">
                   <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
                     <MDBCardImage
-                      src={cnicFront}
+                      src={`../../career_counselling_portal/Counsellors/${counsellorProfileData['counsellor_id']['email']}/${counsellorProfileData['cnic_front_img']}`}
                       alt="avatar"
                       className=""
                       style={{ width: '300px' }}
@@ -59,7 +65,7 @@ export default function Profile() {
                   </MDBListGroupItem>
                   <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
                   <MDBCardImage
-                      src={cnicBack}
+                      src={`../../career_counselling_portal/Counsellors/${counsellorProfileData['counsellor_id']['email']}/${counsellorProfileData['cninc_back_img']}`}
                       alt="avatar"
                       style={{ width: '300px' }}
                     fluid />
@@ -79,7 +85,7 @@ export default function Profile() {
                     <MDBCardText>Full Name</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">Ramsha Farrukh</MDBCardText>
+                    <MDBCardText className="text-muted">{counsellorProfileData['counsellor_id']['name']}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -88,7 +94,7 @@ export default function Profile() {
                     <MDBCardText>Email</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">ram25@gmail.com</MDBCardText>
+                    <MDBCardText className="text-muted">{counsellorProfileData['counsellor_id']['email']}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -97,7 +103,7 @@ export default function Profile() {
                     <MDBCardText>Phone</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">+92-3144383634</MDBCardText>
+                    <MDBCardText className="text-muted">{counsellorProfileData['phone_no']}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -106,7 +112,7 @@ export default function Profile() {
                     <MDBCardText>CNIC</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">35202-5385812-0</MDBCardText>
+                    <MDBCardText className="text-muted">{counsellorProfileData['cnic']}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -115,7 +121,7 @@ export default function Profile() {
                     <MDBCardText>Gender</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">Female</MDBCardText>
+                    <MDBCardText className="text-muted">{counsellorProfileData['gender']}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
               </MDBCardBody>
@@ -131,7 +137,7 @@ export default function Profile() {
                         <MDBCardText>Qualification</MDBCardText>
                       </MDBCol>
                       <MDBCol sm="10">
-                        <MDBCardText className="text-muted">PHD</MDBCardText>
+                        <MDBCardText className="text-muted">{counsellorProfileData['qualification']['qualification']}</MDBCardText>
                       </MDBCol>
                     </MDBRow>
                     <hr />
@@ -140,12 +146,12 @@ export default function Profile() {
                         <MDBCardText>Area of Field</MDBCardText>
                       </MDBCol>
                       <MDBCol sm="10">
-                        <MDBCardText className="text-muted">Computer Science</MDBCardText>
+                        <MDBCardText className="text-muted">{counsellorProfileData['qualification']['field_of_study']}</MDBCardText>
                       </MDBCol>
                     </MDBRow>
                     <hr />
                     <MDBCardImage
-                      src={transcript}
+                      src={`../../career_counselling_portal/Counsellors/${counsellorProfileData['counsellor_id']['email']}/${counsellorProfileData['qualification']['transcript_img']}`}
                       alt="avatar"
                       className=""
                       style={{ width: '350px' }}
@@ -153,17 +159,18 @@ export default function Profile() {
                   </MDBCardBody>
                 </MDBCard>
               </MDBCol>
-
-              <MDBCol md="12" className='mt-5'>
+              {counsellorProfileData &&
+                counsellorProfileData['working_experiences'].map((counsellorData, index) => (
+              <MDBCol md="12" className='mt-5' key={index}>
                 <MDBCard className="mb-4 mb-md-0">
                   <MDBCardBody className="text-center">
-                    <MDBCardText c className={`mb-5 ${ProfileCSS.peronsalDetails}`}><span className="font-italic me-1 mb-5">Working Experience</span></MDBCardText>
+                    <MDBCardText className={`mb-5 ${ProfileCSS.peronsalDetails}`}><span className="font-italic me-1 mb-5">Working Experience</span></MDBCardText>
                     <MDBRow>
                       <MDBCol sm="2">
                         <MDBCardText>Insitute</MDBCardText>
                       </MDBCol>
                       <MDBCol sm="10">
-                        <MDBCardText className="text-muted">University of the Punjab</MDBCardText>
+                        <MDBCardText className="text-muted">{counsellorData['institute_name']}</MDBCardText>
                       </MDBCol>
                     </MDBRow>
                     <hr />
@@ -172,7 +179,7 @@ export default function Profile() {
                         <MDBCardText>Starting Year</MDBCardText>
                       </MDBCol>
                       <MDBCol sm="10">
-                        <MDBCardText className="text-muted">2020</MDBCardText>
+                        <MDBCardText className="text-muted">{counsellorData['starting_year']}</MDBCardText>
                       </MDBCol>
                     </MDBRow>
                     <hr />
@@ -181,12 +188,12 @@ export default function Profile() {
                         <MDBCardText>Ending Year</MDBCardText>
                       </MDBCol>
                       <MDBCol sm="10">
-                        <MDBCardText className="text-muted">2024</MDBCardText>
+                        <MDBCardText className="text-muted">{counsellorData['ending_year']}</MDBCardText>
                       </MDBCol>
                     </MDBRow>
                     <hr />
                     <MDBCardImage
-                      src={working_experience}
+                      src={`../../career_counselling_portal/Counsellors/${counsellorProfileData['counsellor_id']['email']}/WorkingExperience/${counsellorData['certificates_image']}`}
                       alt="avatar"
                       className=""
                       style={{ width: '350px' }}
@@ -194,10 +201,10 @@ export default function Profile() {
                     
                   </MDBCardBody>
                 </MDBCard>
-              </MDBCol>
+              </MDBCol>))}
             </MDBRow>
           </MDBCol>
-        </MDBRow>
+        </MDBRow>}
       </MDBContainer>
     </section>
   );

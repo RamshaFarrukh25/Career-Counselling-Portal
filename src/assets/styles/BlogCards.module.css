@@ -1,176 +1,175 @@
 *{
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-    .mainHeading {
-      font-family: var(--fontHeading);
-      color: white;
-      padding: 10px;
-      text-shadow: 5px 5px 5px var(--blue);
-      position: relative; /* Positioning context for pseudo-element */
-    }
-    
-    .mainHeading::after {
-      content: ''; /* Create a pseudo-element */
-      position: absolute;
-      bottom: 0; /* Position at the bottom of the mainHeading */
-      left: 50%; /* Center horizontally */
-      width: 50%; /* Half width */
-      border-bottom: 2px solid white; /* Border properties */
-      transform: translateX(-50%); /* Adjust to center properly */
-    }
+  .mainHeading {
+    font-family: var(--fontHeading);
+    color: white;
+    padding: 10px;
+    text-shadow: 5px 5px 5px var(--blue);
+    position: relative; /* Positioning context for pseudo-element */
+  }
+  
+  .mainHeading::after {
+    content: ''; /* Create a pseudo-element */
+    position: absolute;
+    bottom: 0; /* Position at the bottom of the mainHeading */
+    left: 50%; /* Center horizontally */
+    width: 50%; /* Half width */
+    border-bottom: 2px solid white; /* Border properties */
+    transform: translateX(-50%); /* Adjust to center properly */
+  }
 
-  .searchBarContainer {
-      display: flex;
-      align-items: center;
-      margin: 20px 80px;
-      width: 40%;
-      padding: 10px;
-    }
-    
-    .searchBarInput {
-      padding: 10px;
-      border: 1px solid var(--blue);
-      border-radius: 5px;
-      flex: 1;
-    }
-    
-    .searchBarBtn {
-      margin-left: 10px;
-      padding: 10px 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: var(--blue);
-      color: white;
-      cursor: pointer;
-    }
-    
-  
-  .overAll{
-    margin: 0;
-    min-height: 100vh;
-    font-family: var(--fontHeading);
-    /* background: #fafafa; */
+.searchBarContainer {
+    display: flex;
+    align-items: center;
+    margin: 20px 80px;
+    width: 40%;
+    padding: 10px;
   }
   
+  .searchBarInput {
+    padding: 10px;
+    border: 1px solid var(--blue);
+    border-radius: 5px;
+    flex: 1;
+  }
+  
+  .searchBarBtn {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: var(--blue);
+    color: white;
+    cursor: pointer;
+  }
+  
+
+.overAll{
+  margin: 0;
+  min-height: 70vh;
+  font-family: var(--fontHeading);
+  /* background: #fafafa; */
+}
+
+.cardsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: flex-start; /* Modified alignment */
+  padding: 2rem; /* Adjusted padding */
+  margin: 0 auto;
+}
+
+.card {
+  font-family: var(--fontHeading);
+  --bg-filter-opacity: 0.5;
+  background-image: linear-gradient(rgba(0,0,0,var(--bg-filter-opacity)), url('https://cdn.pixabay.com/photo/2016/04/20/08/21/entrepreneur-1340649_1280.jpg')); /* Updated background */
+  height: 15em;
+  width: 15em;
+  font-size: 1.5em;
+  color: var(--lightPink);
+  border-radius: 1em;
+  padding: 1em;
+  display: flex;
+  align-items: flex-end;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 2px 2px 2px  var(--blue);
+  transition: all, 0.5s;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid var(--lavender);
+  text-decoration: none;
+}
+
+.card:hover {
+  transform: rotate(0);
+}
+
+.card h1 {
+  margin: 0;
+  font-size: 1.5em;
+  line-height: 1.2em;
+}
+
+.card p {
+  font-size: 0.75em;
+  font-family: var(--fontHeading);
+  margin-top: 0.5em;
+  line-height: 2em;
+}
+
+
+.card .date {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0.75em;
+  padding: 1em;
+  line-height: 1em;
+  opacity: .8;
+}
+
+.card:before,
+.card:after {
+  content: '';
+  transform: scale(0);
+  transform-origin: top left;
+  border-radius: 50%;
+  position: absolute;
+  left: -50%;
+  top: -50%;
+  z-index: -5;
+  transition: all, 0.5s;
+  transition-timing-function: ease-in-out;
+}
+
+.card:before {
+  background: #ddd;
+  width: 250%;
+  height: 250%;
+}
+
+.card:after {
+  background: white;
+  width: 200%;
+  height: 200%;
+}
+
+.card:hover {
+  color: var(--blue);
+}
+
+.card:hover:before,
+.card:hover:after {
+  transform: scale(1);
+}
+
+/* MEDIA QUERIES */
+@media screen and (max-width: 1285px) {
   .cardsWrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-between;
-    align-items: flex-start; /* Modified alignment */
-    padding: 2rem; /* Adjusted padding */
-    margin: 0 auto;
+    justify-content: center; /* Center cards */
   }
-  
+}
+
+@media screen and (max-width: 900px) {
+  .cardsWrapper {
+    padding: 2rem; /* Adjust padding */
+  }
+}
+
+@media screen and (max-width: 500px) {
   .card {
-    font-family: var(--fontHeading);
-    --bg-filter-opacity: 0.5;
-    background-image: linear-gradient(rgba(0,0,0,var(--bg-filter-opacity)), url('https://cdn.pixabay.com/photo/2016/04/20/08/21/entrepreneur-1340649_1280.jpg')); /* Updated background */
-    height: 17em;
-    width: 15em;
-    font-size: 1.5em;
-    color: var(--lightPink);
-    border-radius: 1em;
-    padding: 1em;
-    display: flex;
-    align-items: flex-end;
-    background-size: cover;
-    background-position: center;
-    box-shadow: 2px 2px 2px  var(--blue);
-    transition: all, 0.5s;
-    position: relative;
-    overflow: hidden;
-    border: 3px solid var(--lavender);
-    text-decoration: none;
+    max-width: calc(100vw - 4rem);
+    width: 90%; /* Adjust width */
   }
-  
-  .card:hover {
-    transform: rotate(0);
+}
+
+@media screen and (max-width: 450px) {
+  .card {
+    height: 18em; /* Adjust height */
   }
-  
-  .card h1 {
-    margin: 0;
-    font-size: 1.5em;
-    line-height: 1.2em;
-  }
-  
-  .card p {
-    font-size: 0.75em;
-    font-family: var(--fontHeading);
-    margin-top: 0.5em;
-    line-height: 2em;
-  }
-  
-  
-  .card .date {
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 0.75em;
-    padding: 1em;
-    line-height: 1em;
-    opacity: .8;
-  }
-  
-  .card:before,
-  .card:after {
-    content: '';
-    transform: scale(0);
-    transform-origin: top left;
-    border-radius: 50%;
-    position: absolute;
-    left: -50%;
-    top: -50%;
-    z-index: -5;
-    transition: all, 0.5s;
-    transition-timing-function: ease-in-out;
-  }
-  
-  .card:before {
-    background: #ddd;
-    width: 250%;
-    height: 250%;
-  }
-  
-  .card:after {
-    background: white;
-    width: 200%;
-    height: 200%;
-  }
-  
-  .card:hover {
-    color: var(--blue);
-  }
-  
-  .card:hover:before,
-  .card:hover:after {
-    transform: scale(1);
-  }
-  
-  /* MEDIA QUERIES */
-  @media screen and (max-width: 1285px) {
-    .cardsWrapper {
-      justify-content: center; /* Center cards */
-    }
-  }
-  
-  @media screen and (max-width: 900px) {
-    .cardsWrapper {
-      padding: 2rem; /* Adjust padding */
-    }
-  }
-  
-  @media screen and (max-width: 500px) {
-    .card {
-      max-width: calc(100vw - 4rem);
-      width: 90%; /* Adjust width */
-    }
-  }
-  
-  @media screen and (max-width: 450px) {
-    .card {
-      height: 18em; /* Adjust height */
-    }
-  }
-  
+}

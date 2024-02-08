@@ -1,7 +1,13 @@
 from rest_framework import serializers
-from .models import Counsellor, Blogs, UserChatWithCounsellors, Reviews, ACU
+from .models import *
 
 class BlogsSerializer(serializers.ModelSerializer):
+    # dynamically get user_email against the respective blog
+    counsellor_email = serializers.SerializerMethodField()
+
+    def get_counsellor_email(self, obj):
+        return obj.counsellor_id.counsellor_id.email
+
     class Meta:
         model = Blogs
         fields = '__all__'
@@ -33,9 +39,37 @@ class UserChatWithCounsellorsSerializer(serializers.ModelSerializer):
         fields = ["counsellor_id", "counsellor_name"]
 
 
-class ACUSerializer(serializers.ModelSerializer):
+class CounsellorDataSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source='counsellor_id.name')
+    email = serializers.CharField(source='counsellor_id.email')
+    
+    class Meta:
+        model = Counsellor
+        fields = ['name', 'email', 'phone_no', 'profile_pic']
+    
+    
+ class ACUSerializer(serializers.ModelSerializer):
     class Meta:
         model = ACU
         fields = '__all__'
 
-    
+
+class WorkingExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkingExperience
+        fields = '__all__'
+
+class QualificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Qualification
+        fields = '__all__'
+
+
+class CounsellorSerializer(serializers.ModelSerializer):
+    counsellor_id = ACUSerializer()
+    working_experiences = WorkingExperienceSerializer(many=True)
+    qualification = QualificationSerializer()
+
+    class Meta:
+        model = Counsellor
+        fields = '__all__'
