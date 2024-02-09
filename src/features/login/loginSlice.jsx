@@ -50,6 +50,9 @@ const loginSlice = createSlice({
             state.isLogin= action.payload.isLogin
             state.role=action.payload.role
             state.user_id= action.payload.user_id
+             // Store user_id and isLogin in local storage
+            localStorage.setItem('user_id', state.user_id);
+            localStorage.setItem('isLogin', state.isLogin);
             console.log("login state",state.isLogin)
             console.log("role",state.role)
             console.log("user_id",state.user_id)

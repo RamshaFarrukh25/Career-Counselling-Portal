@@ -11,6 +11,7 @@ import careerGPTReducer from "./features/careerGPT/careerGPTSlice"
 
 //Admin Dashboard
 import profileReducer from './features/dashboards/admin/profile/profileSlice'
+import dashboardReducer from './features/dashboards/admin/adminDashboard/dashboardSlice'
 
 
 export const store = configureStore({
@@ -26,5 +27,6 @@ export const store = configureStore({
         careerGPT: careerGPTReducer,
         //Admin Dashboard
         profile:profileReducer,
+        dashboard:dashboardReducer,
     }
 })

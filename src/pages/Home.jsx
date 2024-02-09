@@ -17,6 +17,7 @@ export default function Home(){
           to="careerGPT"
         >
             <img src={Icon} className={HomeCSS.botIcon}/>
+
         </Link>
         </>
     )
