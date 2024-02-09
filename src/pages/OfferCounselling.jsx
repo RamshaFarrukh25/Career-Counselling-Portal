@@ -1,4 +1,5 @@
 import OfferCounsellingCSS from "../assets/styles/OfferCounselling.module.css"
+import Loading from "../assets/images/Loading.gif"
 import { useDispatch, useSelector, useStore } from "react-redux"
 import 
 { handleChange,
@@ -45,7 +46,8 @@ export default function OfferCounselling(){
         isOTPModal,
         role,
         isEmailExist,
-        otp
+        otp,
+        isLoading
       } = useSelector((store) => store.offerCounselling)
 
   const [images, setImages] = React.useState({
@@ -440,7 +442,6 @@ export default function OfferCounselling(){
             dispatch(ErrorMsg({
               msg:''
             }))
-            console.log("hello")
             dispatch(setCount({
               value:3}))
           }
@@ -571,10 +572,11 @@ export default function OfferCounselling(){
         
         <button
           className={`${OfferCounsellingCSS.actionButton} next action-button`}
+          disabled={isLoading && true}
           onClick={async (event) => {
             let allDetailsFilled = true; 
             offerCounsellorForm.workingExperience.forEach((workingExperienceData, index) => {
-              console.log(workingExperienceData)
+              (workingExperienceData)
               if (
                 workingExperienceData.institute === "" ||
                 workingExperienceData.startingYear === "" ||
@@ -631,6 +633,7 @@ export default function OfferCounselling(){
         }}
         >Add</button>
         <p className={OfferCounsellingCSS.errorMsg}>{errorMsg}</p>
+        {isLoading && <img src={Loading} className={OfferCounsellingCSS.loading} alt="loading"/>}
         </fieldset>
        
     </>)}

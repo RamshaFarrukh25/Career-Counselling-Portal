@@ -26,14 +26,14 @@ const blogDetailsSlice = createSlice({
     extraReducers: (builder) => {
       builder
           .addCase(blogDetails.pending, (state) => {
-              console.log("pending")
+              //console.log("pending")
           })
           .addCase(blogDetails.fulfilled, (state, action) => {
-              console.log("recieved")
+              //console.log("recieved")
               state.blogDetailsData = action.payload.blogDetails
           })
           .addCase(blogDetails.rejected, (state) => {
-              console.log("rejected")
+              //console.log("rejected")
           });
     },
 });

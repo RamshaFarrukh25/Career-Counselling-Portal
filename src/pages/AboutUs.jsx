@@ -81,7 +81,7 @@ export default function AboutUs(){
                     <div className={`col-sm-6 col-lg-3 ${AboutUsCSS.teamCards}`}>
                         <div className={AboutUsCSS.team}>
                             <div className={`${AboutUsCSS.face} ${AboutUsCSS.frontFace}`}>
-                                <img src="../../career_counselling_portal/Counsellors/laibatariq729@gmail.com/cnicBackImage.jpg" alt="TeamMember1" className={AboutUsCSS.profile} />
+                                <img src={Team3} alt="TeamMember1" className={AboutUsCSS.profile} />
                                 <div className={`mt-3 text-uppercase ${AboutUsCSS.name}`}>
                                     Mehak Nadeem
                                 </div>

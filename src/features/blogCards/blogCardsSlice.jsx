@@ -2,7 +2,7 @@ import { createSlice ,createAsyncThunk} from "@reduxjs/toolkit"
 import axios from 'axios';
 
 const initialState = {
-  blogsDataList:''
+  blogsDataList:'',
 }
 
 // API THAT GETS BLOGS DATA
@@ -11,7 +11,7 @@ const apiUrl = "http://127.0.0.1:8000/fetchBlogsData"
 export const fetchBlogsData = createAsyncThunk('blogCardsSlice/fetchBlogsData', async () => {
     try {
       const response = await axios.get(apiUrl);
-      console.log(response.data)
+      //console.log(response.data)
       return response.data;
     } 
     catch (error) {
@@ -27,15 +27,14 @@ const blogCardsSlice = createSlice({
     extraReducers: (builder) => {
       builder
           .addCase(fetchBlogsData.pending, (state) => {
-              console.log("pending")
+              //console.log("pending")
           })
           .addCase(fetchBlogsData.fulfilled, (state, action) => {
-              console.log("recieved")
+              //console.log("recieved")
               state.blogsDataList= action.payload.blogsData
-              console.log("data", state.blogsDataList)
           })
           .addCase(fetchBlogsData.rejected, (state, action) => {
-              console.log("rejected")
+              //console.log("rejected")
           });
     },
 });

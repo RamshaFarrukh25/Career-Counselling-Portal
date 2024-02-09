@@ -26,6 +26,7 @@ import Dashboard from './dashboards/counsellor/Dashboard'
 import CounsellorProfile from './dashboards/counsellor/Profile'
 import AddBlog from './dashboards/counsellor/AddBlog'
 import ShowBlogs from './dashboards/counsellor/ShowBlogs'
+import Settings from './dashboards/counsellor/Settings'
 
 
 
@@ -53,6 +54,7 @@ export default function App() {
             <Route path="blogDetail" element={<BlogDetail />} />
           </Route>
 
+
           {/* Admin DashBoard Routing  */}
           <Route path="admin" element={<AdminLayout/>}>
            <Route path="dashboard" element={<DashBoard/>} />
@@ -63,13 +65,17 @@ export default function App() {
            <Route path="approveReviews" element={<ApproveReviews/>}/>
           </Route>
 
-          <Route path="counsellor" element={<Counsellor />}>
-            <Route index element={<Dashboard />} />
-            <Route path="profile" element={<CounsellorProfile />} />
-            <Route path="addBlog" element={<AddBlog />} />
-            <Route path="showBlogs" element={<ShowBlogs />}/>
+          <Route element={<Authentication />}>
+            <Route path="counsellor" element={<Counsellor />}>
+              <Route index element={<Dashboard />} />
+              <Route path="settings" element={<Settings />} />
+              <Route path="profile" element={<CounsellorProfile />} />
+              <Route path="addBlog" element={<AddBlog />} />
+              <Route path="addBlog/:id" element={<AddBlog />} />
+              <Route path="showBlogs" element={<ShowBlogs />}/>
+              <Route path="showBlogs/:id" element={<BlogDetail />}/>
+            </Route>
           </Route>
-
         </Routes>
       
       </BrowserRouter>

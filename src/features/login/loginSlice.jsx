@@ -8,7 +8,9 @@ const initialState = {
     },
     isLogin:null,
     role:'',
-    user_id:''
+    user_id:'',
+    user_name: '',
+    user_email: ''
 }
 
 
@@ -57,6 +59,9 @@ const loginSlice = createSlice({
             console.log("role",state.role)
             console.log("user_id",state.user_id)
 
+            state.user_id=action.payload.user_id
+            state.user_name=action.payload.user_name
+            state.user_email=action.payload.user_email
           })
           .addCase(loginUser.rejected, (state) => {
             console.log("rejected");
