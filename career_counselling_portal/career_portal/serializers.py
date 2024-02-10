@@ -20,6 +20,7 @@ class ReviewsSerializer(serializers.ModelSerializer):
 
 
 class TopCounsellorSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='counsellor_id.id')
     name = serializers.CharField(source='counsellor_id.name')
     field_of_study = serializers.CharField(source='qualification.field_of_study')
     qualification = serializers.CharField(source='qualification.qualification')
@@ -28,6 +29,8 @@ class TopCounsellorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Counsellor
+        fields = ['id','name', 'field_of_study', 'qualification', 'review_description', 'ratings','profile_pic']
+
         fields = ['name', 'field_of_study', 'qualification', 'review_description', 'ratings','profile_pic']
 
 
