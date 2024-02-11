@@ -26,7 +26,7 @@ export default function Reviews(){
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {reviewsForm, isSave} = useSelector((store) => store.reviews)
-    const {user_id,isLogin} = useSelector((store)=>store.login)
+    const {is_exist} = useSelector((store) => store.authentication)
     const showReviewForm = useSelector((store) => store.reviews.showReviewForm)
     const reviewImage = useSelector((store) => store.reviews.changeReviewImage)
     const ratingImage = useSelector((store) => store.reviews.changeRatingImage)
@@ -50,13 +50,13 @@ export default function Reviews(){
         dispatch(setRating(newRating));
     };
 
+    
     useEffect(() => {
-        return () => {
-          dispatch(getReviews())
-          dispatch(getCounsellorsByUID(user_id))
-        }
-      }, [])
+        dispatch(getReviews())
+        dispatch(getCounsellorsByUID())
+    }, [])
 
+    
     return(
         <>
         <div id="reviews" className={ReviewsCSS.wrapper}>
@@ -80,8 +80,8 @@ export default function Reviews(){
                             <form 
                                 onSubmit={(event) => {
                                     event.preventDefault()
-                                    if(isLogin){
-                                        dispatch(saveReviews({'reviewsForm':reviewsForm,'user_id':user_id}))
+                                    if(is_exist){
+                                        dispatch(saveReviews({'reviewsForm':reviewsForm}))
                                         dispatch(clearReview())
                                     } else {
                                         dispatch(clearReview())
@@ -160,8 +160,8 @@ export default function Reviews(){
                             <form
                                 onSubmit={(event) => {
                                     event.preventDefault()
-                                    if(isLogin){
-                                        dispatch(saveRatings({'reviewsForm':reviewsForm,'user_id':user_id}))
+                                    if(is_exist){
+                                        dispatch(saveRatings({'reviewsForm':reviewsForm}))
                                         dispatch(clearRatings())
                                     } else {
                                         dispatch(clearRatings())

@@ -17,13 +17,11 @@ import {getCounsellorProfileData} from "../../features/dashboards/counsellor/cou
 import { useDispatch,useSelector } from 'react-redux';
 
 export default function Profile() {
-
   const dispatch = useDispatch()
   const {counsellorProfileData} = useSelector((store)=>store.counsellorProfile)
-  const {user_id} = useSelector((store)=>store.login)
-  // console.log("User_ID", user_id)
+ 
   useEffect(() => {
-    dispatch(getCounsellorProfileData(user_id))
+    dispatch(getCounsellorProfileData())
   }, [])
 
   return (

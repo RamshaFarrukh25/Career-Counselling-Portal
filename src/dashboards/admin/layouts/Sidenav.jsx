@@ -1,7 +1,6 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom'
 import SidenavCSS from '../../../assets/styles/dashboards/admin_css/Sidenav.module.css'
 import { useState } from 'react';
-import { logOut } from '../../../features/login/loginSlice';
 import { useDispatch } from 'react-redux';
 export default function SidebarNav() {
     const navigate = useNavigate();
@@ -12,11 +11,7 @@ export default function SidebarNav() {
       setShowSidebar(!showSidebar);
     };
 
-  const handleLogout = () => {
-    dispatch(logOut())
-    navigate('/')
-    window.location.reload()
-  };
+
     return (
     <>
     <div className={`container-fluid  `}>
@@ -73,7 +68,7 @@ export default function SidebarNav() {
                         </ul>
                     </li>
                     <li>
-                <button onClick={handleLogout} className="btn  text-white">
+                <button className="btn  text-white">
                   Sign Out
                 </button>
               </li>

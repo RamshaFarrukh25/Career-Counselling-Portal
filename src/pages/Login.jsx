@@ -1,24 +1,32 @@
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
+import React from "react"
 import { 
   handleChange,
-  handleSubmit,loginUser
+  loginUser,
+  clearForm
 } from "../features/login/loginSlice"
 import { Link, useNavigate } from "react-router-dom"
 import LoginCSS from "../assets/styles/Login.module.css"
 import Robo from "../assets/images/Login_Robo.gif"
 
-
 export default function Login() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {loginForm,isLogin,role} = useSelector((store) => store.login)
-    useEffect(() => {
-      console.log(isLogin,role)
-      if (isLogin && role === 'U' || role === 'A'  || role === 'C' || role === 'B') {
-          navigate('/')
+    const {loginForm, isLogin} = useSelector((store) =>  store.login)
+    
+    React.useEffect(() => {
+      if (isLogin) {
+        navigate('/')
       }
     }, [isLogin])
+
+    React.useEffect(() => {
+      return () => {
+        dispatch(clearForm())
+      }
+    }, [dispatch])
+
+
     return (
       <div className={LoginCSS.wrapper}>
         <div className={LoginCSS.inner}>

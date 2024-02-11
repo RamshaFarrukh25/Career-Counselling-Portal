@@ -9,7 +9,7 @@ import {
 import JoditEditor from "jodit-react"
 import React, { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { getBlogDetails, handleChange, setDescription,addBlogData, editBlogData, clearForm } from "../../features/dashboards/counsellor/addBlogSlice"
+import { getBlogDetails, handleChange, setDescription,addBlogData, editBlogData, clearForm, showErrorMsg } from "../../features/dashboards/counsellor/addBlogSlice"
 import { useParams } from "react-router-dom"
 
 
@@ -17,8 +17,7 @@ export default function AddBlog() {
     const params = useParams()
     const editor = React.useRef(null)
     const dispatch = useDispatch()
-    const {addBlog} = useSelector((store) => store.addBlog)
-    const { user_id, user_name, user_email } = useSelector((store) => store.login)
+    const {addBlog, errorMsg} = useSelector((store) => store.addBlog)
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const formData = new FormData()
@@ -34,9 +33,6 @@ export default function AddBlog() {
             dispatch(setDescription({ 'description': textContent }))
             formData.append('addBlogData', JSON.stringify(addBlog))
             formData.append('cover_image', coverImage)
-            formData.append('user_id', user_id)
-            formData.append('email', user_email)
-            formData.append('name', user_name)
             if(!params.id) {
                 await dispatch(addBlogData(formData))
             } else {
@@ -77,7 +73,9 @@ export default function AddBlog() {
             <form
                 onSubmit={(event) => {
                     event.preventDefault()
-                    handleAddBlog();
+                    if(errorMsg === ""){
+                        handleAddBlog();
+                    }
                 }}
             >
                 <MDBContainer>
@@ -130,7 +128,6 @@ export default function AddBlog() {
                                             onChange={(event) => {
                                                 handleImage(event.target.files[0])
                                             }}
-                                            required
                                         />
                                     </div>
                                     {coverImageURL && 
@@ -158,13 +155,27 @@ export default function AddBlog() {
                                         />
                                     </div>
                                 </MDBCardBody>
-                                {!params.id && <button className={AddBlogCSS.submitBtn} disabled={isSubmitting}>
+                                {!params.id && 
+                                <button className={AddBlogCSS.submitBtn} disabled={isSubmitting}
+                                    onClick={(event) => {
+                                        if(!params.id  && !coverImage){
+                                            dispatch(showErrorMsg({
+                                                error: "Please fill all the required details"
+                                            }))
+                                        } else {
+                                            dispatch(showErrorMsg({
+                                                error: ""
+                                            }))
+                                        }
+                                    }}
+                                >
                                     <span>Add Blog</span>
                                 </button>}
                                 {params.id && <button className={AddBlogCSS.submitBtn} disabled={isSubmitting}>
                                     <span>Edit Blog</span>
                                 </button>}
                                 {isSubmitting && <div className={`mt-2 text-center mb-3 ${AddBlogCSS.successMsg}`}>Saved Successfully</div>}
+                                {errorMsg != "" && <p className={`mt-2 text-center mb-3 ${AddBlogCSS.errorMsg}`}>{errorMsg}</p>}
                             </MDBCard>
                         </MDBCol>
                     </MDBRow>

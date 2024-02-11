@@ -27,8 +27,6 @@ const columns = [
 ];
 
 export default function ShowBlogs() {
-  const {user_id} = useSelector((store) => store.login)
-  //console.log("User_IDin Show Blogs", user_id)
   const dispatch = useDispatch();
   const { selectedBlog, deleteConfirmationOpen, rows } = useSelector((store) => store.showBlogs);
   const [page, setPage] = useState(0);
@@ -37,7 +35,7 @@ export default function ShowBlogs() {
 
   React.useEffect(() => {
     async function fetchCounsellorBlogs() {
-      await dispatch(getCounsellorBlogs(user_id))
+      await dispatch(getCounsellorBlogs())
     }
     fetchCounsellorBlogs()
   }, [])

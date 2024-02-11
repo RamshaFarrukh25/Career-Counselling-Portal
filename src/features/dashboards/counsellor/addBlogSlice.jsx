@@ -10,6 +10,7 @@ const initialState = {
         area_of_field:'',
         cover_image: ''
     },
+    errorMsg: ""
 }
 
 // API THAT GETS BLOGS DATA
@@ -83,8 +84,11 @@ const addBlogSlice = createSlice({
             area_of_field: "",
           };
           state.isChanged = null;
+          state.errorMsg = ""
         },
-
+        showErrorMsg: (state, {payload}) => {
+          state.errorMsg = payload.error
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -92,10 +96,10 @@ const addBlogSlice = createSlice({
             //console.log("add Blog pending");
           })
           .addCase(addBlogData.fulfilled, (state,action) => {
-            //console.log("add Blog accepted");
+              //console.log("add Blog accepted");
           })
           .addCase(addBlogData.rejected, (state, action) => {
-            //console.log("add Blog rejected");
+              //console.log("add Blog rejected");
           })
           .addCase(getBlogDetails.pending, (state) => {
             //console.log("getBlogDetails pending")
@@ -124,4 +128,4 @@ const addBlogSlice = createSlice({
 })
 
 export default addBlogSlice.reducer
-export const {handleChange,setDescription,clearForm} = addBlogSlice.actions
+export const {handleChange, setDescription, clearForm, showErrorMsg} = addBlogSlice.actions
