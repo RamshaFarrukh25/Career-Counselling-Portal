@@ -306,21 +306,20 @@ def get_truncated_review(description,max_lines=3):
 @api_view(['GET'])
 def getTopCounsellors(request):
     if request.method == 'GET':
-        top_counsellors = (
-            Counsellor.objects
-            .filter(Q(counsellor_id__role='C') | Q(counsellor_id__role='B'))
-            .order_by('-ratings__rating')[:10]
-        )
+        top_counsellors = (Counsellor.objects
+                       .filter(Q(counsellor_id__role='C') | Q(counsellor_id__role='B'))
+                       .annotate(avg_rating=Avg('ratings__rating'))
+                       .order_by('-avg_rating')[:10])
         serializer = TopCounsellorSerializer(top_counsellors, many=True)
+        #print(serializer.data)
         for data in serializer.data:
-            if data['review_description']:
-                data['review_description'] = get_truncated_review(data['review_description'])
-        return HttpResponse(json.dumps({'top_counsellors': serializer.data}))
+            if data["review_description"]:
+                data["review_description"] =  get_truncated_review(data["review_description"], 2)
+        return JsonResponse({'top_counsellors': serializer.data})
     else:
-        return HttpResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
 # Ask Counsellor Page End
-    
 
 # Reviews / Ratings
 @csrf_exempt

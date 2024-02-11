@@ -26,6 +26,5 @@ export default function AuthenticateCounsellor(){
     if(is_exist && (role ==='C' || role === 'B')){
         return <Outlet />
     }
-
     return <Navigate to="." />
 }
