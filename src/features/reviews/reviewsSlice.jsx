@@ -27,9 +27,9 @@ const initialState = {
 const apiUrl = "http://127.0.0.1:8000/saveReviews";
 
 
-export const saveReviews = createAsyncThunk('reviewsSlice/saveReviews', async ({reviewsForm,user_id}) => {
+export const saveReviews = createAsyncThunk('reviewsSlice/saveReviews', async ({reviewsForm}) => {
     try{
-      const response = await axios.post(apiUrl, {reviewsForm,user_id} );
+      const response = await axios.post(apiUrl, {reviewsForm} );
       return response.data;
     } 
     catch (error) {
@@ -54,9 +54,9 @@ export const getReviews = createAsyncThunk('reviewsSlice/getReviews', async() =>
 // API THAT GETS COUNSELLORS LIST
 const getApiUrl = "http://127.0.0.1:8000/getCounsellorsByUID";
 
-export const getCounsellorsByUID = createAsyncThunk("reviewsSlice/getCounsellorsByUID", async (user_id)=>{
+export const getCounsellorsByUID = createAsyncThunk("reviewsSlice/getCounsellorsByUID", async ()=>{
     try{
-        const response = await axios.post(getApiUrl,  {"uid": user_id });
+        const response = await axios.get(getApiUrl);
         return response.data;
     }
     catch (error) {
@@ -68,9 +68,9 @@ export const getCounsellorsByUID = createAsyncThunk("reviewsSlice/getCounsellors
 const saveRatingsAPI = "http://127.0.0.1:8000/saveRatings";
 
 
-export const saveRatings = createAsyncThunk('reviewsSlice/saveRatings', async ({reviewsForm,user_id}) => {
+export const saveRatings = createAsyncThunk('reviewsSlice/saveRatings', async ({reviewsForm}) => {
     try{
-      const response = await axios.post(saveRatingsAPI, {reviewsForm,user_id} );
+      const response = await axios.post(saveRatingsAPI, {reviewsForm} );
       return response.data;
     } 
     catch (error) {

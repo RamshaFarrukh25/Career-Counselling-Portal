@@ -7,9 +7,9 @@ const initialState = {
     averageRating: null
 }
 
-export const getCounsellorCardsData = createAsyncThunk('dashboardSlice/getCounsellorCardsData', async(id) => {
+export const getCounsellorCardsData = createAsyncThunk('dashboardSlice/getCounsellorCardsData', async() => {
     try {
-        const response = await axios.get(`http://127.0.0.1:8000/getCounsellorCardsData/${id}`)
+        const response = await axios.get("http://127.0.0.1:8000/getCounsellorCardsData")
         return response.data
     } catch(error){
         throw error

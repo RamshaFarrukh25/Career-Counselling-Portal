@@ -91,3 +91,11 @@
 .submitBtn:hover:after {
     transform: translate(0, 0);
 }
+
+.successMsg{
+    color: #4BB543;   
+}
+
+.errorMsg{
+    color: red;
+}

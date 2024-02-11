@@ -1,21 +1,18 @@
 import DashboardCSS from "../../assets/styles/dashboards/counsellor_css/Dashboard.module.css"
 import Reviews from "../../assets/images/Counsellor_Reviews.gif"
 import Blogs from "../../assets/images/Counsellor_Blogs.png"
-import Unapproved from "../../assets/images/Counsellor_Unapproved2.png"
 import Pending from "../../assets/images/Counsellor_pending.gif"
 import { useDispatch, useSelector } from "react-redux"
 import React from 'react'
 import {getCounsellorCardsData} from "../../features/dashboards/counsellor/dashboardSlice"
 
 export default function Dashboard(){
-    const {user_id} = useSelector((store) => store.login)
-    //console.log("User_IDin cards", user_id)
     const dispatch = useDispatch()
     const {approvedBlogs, pendingApprovalBlogs, averageRating} = useSelector((store) => store.counsellorDashboard)
 
     React.useEffect(() => {
         async function getCards() {
-            await dispatch(getCounsellorCardsData(user_id))
+            await dispatch(getCounsellorCardsData())
         }
         getCards()
     }, [])

@@ -12,6 +12,9 @@ urlpatterns = [
     path('sendVerificationEmail', views.sendVerificationEmail, name='sendVerificationEmail'),
     # Login
     path('loginUser',views.loginUser,name='loginUser'),
+    # GET SESSION DATA
+    path('getSessionData', views.getSessionData, name='getSessionData'),
+    path('deleteSessionData', views.deleteSessionData, name='deleteSessionData'),
     # Ask Counsellor
     path('getTopCounsellors',views.getTopCounsellors,name='getTopCounsellors'),
     # Reviews/Ratings
@@ -19,21 +22,18 @@ urlpatterns = [
     path('getReviews', views.getReviews, name = 'getReviwes'),
     path('getCounsellorsByUID', views.getCounsellorsByUID,  name="getCounsellorsByUID"),
     path('saveRatings', views.saveRatings, name="saveRatings"),
-    # CareerGPT History
-    #path('storeCareerGPTHistory', views.storeCareerGPTHistory, name='storeCareerGPTHistory'),
-    #path('loadCareerGPTHistory', views.loadCareerGPTHistory, name='loadCareerGPTHistory'),
     # Blog Cards
     path('fetchBlogsData', views.fetchBlogsData, name='fetchBlogsData'),
     # Blog Details
     path('blogDetails',views.blogDetails,name='blogDetails'),
 
     # Counsellor Dashboard 
-    path('getCounsellorData/<int:uid>', views.getCounsellorData, name='getCounsellorData'),
-    path('getCounsellorCardsData/<int:uid>', views.getCounsellorCardsData, name='getCounsellorCardsData'),
-    path('getCounsellorProfileData/<int:uid>', views.getCounsellorProfileData, name='getCounsellorProfileData'),
-    path('getCounsellorSettings/<int:uid>', views.getCounsellorSettings, name='getCounsellorSettings'),
+    path('getCounsellorData', views.getCounsellorData, name='getCounsellorData'),
+    path('getCounsellorCardsData', views.getCounsellorCardsData, name='getCounsellorCardsData'),
+    path('getCounsellorProfileData', views.getCounsellorProfileData, name='getCounsellorProfileData'),
+    path('getCounsellorSettings', views.getCounsellorSettings, name='getCounsellorSettings'),
     path('updateCounsellorSettings', views.updateCounsellorSettings, name='updateCounsellorSettings'),
-    path('getCounsellorBlogs/<int:uid>', views.getCounsellorBlogs, name='getCounsellorBlogs'),
+    path('getCounsellorBlogs', views.getCounsellorBlogs, name='getCounsellorBlogs'),
     path('addBlog', views.addBlog, name='addBlog'),
     path('editBlog', views.editBlog, name='editBlog'),
     path('deleteBlog/<int:bid>', views.deleteBlog, name='deleteBlog'),
