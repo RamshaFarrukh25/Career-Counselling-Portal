@@ -13,6 +13,7 @@ from django.db.models import Q, Avg
 from rest_framework.decorators import api_view
 from .serializers import *
 import traceback
+from .Utils.sendbird import createUser, createChannel, getUser  
 
 from .Utils.counsellor import makeDirectoy, saveImage, deleteImage, removeDirectory
 
@@ -668,6 +669,95 @@ def addBlog(request):
     else:
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
     
+    
+# CareerGPT History End    
+    
+
+#SendBird Api for Create Channel
+@csrf_exempt
+def createSendBirdChannel(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        counsellorId = data.get('counsellorId')
+        counsellorNickName = data.get('counsellorNickName')
+        counsellorProfileURL = data.get('counsellorProfileURL')
+        user_id = data.get("user_id")
+        # Check if the user is logged in (user_id exists in the session)
+        if user_id is not None:
+            try:
+                # Fetch user details from the database using the user_id
+                user = ACU.objects.get(id=user_id)
+                # print("In views.py file",user.name)
+                User_object = user_id
+                Counsellor_object = counsellorId
+                if (not getUser(User_object)):
+                    user_user_id = createUser(user_id, user.name, "")
+                    print(user_user_id)
+                    User_object = json.loads(user_user_id.content).get('user_id')
+
+                if (not getUser(Counsellor_object)):
+                    counsellor_user_id = createUser(counsellorId, counsellorNickName, counsellorProfileURL)
+                    print(counsellor_user_id)
+                    Counsellor_object = json.loads(counsellor_user_id.content).get('user_id')
+
+                # Create a SendBird channel
+                print(User_object, Counsellor_object, user.name, counsellorNickName)
+                channel = createChannel(User_object, Counsellor_object, user.name, counsellorNickName)
+                channel_url = json.loads(channel.content).get('channel_url')
+                print("Channel Url in views.py : ", channel_url)
+
+                if not channel_url:
+                    raise Exception("Sorry, channel is not created on SendBird!!")
+
+                return HttpResponse(channel_url, status=200)
+
+            except ACU.DoesNotExist:
+                return JsonResponse({'message': 'User not found in the database'}, status=404)
+            except Exception as e:
+                return JsonResponse({'message': str(e)}, status=500)
+        else:
+            return JsonResponse({'message': 'User not logged in'}, status=401)
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
+    
+    #End of SendBird Api
+
+##########API FOR ADMIN DASHBOARD (COUNT API)##########
+
+#Api for getting total of user count
+def getUsersCount(request):
+    try:
+        users_count = ACU.objects.count()
+        return JsonResponse({'users_count': users_count})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+#Api for getting total of Blogs count
+def getBlogsCount(request):
+    try:
+        blog_count =Blogs.objects.count()
+        return JsonResponse({'blog_count': blog_count})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+
+#Api for getting total of Counsellors count
+def getCounsellorsCount(request):
+    try:
+        counsellor_count = Counsellor.objects.filter(is_approved=True).count()
+        return JsonResponse({'counsellor_count': counsellor_count})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+#Api for getting total of Reviews count
+def getReviewsCount(request):
+    try:
+        review_count = Reviews.objects.filter(is_approved=True).count()
+        return JsonResponse({'review_count': review_count})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+##########---end of dashboard api---##########
 
 @csrf_exempt
 def editBlog(request):

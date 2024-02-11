@@ -26,7 +26,16 @@ urlpatterns = [
     path('fetchBlogsData', views.fetchBlogsData, name='fetchBlogsData'),
     # Blog Details
     path('blogDetails',views.blogDetails,name='blogDetails'),
-
+    #Create SendBirdChannel
+    path('createSendBirdChannel', views.createSendBirdChannel, name='createSendBirdChannel'),
+    #Total User Count
+    path('getUsersCount', views.getUsersCount, name='getUsersCount'),
+    #Total Blogs Count
+    path('getBlogsCount', views.getBlogsCount, name='getBlogsCount'),
+    #Total Counsellors Count
+    path('getCounsellorsCount', views.getCounsellorsCount, name='getCounsellorsCount'),
+    #Total Reviews Count
+    path('getReviewsCount', views.getReviewsCount, name='getReviewsCount'),
     # Counsellor Dashboard 
     path('getCounsellorData', views.getCounsellorData, name='getCounsellorData'),
     path('getCounsellorCardsData', views.getCounsellorCardsData, name='getCounsellorCardsData'),
