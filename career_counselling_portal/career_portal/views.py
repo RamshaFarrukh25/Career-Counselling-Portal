@@ -679,9 +679,21 @@ def createSendBirdChannel(request):
             try:
                 # Fetch user details from the database using the user_id
                 user = ACU.objects.get(id=user_id)
-                # print("In views.py file",user.name)
                 User_object = user_id
                 Counsellor_object = counsellorId
+                # Check if the entry already exists in UserChatWithCounsellors
+                existing_entry = UserChatWithCounsellors.objects.filter(
+                    user_id=user_id,
+                    counsellor_id=counsellorId
+                ).exists()
+
+                if not existing_entry:
+                    # If the entry doesn't exist, create one
+                    UserChatWithCounsellors.objects.create(
+                        user_id=user,
+                        counsellor_id=Counsellor_object
+                    )
+
                 if (not getUser(User_object)):
                     user_user_id = createUser(user_id, user.name, "")
                     print(user_user_id)

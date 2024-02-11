@@ -27,6 +27,7 @@ import CounsellorProfile from './dashboards/counsellor/Profile'
 import AddBlog from './dashboards/counsellor/AddBlog'
 import ShowBlogs from './dashboards/counsellor/ShowBlogs'
 import Settings from './dashboards/counsellor/Settings'
+import CounsellorChat from './dashboards/counsellor/CounsellorChat'
 
 
 
@@ -67,6 +68,7 @@ export default function App() {
 
           <Route element={<Authentication />}>
             <Route path="counsellor" element={<Counsellor />}>
+        
               <Route index element={<Dashboard />} />
               <Route path="settings" element={<Settings />} />
               <Route path="profile" element={<CounsellorProfile />} />
@@ -74,6 +76,8 @@ export default function App() {
               <Route path="addBlog/:id" element={<AddBlog />} />
               <Route path="showBlogs" element={<ShowBlogs />}/>
               <Route path="showBlogs/:id" element={<BlogDetail />}/>
+              <Route path='counsellorChat' element= {< CounsellorChat/>}/>
+              
             </Route>
           </Route>
         </Routes>

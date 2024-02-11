@@ -97,6 +97,9 @@ export default function Counsellor(){
                     <li>
                         <Link className={CounsellorCSS.links} to="showBlogs"><span className="fa fa-sticky-note"></span>Show Blogs</Link>
                     </li>
+                    <li>
+                        <Link className={CounsellorCSS.links} to="counsellorChat"><span className="fas fa-comment-dots"></span>Chat</Link>
+                    </li>
                 </ul>
             </div>
         

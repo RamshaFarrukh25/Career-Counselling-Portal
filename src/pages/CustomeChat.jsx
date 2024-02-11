@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import SBConversation from '@sendbird/uikit-react/Channel';
 import SBChannelList from '@sendbird/uikit-react/ChannelList';
 import SBChannelSettings from '@sendbird/uikit-react/ChannelSettings';
+import { useNavigate } from 'react-router-dom';
 
 export default function CustomizedApp(props) {
   const [showSettings, setShowSettings] = useState(false);
   const [currentChannelUrl, setCurrentChannelUrl] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Update currentChannelUrl when props.channelUrl changes
@@ -18,7 +20,7 @@ export default function CustomizedApp(props) {
     event.preventDefault();
     // Check if the channelUrl is different before updating
     if (currentChannelUrl !== channelUrl) {
-      window.location.href = `/chat?channelUrl=${channelUrl}`;
+      navigate(`/chat?channelUrl=${channelUrl}`);
       setCurrentChannelUrl(channelUrl);
     }
   };
@@ -45,7 +47,7 @@ export default function CustomizedApp(props) {
             }
           }} 
           activeChannelUrl={currentChannelUrl}
-          renderHeader={() => { return <><h2>Messages</h2> <hr/></>}}
+          renderHeader={() => { return <><h3 style={{margin : "15px"}}><i>Messages</i></h3> <hr/></>}}
         
           />
         </div>
