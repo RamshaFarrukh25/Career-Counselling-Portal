@@ -38,6 +38,7 @@ export default function Hero(){
                              ${role=='U' ? HeroCSS.UserLogoutButton : ''}
                             `} onClick={(event)=>{
                                 dispatch(logout())
+                                window.location.reload()
                             }}>Logout</Link>}
                            
                         </div>       
