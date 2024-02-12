@@ -8,6 +8,7 @@ import { authenticate } from "../features/authentication/authenticationSlice"
 
 export default function AskCounsellor() {
   const { user_id, is_exist } = useSelector((store) => store.authentication)
+  console.log("User_id", user_id)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ export default function AskCounsellor() {
 
   const handleChatButtonClick = (counsellor) => {
     if (is_exist) {
-      createChannel(counsellor.id, counsellor.name, "", user_id, navigate);
+      createChannel(counsellor.id, counsellor.name, "", navigate);
     } else {
       // Redirect to login page if the user is not logged in
       navigate("/login");
@@ -94,47 +95,7 @@ export default function AskCounsellor() {
                   </div>
                 </div>
               ))}
-              {/* <div className="col-md-6 mb-4" key="1">
-                  <div
-                    className={`card ${AskCounsellorCSS.CounsellorCard}`}
-                  >
-                    <div className="row no-gutters">
-                      <div className="col-md-4 d-flex justify-content-center align-items-center">
-                        <img
-                          src=""
-                          className={`${AskCounsellorCSS.image} card-img rounded-circle ms-4 mt-3`}
-                          alt="CounselorImage"
-                        />
-                      </div>
-                      <div className="col-md-8">
-                        <div className="card-body">
-                          <h5 className="card-title">
-                            <strong>Hira Khan</strong>
-                          </h5>
-                          {/* <p className="card-text">
-                            <strong>Specialty: </strong>{" "}
-                            {counsellor.qualification} in{" "}
-                            {counsellor.field_of_study}.
-                          </p> */}
-                          {/* <p className="card-text">
-                            <strong>Last Review: </strong>
-                            {counsellor.review_description}
-                          </p>
-                          <p className="card-text">
-                            <strong>Rating:</strong>{" "}
-                            {generateStars(counsellor.ratings)}
-                          </p> */}
-                          {/* <button
-                            onClick={() => handleChatButtonClick()}
-                            className={`btn ${AskCounsellorCSS.ChatButton}`}
-                          >
-                            Chat With Hira khan
-                          </button> */}
-                        {/* </div> */}
-                      {/* </div>
-                    </div>
-                  </div>
-                </div> */} 
+                   
           </div>
         </div>
       </main>
