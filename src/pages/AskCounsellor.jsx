@@ -1,18 +1,22 @@
-import AskCounsellorCSS from "../assets/styles/AskCounsellor.module.css";
-import CounsellorsImage from "../assets/images/Dr. Samantha Williams_Image.jpg";
-import { getTopCounsellors } from "../features/askCounsellor/askCounsellorSlice";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import  createChannel  from "../features/askCounsellor/createChannel";
-import { useNavigate } from "react-router-dom";
+import AskCounsellorCSS from "../assets/styles/AskCounsellor.module.css"
+import { getTopCounsellors } from "../features/askCounsellor/askCounsellorSlice"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import  createChannel  from "../features/askCounsellor/createChannel"
+import { useNavigate } from "react-router-dom"
+import { authenticate } from "../features/authentication/authenticationSlice"
+
 export default function AskCounsellor() {
-  const { user_id, is_exist } = useSelector((store) => store.authentication);
+  const { user_id, is_exist } = useSelector((store) => store.authentication)
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { topCounsellorsList } = useSelector((store) => store.askCounsellor);
+
   useEffect(() => {
     dispatch(getTopCounsellors());
+    dispatch(authenticate())
   }, []);
 
   const generateStars = (rating) => {

@@ -39,33 +39,33 @@ const authenticationSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(authenticate.pending, (state) => {
-                //console.log("authenticate pending")
+                console.log("authenticate pending")
             })
             .addCase(authenticate.fulfilled, (state, action) => {
-                //console.log("authenticate fulfilled")
+                console.log("authenticate fulfilled")
                 state.user_id = action.payload.user_id
                 state.email = action.payload.email
                 state.is_exist = action.payload.is_exist
                 state.role = action.payload.role
-                // console.log("user_id: ", state.user_id)
-                // console.log("Email: ", state.email)
-                // console.log("is_exist: ", state.is_exist)
+                console.log("user_id: ", state.user_id)
+                console.log("Email: ", state.email)
+                console.log("is_exist: ", state.is_exist)
             })
             .addCase(authenticate.rejected, (state, action) => {
-                //console.log("authenticate rejected")
+                console.log("authenticate rejected")
             })
             .addCase(logout.pending, (state) => {
-                //console.log("logout pending")
+                console.log("logout pending")
             })
             .addCase(logout.fulfilled, (state, action) => {
-                //console.log("logout fulfilled")
+                console.log("logout fulfilled")
                 state.user_id = null
                 state.email = null
                 state.role = null
                 state.is_exist = null
             })
             .addCase(logout.rejected, (state, action) => {
-                //console.log("logout rejected")
+                console.log("logout rejected")
             })
     }
 })

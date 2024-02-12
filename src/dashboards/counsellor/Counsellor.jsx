@@ -238,7 +238,10 @@ export default function Counsellor(){
                                 style={{  
                                     fontFamily: "var(--fontHeading)", 
                                 }}
-                                onClick={(event) => dispatch(logout())}
+                                onClick={(event) =>{ 
+                                    dispatch(logout()) 
+                                    window.location.reload()
+                                }}
                             >Logout</MenuItem>
                             
                         </Link>

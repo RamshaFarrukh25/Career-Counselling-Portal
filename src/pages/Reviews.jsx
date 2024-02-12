@@ -34,6 +34,7 @@ export default function Reviews(){
     const counsellorList = useSelector((store) => store.reviews.counsellorList)
     // const ratingForm = useSelector((store) => store.reviews.ratingForm)
 
+
     const handleReviewImageClick = () => {
         dispatch(setShowReviewForm(true)); // Show review form
         dispatch(setChangeReviewImage(RevLogoA));
@@ -233,7 +234,7 @@ export default function Reviews(){
                                         }}
                                         required
                                     />
-                                    <label for="star5"></label> 
+                                    <label htmlFor="star5"></label> 
                                     <input 
                                         type="radio" id="star4" 
                                         name="rating"
@@ -249,7 +250,7 @@ export default function Reviews(){
                                         }} 
                                         required
                                     />
-                                    <label for="star4"></label> 
+                                    <label htmlFor="star4"></label> 
                                     <input 
                                         type="radio" id="star3" 
                                         name="rating"
@@ -265,7 +266,7 @@ export default function Reviews(){
                                         }}
                                         required
                                     />
-                                    <label for="star3"></label> 
+                                    <label htmlFor="star3"></label> 
                                     <input 
                                         type="radio" id="star2" 
                                         name="rating"
@@ -281,7 +282,7 @@ export default function Reviews(){
                                         }}
                                         required
                                     />
-                                    <label for="star2"></label> 
+                                    <label htmlFor="star2"></label> 
                                     <input 
                                         type="radio" id="star1" 
                                         name="rating"
@@ -297,7 +298,7 @@ export default function Reviews(){
                                         }}
                                         required  
                                     />
-                                    <label for="star1"></label> 
+                                    <label htmlFor="star1"></label> 
                                 </div> 
                                 
                                 <button className={ReviewsCSS.submitBtn}>
