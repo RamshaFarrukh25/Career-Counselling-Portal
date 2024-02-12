@@ -680,15 +680,31 @@ def createSendBirdChannel(request):
         counsellorId = data.get('counsellorId')
         counsellorNickName = data.get('counsellorNickName')
         counsellorProfileURL = data.get('counsellorProfileURL')
-        user_id = data.get("user_id")
+        user_id =  request.session.get('user_id')
+        print("User id", user_id)
+        print("Counsellor id", counsellorId, counsellorNickName, counsellorProfileURL)
         # Check if the user is logged in (user_id exists in the session)
         if user_id is not None:
             try:
                 # Fetch user details from the database using the user_id
                 user = ACU.objects.get(id=user_id)
-                # print("In views.py file",user.name)
+                print("User",user)
+                # counsellor = Counsellor.objects.get(counsellor_id=user)
                 User_object = user_id
                 Counsellor_object = counsellorId
+                # Check if the entry already exists in UserChatWithCounsellors
+                # existing_entry = UserChatWithCounsellors.objects.filter(
+                #     user_id=user,
+                #     counsellor_id=counsellor
+                # ).exists()
+
+                # if not existing_entry:
+                #     # If the entry doesn't exist, create one
+                #     UserChatWithCounsellors.objects.create(
+                #         user_id=user,
+                #         counsellor_id=counsellor
+                #     )
+
                 if (not getUser(User_object)):
                     user_user_id = createUser(user_id, user.name, "")
                     print(user_user_id)
@@ -713,6 +729,7 @@ def createSendBirdChannel(request):
             except ACU.DoesNotExist:
                 return JsonResponse({'message': 'User not found in the database'}, status=404)
             except Exception as e:
+                print(e)
                 return JsonResponse({'message': str(e)}, status=500)
         else:
             return JsonResponse({'message': 'User not logged in'}, status=401)
