@@ -1,27 +1,24 @@
-const createChannel = async (id, nickname, profileUrl, user_id, navigate) => {
+import axios from 'axios';
+
+axios.defaults.withCredentials = true;
+
+const createChannel = async (id, nickname, profileUrl, navigate) => {
   try {
-    const url = 'http://localhost:8000/createSendBirdChannel';
+    const url = 'http://127.0.0.1:8000/createSendBirdChannel';
     const user = {
-      counsellorId: id,
-      counsellorNickName: nickname,
-      counsellorProfileURL: 'https://example.com/profile.jpg',
-      user_id: user_id,
+      'counsellorId': id,
+      'counsellorNickName': nickname,
+      'counsellorProfileURL': 'https://example.com/profile.jpg'
     };
 
-    const response = await fetch(url, {
-      method: 'POST',
+    const response = await axios.post(url, user, {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(user),
     });
 
     if (response.status === 200) {
-      const channelUrl = await response.text();
-
-      // Store user_id and isLogin in local storage
-      localStorage.setItem('user_id', user_id);
-      localStorage.setItem('isLogin', 'true');
+      const channelUrl = response.data;
 
       // Use the navigate function passed as a parameter
       navigate(`/chat?channelUrl=${channelUrl}`);
@@ -34,4 +31,5 @@ const createChannel = async (id, nickname, profileUrl, user_id, navigate) => {
 };
 
 export default createChannel;
+
 

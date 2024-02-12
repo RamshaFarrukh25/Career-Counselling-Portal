@@ -71,7 +71,6 @@ export default function App() {
           {/* Counsellor DashBoard Routing  */}
           <Route element={<AuthenticateCounsellor />}>
             <Route path="counsellor" element={<Counsellor />}>
-        
               <Route index element={<Dashboard />} />
               <Route path="settings" element={<Settings />} />
               <Route path="profile" element={<CounsellorProfile />} />
@@ -80,7 +79,6 @@ export default function App() {
               <Route path="showBlogs" element={<ShowBlogs />}/>
               <Route path="showBlogs/:id" element={<BlogDetail />}/>
               <Route path='counsellorChat' element= {< CounsellorChat/>}/>
-              
             </Route>
           </Route>
         </Routes>  

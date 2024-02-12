@@ -9,7 +9,7 @@ const myColorSet = {
 };
 
 function CounsellorChat() {
-  const {user_id} = useSelector((store)=>store.login)
+  const {user_id} = useSelector((store)=>store.authentication)
  
   return (
     
