@@ -10,7 +10,9 @@ import Home from './pages/Home'
 import AboutUs from './pages/AboutUs'
 import OfferCounselling from "./pages/OfferCounselling"
 import CareerGPT from './pages/CareerGPT/CareerGPT'
-import Authentication from './layouts/Authentication'
+import AuthenticateUser from './layouts/AuthenticateUser'
+import AuthenticateCounsellor from './layouts/AuthenticateCounsellor'
+import AuthenticateAdmin from './layouts/AuthenticateAdmin'
 import Chat from './pages/Chat'
 //Admin Dashboard
 import AdminLayout from './dashboards/admin/layouts/Layout'
@@ -34,7 +36,6 @@ import CounsellorChat from './dashboards/counsellor/CounsellorChat'
 export default function App() {
   return (
     <>
-   
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout/>} > 
@@ -46,7 +47,7 @@ export default function App() {
             <Route path="askCounsellor" element={<AskCounsellor/>}/>
             <Route path="chat" element = {<Chat/>}/>
 
-            <Route element={<Authentication />} >
+            <Route element={<AuthenticateUser />} >
               <Route path="careerGPT" element={<CareerGPT />} />
             </Route>
 
@@ -55,18 +56,20 @@ export default function App() {
             <Route path="blogDetail" element={<BlogDetail />} />
           </Route>
 
-
           {/* Admin DashBoard Routing  */}
-          <Route path="admin" element={<AdminLayout/>}>
-           <Route path="dashboard" element={<DashBoard/>} />
-           <Route path="approveCounsellors" element={<ApproveCounsellors/>} />
-           <Route path="approveBlogs" element={<ApproveBlogs/>} />
-           <Route path="profile" element={<AdminProfile/>} />
-           <Route path="userReport" element={<UserReport/>}></Route>
-           <Route path="approveReviews" element={<ApproveReviews/>}/>
+          <Route element={<AuthenticateAdmin />}>
+            <Route path="admin" element={<AdminLayout/>}>
+            <Route path="dashboard" element={<DashBoard/>} />
+            <Route path="approveCounsellors" element={<ApproveCounsellors/>} />
+            <Route path="approveBlogs" element={<ApproveBlogs/>} />
+            <Route path="profile" element={<AdminProfile/>} />
+            <Route path="userReport" element={<UserReport/>}></Route>
+            <Route path="approveReviews" element={<ApproveReviews/>}/>
+            </Route>
           </Route>
 
-          <Route element={<Authentication />}>
+          {/* Counsellor DashBoard Routing  */}
+          <Route element={<AuthenticateCounsellor />}>
             <Route path="counsellor" element={<Counsellor />}>
         
               <Route index element={<Dashboard />} />
@@ -80,8 +83,7 @@ export default function App() {
               
             </Route>
           </Route>
-        </Routes>
-      
+        </Routes>  
       </BrowserRouter>
     </>
   )

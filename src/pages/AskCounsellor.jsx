@@ -1,19 +1,22 @@
-import AskCounsellorCSS from "../assets/styles/AskCounsellor.module.css";
-import CounsellorsImage from "../assets/images/Dr. Samantha Williams_Image.jpg";
-import { getTopCounsellors } from "../features/askCounsellor/askCounsellorSlice";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import  createChannel  from "../features/askCounsellor/createChannel";
-import { useNavigate } from "react-router-dom";
+import AskCounsellorCSS from "../assets/styles/AskCounsellor.module.css"
+import { getTopCounsellors } from "../features/askCounsellor/askCounsellorSlice"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import  createChannel  from "../features/askCounsellor/createChannel"
+import { useNavigate } from "react-router-dom"
+import { authenticate } from "../features/authentication/authenticationSlice"
 
 export default function AskCounsellor() {
-  const { user_id, isLogin } = useSelector((store) => store.login);
+  const { user_id, is_exist } = useSelector((store) => store.authentication)
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { topCounsellorsList } = useSelector((store) => store.askCounsellor);
+
   useEffect(() => {
     dispatch(getTopCounsellors());
+    dispatch(authenticate())
   }, []);
 
   const generateStars = (rating) => {
@@ -28,7 +31,7 @@ export default function AskCounsellor() {
   };
 
   const handleChatButtonClick = (counsellor) => {
-    if (isLogin) {
+    if (is_exist) {
       createChannel(counsellor.id, counsellor.name, "", user_id, navigate);
     } else {
       // Redirect to login page if the user is not logged in
@@ -56,7 +59,7 @@ export default function AskCounsellor() {
                     <div className="row no-gutters">
                       <div className="col-md-4 d-flex justify-content-center align-items-center">
                         <img
-                          src={CounsellorsImage}
+                          src={`../../career_counselling_portal/Counsellors/${counsellor.email}/${counsellor.profile_pic}`}
                           className={`${AskCounsellorCSS.image} card-img rounded-circle ms-4 mt-3`}
                           alt="CounselorImage"
                         />
@@ -77,7 +80,7 @@ export default function AskCounsellor() {
                           </p>
                           <p className="card-text">
                             <strong>Rating:</strong>{" "}
-                            {generateStars(counsellor.ratings)}
+                            {generateStars(counsellor.avg_rating)}
                           </p>
                           <button
                             onClick={() => handleChatButtonClick(counsellor)}

@@ -7,10 +7,10 @@ const initialState = {
 
 
 
-export const getCounsellorProfileData = createAsyncThunk('counsellorProfileSlice/getCounsellorProfileData', async (user_id) => {
+export const getCounsellorProfileData = createAsyncThunk('counsellorProfileSlice/getCounsellorProfileData', async () => {
     try {
         //console.log(user_id)
-        const response = await axios.get(`http://127.0.0.1:8000/getCounsellorProfileData/${user_id}`);
+        const response = await axios.get("http://127.0.0.1:8000/getCounsellorProfileData")
         return response.data;
     } 
     catch (error) {
@@ -30,7 +30,6 @@ const counsellorProfileSlice = createSlice({
           .addCase(getCounsellorProfileData.fulfilled, (state,action) => {
             //console.log("accepted");
             state.counsellorProfileData = action.payload.counsellor_profile_data
-            console.log(state.counsellorProfileData)
           })
           .addCase(getCounsellorProfileData.rejected, (state) => {
             //console.log("rejected");

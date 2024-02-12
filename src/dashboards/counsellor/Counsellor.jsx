@@ -9,9 +9,9 @@ import {
 } from 'mdb-react-ui-kit'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import { logOut} from "../../features/login/loginSlice"
 import { useDispatch, useSelector } from "react-redux"
 import {getCounsellorData} from "../../features/dashboards/counsellor/counsellorSlice"
+import {logout} from "../../features/authentication/authenticationSlice"
 
 export default function Counsellor(){
     const [sidebar, showSidebar] = React.useState(true)
@@ -20,14 +20,12 @@ export default function Counsellor(){
     const notificationOpen = Boolean(notification)
     const open = Boolean(anchorEl)
     const dispatch= useDispatch()
-    const navigate = useNavigate()
-    const {user_id} = useSelector((store) => store.login)
-    //console.log("User_ID", user_id)
+
     const {name, email, profilePic} = useSelector((store) => store.counsellor)
 
     React.useEffect(() => {
         async function getData (){
-            await dispatch(getCounsellorData(user_id))
+            await dispatch(getCounsellorData())
         }
         getData()
     }, [])
@@ -60,12 +58,6 @@ export default function Counsellor(){
         setAnchorEl(null)
     }
 
-    const handleLogout = () => {
-        setAnchorEl(null)
-        dispatch(logOut())
-        navigate("/")
-        window.location.reload()
-    }
 
     return (
         <>
@@ -246,11 +238,13 @@ export default function Counsellor(){
                         </Link>
                         <Link className={CounsellorCSS.profileIcon}> 
                             <MenuItem 
-                                onClick={handleLogout}
                                 style={{  
                                     fontFamily: "var(--fontHeading)", 
                                 }}
-                            
+                                onClick={(event) =>{ 
+                                    dispatch(logout()) 
+                                    window.location.reload()
+                                }}
                             >Logout</MenuItem>
                             
                         </Link>
@@ -262,8 +256,6 @@ export default function Counsellor(){
                     >
                         <span><i className="fa-solid fa-gear"></i></span>
                     </Link>
-                    
-
                    
                 </div>
             </div>

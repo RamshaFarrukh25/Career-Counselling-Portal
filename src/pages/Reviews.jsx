@@ -26,13 +26,14 @@ export default function Reviews(){
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {reviewsForm, isSave} = useSelector((store) => store.reviews)
-    const {user_id,isLogin} = useSelector((store)=>store.login)
+    const {is_exist} = useSelector((store) => store.authentication)
     const showReviewForm = useSelector((store) => store.reviews.showReviewForm)
     const reviewImage = useSelector((store) => store.reviews.changeReviewImage)
     const ratingImage = useSelector((store) => store.reviews.changeRatingImage)
     const latestReviews = useSelector((store) => store.reviews.latestReviews)
     const counsellorList = useSelector((store) => store.reviews.counsellorList)
     // const ratingForm = useSelector((store) => store.reviews.ratingForm)
+
 
     const handleReviewImageClick = () => {
         dispatch(setShowReviewForm(true)); // Show review form
@@ -50,13 +51,13 @@ export default function Reviews(){
         dispatch(setRating(newRating));
     };
 
+    
     useEffect(() => {
-        return () => {
-          dispatch(getReviews())
-          dispatch(getCounsellorsByUID(user_id))
-        }
-      }, [])
+        dispatch(getReviews())
+        dispatch(getCounsellorsByUID())
+    }, [])
 
+    
     return(
         <>
         <div id="reviews" className={ReviewsCSS.wrapper}>
@@ -80,8 +81,8 @@ export default function Reviews(){
                             <form 
                                 onSubmit={(event) => {
                                     event.preventDefault()
-                                    if(isLogin){
-                                        dispatch(saveReviews({'reviewsForm':reviewsForm,'user_id':user_id}))
+                                    if(is_exist){
+                                        dispatch(saveReviews({'reviewsForm':reviewsForm}))
                                         dispatch(clearReview())
                                     } else {
                                         dispatch(clearReview())
@@ -160,8 +161,8 @@ export default function Reviews(){
                             <form
                                 onSubmit={(event) => {
                                     event.preventDefault()
-                                    if(isLogin){
-                                        dispatch(saveRatings({'reviewsForm':reviewsForm,'user_id':user_id}))
+                                    if(is_exist){
+                                        dispatch(saveRatings({'reviewsForm':reviewsForm}))
                                         dispatch(clearRatings())
                                     } else {
                                         dispatch(clearRatings())
@@ -233,7 +234,7 @@ export default function Reviews(){
                                         }}
                                         required
                                     />
-                                    <label for="star5"></label> 
+                                    <label htmlFor="star5"></label> 
                                     <input 
                                         type="radio" id="star4" 
                                         name="rating"
@@ -249,7 +250,7 @@ export default function Reviews(){
                                         }} 
                                         required
                                     />
-                                    <label for="star4"></label> 
+                                    <label htmlFor="star4"></label> 
                                     <input 
                                         type="radio" id="star3" 
                                         name="rating"
@@ -265,7 +266,7 @@ export default function Reviews(){
                                         }}
                                         required
                                     />
-                                    <label for="star3"></label> 
+                                    <label htmlFor="star3"></label> 
                                     <input 
                                         type="radio" id="star2" 
                                         name="rating"
@@ -281,7 +282,7 @@ export default function Reviews(){
                                         }}
                                         required
                                     />
-                                    <label for="star2"></label> 
+                                    <label htmlFor="star2"></label> 
                                     <input 
                                         type="radio" id="star1" 
                                         name="rating"
@@ -297,7 +298,7 @@ export default function Reviews(){
                                         }}
                                         required  
                                     />
-                                    <label for="star1"></label> 
+                                    <label htmlFor="star1"></label> 
                                 </div> 
                                 
                                 <button className={ReviewsCSS.submitBtn}>

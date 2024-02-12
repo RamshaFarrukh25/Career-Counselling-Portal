@@ -6,18 +6,12 @@ const initialState = {
         email: "",
         password: ""
     },
-    isLogin:null,
-    role:'',
-    user_id:'',
-    user_name: '',
-    user_email: ''
+    isLogin: null,
 }
 
 
 // API that Checks Login Credentials
 const apiUrl = "http://127.0.0.1:8000/loginUser";
-
-
 export const loginUser = createAsyncThunk('loginSlice/loginUser', async ({email,password}) => {
     try {
       const response = await axios.post(apiUrl, {email,password} );
@@ -27,6 +21,7 @@ export const loginUser = createAsyncThunk('loginSlice/loginUser', async ({email,
       throw error;
     }
 });
+
 
 const loginSlice = createSlice({
     name: 'login',
@@ -38,37 +33,28 @@ const loginSlice = createSlice({
                 [payload.name]: payload.value
             }
         },
-        logOut:(state)=>{
-          state.isLogin=null
-          state.role=''
+        clearForm: (state) => {
+          state.loginForm = {
+            email: "",
+            password: ""
+          }
         }
     },
     extraReducers: (builder) => {
         builder
           .addCase(loginUser.pending, (state) => {
-            console.log("pending");
+            console.log("login pending");
           })
           .addCase(loginUser.fulfilled, (state,action) => {
+            console.log("Login fulfilled")
             state.isLogin= action.payload.isLogin
-            state.role=action.payload.role
-            state.user_id= action.payload.user_id
-             // Store user_id and isLogin in local storage
-            localStorage.setItem('user_id', state.user_id);
-            localStorage.setItem('isLogin', state.isLogin);
-            console.log("login state",state.isLogin)
-            console.log("role",state.role)
-            console.log("user_id",state.user_id)
-
-            state.user_id=action.payload.user_id
-            state.user_name=action.payload.user_name
-            state.user_email=action.payload.user_email
           })
           .addCase(loginUser.rejected, (state) => {
-            console.log("rejected");
+            console.log("login rejected");
           });
     },
 })
 
 
-export const{handleChange, handleSubmit,logOut} = loginSlice.actions
+export const{handleChange, clearForm } = loginSlice.actions
 export default loginSlice.reducer

@@ -7,9 +7,9 @@ const initialState = {
     rows: null
 }
 
-export const getCounsellorBlogs = createAsyncThunk('showBlogsSlice/getCounsellorBlogs', async(id) => {
+export const getCounsellorBlogs = createAsyncThunk('showBlogsSlice/getCounsellorBlogs', async() => {
     try{
-        const response = await axios.get(`http://127.0.0.1:8000/getCounsellorBlogs/${id}`)
+        const response = await axios.get("http://127.0.0.1:8000/getCounsellorBlogs")
         return response.data
     } catch(error){
         throw error
@@ -32,7 +32,6 @@ const showBlogsSlice = createSlice({
     initialState,
     reducers:{
         handleDeleteBlog: (state, {payload}) => {
-            console.log(payload.data)
             state.selectedBlog = payload.data
             state.deleteConfirmationOpen = true
         },

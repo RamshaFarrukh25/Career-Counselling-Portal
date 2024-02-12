@@ -7,8 +7,7 @@ import offerCounsellingReducer from "./features/offerCounselling/offerCounsellin
 import askCounsellorReducer from "./features/askCounsellor/askCounsellorSlice"
 import blogCardsReducer from "./features/blogCards/blogCardsSlice"
 import blogDetailsReducer from "./features/blogCards/blogDetailsSlice"
-
-
+import authenticationReducer from "./features/authentication/authenticationSlice"
 
 //Counsellor Dashboard
 import counsellorReducer from "./features/dashboards/counsellor/counsellorSlice"
@@ -35,6 +34,7 @@ export const store = configureStore({
         askCounsellor: askCounsellorReducer,
         blogsCard: blogCardsReducer,
         blogDetails: blogDetailsReducer,
+        authentication: authenticationReducer,
         //Counsellor Dashboard
         counsellor: counsellorReducer,
         counsellorDashboard: counsellorDashboardReducer,
