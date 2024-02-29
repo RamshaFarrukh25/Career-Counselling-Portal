@@ -57,4 +57,8 @@ urlpatterns = [
     path('getUnapprovedReviews', views.getUnapprovedReviews, name='getUnapprovedReviews'),
     path('deleteReview', views.deleteReview,  name='deleteReview'),
     path('approveReview', views.approveReview, name='approveReview'),
+    # Approve Blogs
+    path('getUnapprovedBlogs', views.getUnapprovedBlogs,  name='getUnapprovedBlogs'),
+    path('rejectBlog', views.rejectBlog, name='rejectBlog'),
+    path('approveBlog', views.approveBlog, name='approveBlog'),
 ]
