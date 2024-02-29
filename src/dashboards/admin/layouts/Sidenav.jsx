@@ -2,6 +2,9 @@ import { Outlet, Link, useNavigate } from 'react-router-dom'
 import SidenavCSS from '../../../assets/styles/dashboards/admin_css/Sidenav.module.css'
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import {logout} from '../../../features/authentication/authenticationSlice'
+
+
 export default function SidebarNav() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -68,8 +71,12 @@ export default function SidebarNav() {
                         </ul>
                     </li>
                     <li>
-                <button className="btn  text-white">
-                  Sign Out
+                <button className="btn  text-white"
+                        onClick={(event) =>{ 
+                            dispatch(logout()) 
+                            window.location.reload()
+                        }}>
+                  Log Out
                 </button>
               </li>
                 </ul>

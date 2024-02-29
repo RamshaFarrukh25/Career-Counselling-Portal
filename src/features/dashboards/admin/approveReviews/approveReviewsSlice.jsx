@@ -39,7 +39,6 @@ const approveURL = "http://127.0.0.1:8000/approveReview"
 
 export const approveReview =  createAsyncThunk("approveReviewsSlice/approveReview", async(selectedRow) => {
     try{
-        console.log(selectedRow)
         const response = await axios.put(approveURL, selectedRow)
         return response.data;
     }
@@ -75,32 +74,32 @@ const ApproveReviewsSlice = createSlice({
     extraReducers: (builder) => {
         builder
           .addCase(getUnapprovedReviews.pending, (state) => {
-            console.log("reviews data pending");
+            // console.log("reviews data pending");
           })
           .addCase(getUnapprovedReviews.fulfilled, (state,action) => {
-            console.log("reviews data recieved")
+            // console.log("reviews data recieved")
             state.rows = action.payload.unapprovedReviews
           })
           .addCase(getUnapprovedReviews.rejected, (state) => {
-            console.log("reviews data rejected");
+            // console.log("reviews data rejected");
           })
           .addCase(deleteReview.pending, (state) => {
-            console.log("delete review pending");
+            // console.log("delete review pending");
           })
           .addCase(deleteReview.fulfilled, (state) => {
-            console.log("review delete request recieved")
+            // console.log("review delete request recieved")
           })
           .addCase(deleteReview.rejected, (state) => {
-            console.log("reviews delete rejected");
+            // console.log("reviews delete rejected");
           })
           .addCase(approveReview.pending, (state) => {
-            console.log("approve review pending");
+            // console.log("approve review pending");
           })
           .addCase(approveReview.fulfilled, (state) => {
-            console.log("approve review request recieved");
+            // console.log("approve review request recieved");
           })
           .addCase(approveReview.rejected, (state) => {
-            console.log("reviews approval rejected");
+            // console.log("reviews approval rejected");
           })
     },
 })

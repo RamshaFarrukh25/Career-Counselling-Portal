@@ -234,6 +234,7 @@ def loginUser(request):
 
         try:
             user = ACU.objects.get(email=email)
+            #print(user)
             if user is not None and check_password(password, user.password):
                 if user.role == 'U' or user.role == 'A':
                     request.session['name'] = user.name
@@ -309,7 +310,7 @@ def getTopCounsellors(request):
         top_counsellors = (Counsellor.objects
                        .filter(Q(counsellor_id__role='C') | Q(counsellor_id__role='B'))
                        .annotate(avg_rating=Avg('ratings__rating'))
-                       .order_by('-avg_rating')[:10])
+                       .order_by('-avg_rating'))
         serializer = TopCounsellorSerializer(top_counsellors, many=True)
         #print(serializer.data)
         for data in serializer.data:
@@ -419,9 +420,10 @@ def blogDetails(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         id = data.get('id')
+        email = request.session.get('email')
         blogDetails = Blogs.objects.get(id= id)
         serializer= BlogsSerializer(blogDetails)
-        return HttpResponse(json.dumps({'blogDetails':serializer.data}))   
+        return HttpResponse(json.dumps({'blogDetails':serializer.data,'user_email':email}))   
     else:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
 
@@ -455,6 +457,7 @@ def updateAdminProfile(request):
         return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
 # Admin Profile End
 
+blogDetails
 # User Report
 def getUsers(request):
     if request.method == 'GET':
@@ -520,7 +523,6 @@ def approveReview(request):
     if request.method == 'PUT':
         data = json.loads(request.body.decode('utf-8'))
         reviewer_id = data.get('selectedRow')
-        print(reviewer_id)
         review = Reviews.objects.get(id= reviewer_id)
         review.is_approved = True
         review.save()
@@ -528,7 +530,51 @@ def approveReview(request):
     else:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
 # Approve Reviews End
+    
+# Approve Blogs
+def getUnapprovedBlogs(request):
+    if request.method == 'GET':
+        try:
+            blogsData = Blogs.objects.filter(is_approved = False)
+            serializer = BlogsSerializer(blogsData, many = True)
+            return HttpResponse(json.dumps({'unapprovedBlogs' : serializer.data}))
+        except Exception as e:
+            return HttpResponse(json.dumps({'status': 'error'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}),status=405)
 
+@csrf_exempt
+def rejectBlog(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            blog_id = data.get('blog_id')
+            # reason = data.get('rejectionReason')
+            blog = Blogs.objects.get(id= blog_id)
+            email = data.get('counsellor_email')
+            # Deleting blog cover image from Counsellors directory
+            path_blog_image = os.path.join(settings.BASE_DIR, f"Counsellors/{email}/Blogs/{blog.cover_image}")
+            os.remove(path_blog_image)
+            blog.delete()
+            return HttpResponse(json.dumps({'status': 'blog deleted successfully'}))
+        except ACU.DoesNotExist:
+            return HttpResponse(json.dumps({'status': 'error', 'message': 'blog not found'}), status=404, content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
+    
+
+@csrf_exempt
+def approveBlog(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body.decode('utf-8'))
+        blog_id = data.get('blog_id')
+        blog = Blogs.objects.get(id= blog_id)
+        blog.is_approved = True
+        blog.save()
+        return HttpResponse(json.dumps({'status' : 'blog approved successfully'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
+# Approve Blogs End       
 
 # Counsellor Dashboard
 @api_view(['GET'])
