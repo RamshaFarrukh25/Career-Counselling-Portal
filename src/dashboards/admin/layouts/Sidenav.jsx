@@ -68,6 +68,13 @@ export default function SidebarNav() {
                             </Link>
 
                             </li>
+                            
+                            <li><Link to="/admin/counsellorsReport" className="nav-link px-0 text-white">
+                        <i className={`fas fa-file-alt ${SidenavCSS.iconSpacing}`}></i>
+                        <span className="d-none d-sm-inline">Counsellors Report</span>
+                            </Link>
+
+                            </li>
                         </ul>
                     </li>
                     <li>
