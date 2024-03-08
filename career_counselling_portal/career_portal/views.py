@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+import shutil
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
@@ -479,7 +480,7 @@ def deleteUser(request):
             user_id = data.get('selectedRow')
             user = ACU.objects.get(id=user_id)
             # Deleting Counsellor directory
-            if user.role == 'B':
+            if user.role == 'B' or user.role =='C':
                 removeDirectory((os.path.join(settings.BASE_DIR, 'Counsellors')), user.email)
             user.delete()
             return HttpResponse(json.dumps({'status': 'user deleted successfully'}))
@@ -611,7 +612,7 @@ def getCounsellorProfileData(request):
         try:
             uid = request.session.get('user_id')
             counsellor = Counsellor.objects.select_related('counsellor_id').prefetch_related('working_experiences', 'qualification').get(counsellor_id=uid)
-            serializer = CounsellorSerializer(counsellor)
+            serializer = counsellors = (counsellor)
             return JsonResponse({'status': 'success','counsellor_profile_data':serializer.data})
         
         except ACU.DoesNotExist:
@@ -875,3 +876,73 @@ def deleteBlog(request, bid):
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
 # Counsellor Dashboard End 
+
+#admin dashboard
+
+#api that gets counsellors data
+
+@api_view(['GET'])
+def getCounsellorsData(request):
+    if request.method == 'GET':
+        counsellors = Counsellor.objects.filter(is_approved=False)
+        serializer = CounsellorSerializer(counsellors, many=True)
+        return JsonResponse({'status': 'success','counsellorsData':serializer.data},status=200)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+ 
+ 
+
+@csrf_exempt     
+def deleteCounsellor(request, userEmail,rejectionReason):
+    if request.method == 'DELETE':
+        try:
+            counsellor = ACU.objects.get(email = userEmail)
+            path = os.path.join(settings.BASE_DIR, 'Counsellors', counsellor.email)
+            shutil.rmtree(path)
+            subject="Important: Record Verification Rejected"
+            message = f"Dear {counsellor.name},\n\nWe hope this message finds you well. Your registration on BotGuidedPathways is being rejected due to the following reason:\n{rejectionReason}\n"
+            send_mail(subject, message, from_email='BotGuidedPathways@gmail.com', recipient_list=[userEmail])
+            counsellor.delete()   
+            return JsonResponse({"message": "Counsellor deleted successfully"}, status=200)
+        except Exception as e:
+            print(e)
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+    
+     
+def approveCounsellor(request, userEmail, greetingMessage):
+    if request.method == 'GET':
+        try:
+            counsellor = ACU.objects.get(email=userEmail)
+            counsellor_counsellor = counsellor.counsellors.first()
+            if counsellor_counsellor:
+                counsellor_counsellor.is_approved = True
+                counsellor_counsellor.save()
+                subject = "Important: Record Verification Accepted"
+                message = f"Dear {counsellor.name},\n\nWe hope this message finds you well. Your registration on BotGuidedPathways has been accepted. Kindly accept a warm welcome from our administration:\n`{greetingMessage}`\n"
+                send_mail(subject, message, from_email='BotGuidedPathways@gmail.com', recipient_list=[userEmail])
+                return JsonResponse({"message": "Counsellor approved successfully"}, status=200)
+            else:
+                return JsonResponse({"error": "Counsellor not found"}, status=404)
+        except Exception as e:
+            print(e)
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+    
+    
+def getApprovedCounsellors(request):
+    if request.method == 'GET':
+        try:
+            counsellors = ACU.objects.filter(Q(role='C') & Q(counsellors__is_approved=True))
+            serializer = ACUSerializer(counsellors, many=True)
+            #print(serializer.data)
+            return JsonResponse({'counsellorsData': serializer.data})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+
+    
+    
