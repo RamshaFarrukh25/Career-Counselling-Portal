@@ -28,14 +28,10 @@ urlpatterns = [
     path('blogDetails',views.blogDetails,name='blogDetails'),
     #Create SendBirdChannel
     path('createSendBirdChannel', views.createSendBirdChannel, name='createSendBirdChannel'),
-    #Total User Count
-    path('getUsersCount', views.getUsersCount, name='getUsersCount'),
-    #Total Blogs Count
-    path('getBlogsCount', views.getBlogsCount, name='getBlogsCount'),
-    #Total Counsellors Count
-    path('getCounsellorsCount', views.getCounsellorsCount, name='getCounsellorsCount'),
-    #Total Reviews Count
-    path('getReviewsCount', views.getReviewsCount, name='getReviewsCount'),
+    # CareerGPT History
+    path('saveHistory', views.saveHistory, name='saveHistory'),
+    path('getHistory', views.getHistory, name='getHistory'),
+
     # Counsellor Dashboard 
     path('getCounsellorData', views.getCounsellorData, name='getCounsellorData'),
     path('getCounsellorCardsData', views.getCounsellorCardsData, name='getCounsellorCardsData'),
@@ -47,6 +43,17 @@ urlpatterns = [
     path('editBlog', views.editBlog, name='editBlog'),
     path('deleteBlog/<int:bid>', views.deleteBlog, name='deleteBlog'),
 
+
+    # Admin Dashboard 
+
+    # Total User Count
+    path('getUsersCount', views.getUsersCount, name='getUsersCount'),
+    # Total Blogs Count
+    path('getBlogsCount', views.getBlogsCount, name='getBlogsCount'),
+    # Total Counsellors Count
+    path('getCounsellorsCount', views.getCounsellorsCount, name='getCounsellorsCount'),
+    # Total Reviews Count
+    path('getReviewsCount', views.getReviewsCount, name='getReviewsCount'),
     # Admin Profile
     path('getAdminProfile', views.getAdminProfile, name='getAdminProfile'),
     path('updateAdminProfile', views.updateAdminProfile, name='updateAdminProfile'),

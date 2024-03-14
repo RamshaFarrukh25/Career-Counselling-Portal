@@ -13,12 +13,29 @@
     width: 600px;
 }
 
-.react-chatbot-kit-chat-bot-message{
+.custom-bot-message{
     background-color: var(--lightPink);
     margin-left: 5px;
-    width: 350px;
+    width: 400px;
     padding: 14px;
     color: #81689D;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.loading-message{
+    margin-left: 5px;
+    width: 400px;
+    padding: 14px;
+    color: #4BB543;
+    font-size: 16px;
+}
+
+.error-message{
+    margin-left: 5px;
+    width: 400px;
+    padding: 14px;
+    color: red;
     font-size: 16px;
 }
 
@@ -41,4 +58,5 @@
 .react-chatbot-kit-chat-btn-send{
     background-color: #81689D;
 }
+
 

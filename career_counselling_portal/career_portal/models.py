@@ -85,8 +85,10 @@ class Blogs(models.Model):
     
 
 class CareerGPTHistory(models.Model):
-    user_id = models.OneToOneField(ACU, on_delete=models.CASCADE, primary_key=True, related_name='careerGPTHistory')
-    history = models.TextField()
+    user_id = models.ForeignKey(ACU, on_delete=models.CASCADE, related_name='careerGPTHistory')
+    msgId = models.BigIntegerField()
+    message = models.TextField()
+    type = models.CharField(max_length=4, default="bot")
 
     def __str__(self):
         return f'The user who used careerGPT is: {self.user_id.name}'
