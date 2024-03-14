@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -17,36 +17,47 @@ import ApproveBlogsCSS from "../../../assets/styles/dashboards/admin_css/Approve
 import Modal from '@mui/material/Modal';
 import { Editor } from '@tinymce/tinymce-react';
 import Tooltip from '@mui/material/Tooltip';
+import JoditEditor from "jodit-react"
+import { useDispatch, useSelector } from "react-redux";
+import { getUnapprovedBlogs, 
+          setRejectionReason, 
+          rejectBlog, 
+          handleChange, 
+          setSelectedBlog, 
+          handleConfirmDelete,
+          approveBlog} from '../../../features/dashboards/admin/approveBlogs/approveBlogsSlice';
 
 
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 50 },
-  { id: 'blogName', label: 'Blog Name', minWidth: 200 },
-  { id: 'authorName', label: 'Author Name', minWidth: 150 },
-  { id: 'issueDate', label: 'Issue Date', minWidth: 150 },
+  { id: 'title', label: 'Blog Title', minWidth: 200 },
+  { id: 'author_name', label: 'Author Name', minWidth: 150 },
+  { id: 'created_at', label: 'Issue Date', minWidth: 150 },
   { id: 'actions', label: 'Actions', minWidth: 150 },
 ];
 
-// Sample data for the table
-const initialRows = [
-  { id: 1, blogName: 'Sample Blog 1', authorName: 'Author A', issueDate: '2023-01-01', image: CounsellorsImage, content: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.', blogApprovalStatus:0},
-  { id: 2, blogName: 'Sample Blog 2', authorName: 'Author B', issueDate: '2023-01-05', image: CounsellorsImage, content: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.' , blogApprovalStatus :1},
-  // Add more rows as needed...
-];
 
 export default function ApproveBlogs() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchQuery, setSearchQuery] = useState('');
   const [openModal, setOpenModal] = useState(false);
-  const [selectedBlog, setSelectedBlog] = useState(null);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
-  const [rows, setRows] = useState(initialRows);
   const [openApproveModal, setApproveOpenModal] = useState(false);
   const editorRef = useRef(null);
   const [openImageModal, setOpenImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
+  const editor = React.useRef(null)
+
+  const {rows, rejectionReason, selectedBlog} =  useSelector((state) => state.approveBlogs);
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    return () => {
+      dispatch(getUnapprovedBlogs())
+    }
+  }, [dispatch])
 
   const handleOpenModal = (row) => {
     setSelectedBlog(row);
@@ -60,15 +71,6 @@ export default function ApproveBlogs() {
   const handleDeleteBlog = (row) => {
     setSelectedBlog(row);
     setDeleteConfirmationOpen(true);
-  };
-
-  const handleConfirmDelete = () => {
-    if (selectedBlog) {
-      const updatedRows = rows.filter((row) => row.id !== selectedBlog.id);
-      setRows(updatedRows);
-      setSelectedBlog(null);
-    }
-    setDeleteConfirmationOpen(false);
   };
 
   const handleCancelDelete = () => {
@@ -85,19 +87,8 @@ export default function ApproveBlogs() {
     setPage(0);
   };
 
-  const handleApprovalToggle = (blog) => {
-    setSelectedBlog(blog);
+  const handleApprovalToggle = () => {
     setApproveOpenModal(true)
-    const updatedRows = rows.map((row) => {
-      if (row.id === blog.id) {
-        return {
-          ...row,
-          blogApprovalStatus: row.blogApprovalStatus === 1 ? 0 : 1,
-        };
-      }
-      return row;
-    });
-    setRows(updatedRows);
   };
   const handleApproveClose = () => {
     setApproveOpenModal(false);
@@ -169,25 +160,33 @@ export default function ApproveBlogs() {
                             <i
                               className={`fa fa-eye ${ApproveBlogsCSS.icon} ${ApproveBlogsCSS['icon-eye']}`}
                               aria-hidden="true"
-                              onClick={() => handleOpenModal(row)}
-                             
+                              onClick={() => 
+                                {
+                                  dispatch(setSelectedBlog(row))
+                                  handleOpenModal(row)
+                                }}
                             ></i>
                             </Tooltip>
-                            <Tooltip title = "Delete Blog">
+                            <Tooltip title = "Reject Blog">
                             <i
-                              className={`fa fa-trash mx-2 ${ApproveBlogsCSS.icon} ${ApproveBlogsCSS['icon-trash']}`}
+                              className={`fa-solid fa-times mx-2 ${ApproveBlogsCSS.icon} ${ApproveBlogsCSS['icon-trash']}`}
                               aria-hidden="true"
                            
-                              onClick={() => handleDeleteBlog(row)}
+                              onClick={() => 
+                                {
+                                  dispatch(setSelectedBlog(row))
+                                  handleDeleteBlog(row)
+                                }}
                             ></i>
                             </Tooltip>
-                            <Tooltip title = "Approve/Reject Blog">
+                            <Tooltip title = "Approve Blog">
                             <i
-                              className={`fa-solid  ${
-                                row.blogApprovalStatus === 1 ? 'fa-check' : 'fa-times'
-                              } ${ApproveBlogsCSS.icon} ${ApproveBlogsCSS['icon-approval']}`}
-                              onClick={() => handleApprovalToggle(row)}
-                            
+                              className={`fa-solid fa-check ${ApproveBlogsCSS.icon} ${ApproveBlogsCSS['icon-approval']}`}
+                              onClick={() => 
+                                {
+                                  dispatch(setSelectedBlog(row))
+                                  handleApprovalToggle()
+                                }}
                             ></i>
                             </Tooltip>
                           </>
@@ -215,16 +214,16 @@ export default function ApproveBlogs() {
 
       {/* Blog Details Modal */}
       <Dialog open={openModal} onClose={handleCloseModal}>
-        <DialogTitle>Blog Details</DialogTitle>
+        <DialogTitle>Blog Detail</DialogTitle>
         <DialogContent>
           {selectedBlog && (
             <div>
-              <p><strong>Blog Name:</strong> {selectedBlog.blogName}</p>
-              <p><strong>Author Name: </strong>{selectedBlog.authorName}</p>
-              <p><strong>Issue Date:</strong> {selectedBlog.issueDate}</p>
-              <img  className={ApproveBlogsCSS.certImage} src={selectedBlog.image} alt="Blog Image" 
-                  onClick={() => handleImageClick(selectedBlog.image)}/>
-              <p style = {{marginTop: 20}}>{selectedBlog.content}</p>
+              <p><strong>Title: </strong> {selectedBlog.title}</p>
+              <p><strong>Author Name: </strong>{selectedBlog.author_name}</p>
+              <p><strong>Issue Date: </strong> {selectedBlog.created_at}</p>
+              <img  className={ApproveBlogsCSS.certImage} src={`../../../../../career_counselling_portal/Counsellors/${selectedBlog.counsellor_email}/Blogs/${selectedBlog.cover_image}`} alt="Blog Image" 
+                  onClick={() => handleImageClick(`../../../../../career_counselling_portal/Counsellors/${selectedBlog.counsellor_email}/Blogs/${selectedBlog.cover_image}`)}/>
+              <p style = {{marginTop: 20}} dangerouslySetInnerHTML={{ __html: selectedBlog.description }}></p>
             </div>
           )}
           <Button onClick={handleCloseModal}
@@ -264,16 +263,30 @@ export default function ApproveBlogs() {
         <DialogTitle>Delete Confirmation</DialogTitle>
         <DialogContent>
           {selectedBlog && (
-            
-
             <div>
               <p>Are you sure you want to delete this blog?</p>
               <p><strong>ID:</strong> {selectedBlog.id}</p>
-              <p><strong>Blog Name: </strong>{selectedBlog.blogName}</p>
-             
+              <p><strong>Blog Title: </strong>{selectedBlog.title}</p>
+              <p><strong>Reason of Rejection: </strong></p>
+              {/* rejection reason module */}
             </div>
           )}
-          <Button onClick={handleConfirmDelete} style={{
+
+          <Button 
+              onClick={() => 
+                {
+                  dispatch(
+                    setSelectedBlog(selectedBlog.id)
+                  )
+                  dispatch(
+                    handleConfirmDelete()
+                  )
+                  handleCancelDelete()
+                  dispatch(
+                    rejectBlog({blog_id: selectedBlog.id, counsellor_email: selectedBlog.counsellor_email})
+                  )
+                }} 
+              style={{
               margin: '10px',
               padding: '8px 16px',
               cursor: 'pointer',
@@ -311,13 +324,14 @@ export default function ApproveBlogs() {
   <div className={ApproveBlogsCSS.modalContainer}>
     {selectedBlog && (
       <div className={ApproveBlogsCSS.modalContent}>
-        <h2>{selectedBlog.blogName}</h2>
-        <p>Author Name: {selectedBlog.authorName}</p>
-        <hr />
+        <h2>Do you want  to approve this blog?</h2>
+        <p>Blog Title: <strong>{selectedBlog.title}</strong></p>
+        <p>Author Name: {selectedBlog.author_name}</p>
+        
         <div>
-          <Editor
+          {/* <Editor
               onInit={(evt, editor) => editorRef.current = editor}
-      apiKey='5ywgvw0w1l7a1mchsxqbpmi62o54vmb0bss3bo4020kxre28'
+              apiKey='c6i2i2x2pk5zi9xvmylesgph4u0kzmxzdg51sr03dhgjzskp'
          init={{
            height: 200,
            menubar: false,
@@ -332,11 +346,26 @@ export default function ApproveBlogs() {
            'removeformat | help',
            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
          }}
-       />
+       /> */}
         </div>
         <div className={ApproveBlogs.modalActions}>
           <button onClick={handleApproveClose} className= {ApproveBlogsCSS.buttonStyle}>Close</button>
-          <button onClick={() => sendMessage(selectedBlog)} className= {`${ApproveBlogsCSS.buttonStyle} mx-2`} >Submit</button>
+          <button onClick={() =>{
+                    dispatch(
+                      setSelectedBlog(selectedBlog.id)
+                    )
+                    dispatch(
+                      handleConfirmDelete()
+                    )
+                    handleApproveClose()
+                    dispatch(
+                      approveBlog({blog_id: selectedBlog.id})
+                    )
+                  }
+                }
+                  className= {`${ApproveBlogsCSS.buttonStyle} mx-2`} >
+              Approve
+          </button>
         </div>
       </div>
     )}

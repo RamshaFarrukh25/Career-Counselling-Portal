@@ -48,6 +48,7 @@ const loginSlice = createSlice({
           .addCase(loginUser.fulfilled, (state,action) => {
             console.log("Login fulfilled")
             state.isLogin= action.payload.isLogin
+            console.log(state.isLogin)
           })
           .addCase(loginUser.rejected, (state) => {
             console.log("login rejected");

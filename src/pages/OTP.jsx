@@ -71,8 +71,9 @@ export default function OTP(props){
                     await dispatch(registerCounsellor(formData))
                     await dispatch(sendVerificationEmail(
                         {'email': offerCounsellorForm.email, 'name': offerCounsellorForm.name}))
+                    navigate("/signupSuccess", { replace: true })
                 }
-                navigate("/signupSuccess", { replace: true })
+                
                 window.location.reload()
             }
         }

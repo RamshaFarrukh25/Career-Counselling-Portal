@@ -10,7 +10,8 @@ const initialState = {
         area_of_field:'',
         cover_image: ''
     },
-    errorMsg: ""
+    errorMsg: "",
+    user_email:""
 }
 
 // API THAT GETS BLOGS DATA
@@ -111,6 +112,7 @@ const addBlogSlice = createSlice({
             state.addBlog.area_of_field = action.payload.blogDetails.area_of_field
             state.addBlog.description = action.payload.blogDetails.description
             state.addBlog.cover_image = action.payload.blogDetails.cover_image
+            state.user_email = action.payload.user_email
           })
           .addCase(getBlogDetails.rejected, (state, action) => {
             //console.log("getBlogDetails rejected")
@@ -119,7 +121,8 @@ const addBlogSlice = createSlice({
             //console.log("editBlogData pending")
           })
           .addCase(editBlogData.fulfilled, (state, action) => {
-            //console.log("editBlogData fulfilled")
+            console.log("editBlogData fulfilled")
+           
           })
           .addCase(editBlogData.rejected, (state, action) => {
             //console.log("editBlogData rejected")

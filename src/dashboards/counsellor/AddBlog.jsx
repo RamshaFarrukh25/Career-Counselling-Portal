@@ -17,7 +17,7 @@ export default function AddBlog() {
     const params = useParams()
     const editor = React.useRef(null)
     const dispatch = useDispatch()
-    const {addBlog, errorMsg} = useSelector((store) => store.addBlog)
+    const {addBlog, errorMsg,user_email} = useSelector((store) => store.addBlog)
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const formData = new FormData()
