@@ -8,8 +8,6 @@ const initialState = {
 
 // API that GETS TOP Counsellors
 const apiUrl = "http://127.0.0.1:8000/getTopCounsellors";
-
-
 export const getTopCounsellors = createAsyncThunk('askCounsellorSlice/getTopCounsellors', async () => {
     try {
       const response = await axios.get(apiUrl);

@@ -75,3 +75,9 @@ class CounsellorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Counsellor
         fields = '__all__'
+
+
+class CareerGPTHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CareerGPTHistory
+        fields = '__all__'

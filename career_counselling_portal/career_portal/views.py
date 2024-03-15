@@ -429,153 +429,115 @@ def blogDetails(request):
         return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
 
 # Blogs Data End    
-
-# Admin Profile
-def getAdminProfile(request):
-    if request.method == 'GET':
-        try:
-            profileData = ACU.objects.get(role = 'A')
-            serializer = ACUSerializer(profileData)
-            return HttpResponse(json.dumps({'profileData' : serializer.data}))
-        except Exception as e:
-            return HttpResponse(json.dumps({'status': 'error'}))
-    else:
-        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}),status=405)
-
-@csrf_exempt
-def updateAdminProfile(request):
-    if request.method == 'PUT':
-        data = json.loads(request.body.decode('utf-8'))
-        profile_data = data.get('profileForm', {})
-        name = profile_data.get('name')
-        password = profile_data.get('password')
-        admin = ACU.objects.get(role = 'A')
-        admin.name = name
-        admin.password = make_password(password)
-        admin.save()
-        return HttpResponse(json.dumps({'status' : 'profile updated successfully'}))
-    else:
-        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
-# Admin Profile End
-
-blogDetails
-# User Report
-def getUsers(request):
-    if request.method == 'GET':
-        try:
-            users = ACU.objects.filter(Q(role = 'U') | Q(role = 'B'))
-            serializer = ACUSerializer(users, many=True)
-            return HttpResponse(json.dumps({'usersList' : serializer.data}))
-        except Exception as e:
-            return HttpResponse(json.dumps({'status': 'error'}))
-    else:
-        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}),status=405)
     
 
+#SendBird Api for Create Channel 
 @csrf_exempt
-def deleteUser(request):
+def createSendBirdChannel(request):
     if request.method == 'POST':
-        try:
-            data = json.loads(request.body.decode('utf-8'))
-            user_id = data.get('selectedRow')
-            user = ACU.objects.get(id=user_id)
-            # Deleting Counsellor directory
-            if user.role == 'B' or user.role =='C':
-                removeDirectory((os.path.join(settings.BASE_DIR, 'Counsellors')), user.email)
-            user.delete()
-            return HttpResponse(json.dumps({'status': 'user deleted successfully'}))
-        except ACU.DoesNotExist:
-            return HttpResponse(json.dumps({'status': 'error', 'message': 'User not found'}), status=404, content_type='application/json')
-    else:
-        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
-# User Report End
-
-
-# Approve Reviews
-def getUnapprovedReviews(request):
-    if request.method == 'GET':
-        try:
-            reviewsData = Reviews.objects.filter(is_approved = False)
-            serializer = ReviewsSerializer(reviewsData, many = True)
-            return HttpResponse(json.dumps({'unapprovedReviews' : serializer.data}))
-        except Exception as e:
-            return HttpResponse(json.dumps({'status': 'error'}))
-    else:
-        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}),status=405)
-
-
-@csrf_exempt
-def deleteReview(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body.decode('utf-8'))
-            review_id = data.get('selectedRow')
-            review = Reviews.objects.get(id= review_id)
-            review.delete()
-            return HttpResponse(json.dumps({'status': 'user deleted successfully'}))
-        except ACU.DoesNotExist:
-            return HttpResponse(json.dumps({'status': 'error', 'message': 'User not found'}), status=404, content_type='application/json')
-    else:
-        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
-    
-
-@csrf_exempt
-def approveReview(request):
-    if request.method == 'PUT':
         data = json.loads(request.body.decode('utf-8'))
-        reviewer_id = data.get('selectedRow')
-        review = Reviews.objects.get(id= reviewer_id)
-        review.is_approved = True
-        review.save()
-        return HttpResponse(json.dumps({'status' : 'review approved successfully'}))
+        counsellorId = data.get('counsellorId')
+        counsellorNickName = data.get('counsellorNickName')
+        counsellorProfileURL = data.get('counsellorProfileURL')
+        user_id =  request.session.get('user_id')
+        # Check if the user is logged in (user_id exists in the session)
+        if user_id is not None:
+            try:
+                # Fetch user details from the database using the user_id
+                user = ACU.objects.get(id=user_id)
+                print("User",user)
+                # counsellor = Counsellor.objects.get(counsellor_id=user)
+                User_object = user_id
+                Counsellor_object = counsellorId
+                # Check if the entry already exists in UserChatWithCounsellors
+                # existing_entry = UserChatWithCounsellors.objects.filter(
+                #     user_id=user,
+                #     counsellor_id=counsellor
+                # ).exists()
+
+                # if not existing_entry:
+                #     # If the entry doesn't exist, create one
+                #     UserChatWithCounsellors.objects.create(
+                #         user_id=user,
+                #         counsellor_id=counsellor
+                #     )
+
+                if (not getUser(User_object)):
+                    user_user_id = createUser(user_id, user.name, "")
+                    print(user_user_id)
+                    User_object = json.loads(user_user_id.content).get('user_id')
+                    
+                if (not getUser(Counsellor_object)):
+                    counsellor_user_id = createUser(counsellorId, counsellorNickName, counsellorProfileURL)
+                    print(counsellor_user_id)
+                    Counsellor_object = json.loads(counsellor_user_id.content).get('user_id')
+
+                # Create a SendBird channel
+                print(User_object, Counsellor_object, user.name, counsellorNickName)
+                channel = createChannel(User_object, Counsellor_object, user.name, counsellorNickName)
+                channel_url = json.loads(channel.content).get('channel_url')
+                #print("Channel Url in views.py : ", channel_url)
+
+                if not channel_url:
+                    raise Exception("Sorry, channel is not created on SendBird!!")
+
+                return HttpResponse(channel_url, status=200)
+
+            except ACU.DoesNotExist:
+                return JsonResponse({'message': 'User not found in the database'}, status=404)
+            except Exception as e:
+                print(e)
+                return JsonResponse({'message': str(e)}, status=500)
+        else:
+            return JsonResponse({'message': 'User not logged in'}, status=401)
     else:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
-# Approve Reviews End
-    
-# Approve Blogs
-def getUnapprovedBlogs(request):
-    if request.method == 'GET':
-        try:
-            blogsData = Blogs.objects.filter(is_approved = False)
-            serializer = BlogsSerializer(blogsData, many = True)
-            return HttpResponse(json.dumps({'unapprovedBlogs' : serializer.data}))
-        except Exception as e:
-            return HttpResponse(json.dumps({'status': 'error'}))
-    else:
-        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}),status=405)
 
+# End of SendBird Api
+
+
+# CareerGPT History
 @csrf_exempt
-def rejectBlog(request):
+def saveHistory(request):
     if request.method == 'POST':
-        try:
-            data = json.loads(request.body.decode('utf-8'))
-            blog_id = data.get('blog_id')
-            # reason = data.get('rejectionReason')
-            blog = Blogs.objects.get(id= blog_id)
-            email = data.get('counsellor_email')
-            # Deleting blog cover image from Counsellors directory
-            path_blog_image = os.path.join(settings.BASE_DIR, f"Counsellors/{email}/Blogs/{blog.cover_image}")
-            os.remove(path_blog_image)
-            blog.delete()
-            return HttpResponse(json.dumps({'status': 'blog deleted successfully'}))
-        except ACU.DoesNotExist:
-            return HttpResponse(json.dumps({'status': 'error', 'message': 'blog not found'}), status=404, content_type='application/json')
+        data = json.loads(request.body.decode('utf-8'))
+        # print("Data Here: ", data)
+        uid = request.session.get('user_id')
+        acuInstance = ACU.objects.get(id=uid)
+        # Deleting History
+        user_history = CareerGPTHistory.objects.filter(user_id=acuInstance)
+
+        if(len(data) == 1):
+            return JsonResponse({'status': 'success', 'message': 'Data Already Exist'})
+
+        user_history.delete()
+        # Saving History
+        for item in data:
+            print("Item: ", item)
+            history_item = CareerGPTHistory(
+                user_id=acuInstance, 
+                msgId=item['id'],
+                message=item['message'],
+                type=item['type']
+            )
+            history_item.save()
+
+        return JsonResponse({'status': 'success', 'message': 'Data Saved Successfully'})
     else:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
     
-
-@csrf_exempt
-def approveBlog(request):
-    if request.method == 'PUT':
-        data = json.loads(request.body.decode('utf-8'))
-        blog_id = data.get('blog_id')
-        blog = Blogs.objects.get(id= blog_id)
-        blog.is_approved = True
-        blog.save()
-        return HttpResponse(json.dumps({'status' : 'blog approved successfully'}))
+@api_view(['GET'])
+def getHistory(request):
+    if request.method == 'GET':
+        uid = request.session.get('user_id')
+        acuInstance = ACU.objects.get(id=uid)
+        history = CareerGPTHistory.objects.filter(user_id=acuInstance)
+        serializedData = CareerGPTHistorySerializer(history, many=True)
+        return JsonResponse({'history': serializedData.data})
     else:
-        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
-# Approve Blogs End       
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+
+# CareerGPT History End
 
 # Counsellor Dashboard
 @api_view(['GET'])
@@ -714,113 +676,7 @@ def addBlog(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     else:
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
-    
-    
-# CareerGPT History End    
-    
-
-#SendBird Api for Create Channel
-@csrf_exempt
-def createSendBirdChannel(request):
-    if request.method == 'POST':
-        data = json.loads(request.body.decode('utf-8'))
-        counsellorId = data.get('counsellorId')
-        counsellorNickName = data.get('counsellorNickName')
-        counsellorProfileURL = data.get('counsellorProfileURL')
-        user_id =  request.session.get('user_id')
-        print("User id", user_id)
-        print("Counsellor id", counsellorId, counsellorNickName, counsellorProfileURL)
-        # Check if the user is logged in (user_id exists in the session)
-        if user_id is not None:
-            try:
-                # Fetch user details from the database using the user_id
-                user = ACU.objects.get(id=user_id)
-                print("User",user)
-                # counsellor = Counsellor.objects.get(counsellor_id=user)
-                User_object = user_id
-                Counsellor_object = counsellorId
-                # Check if the entry already exists in UserChatWithCounsellors
-                # existing_entry = UserChatWithCounsellors.objects.filter(
-                #     user_id=user,
-                #     counsellor_id=counsellor
-                # ).exists()
-
-                # if not existing_entry:
-                #     # If the entry doesn't exist, create one
-                #     UserChatWithCounsellors.objects.create(
-                #         user_id=user,
-                #         counsellor_id=counsellor
-                #     )
-
-                if (not getUser(User_object)):
-                    user_user_id = createUser(user_id, user.name, "")
-                    print(user_user_id)
-                    User_object = json.loads(user_user_id.content).get('user_id')
-
-                if (not getUser(Counsellor_object)):
-                    counsellor_user_id = createUser(counsellorId, counsellorNickName, counsellorProfileURL)
-                    print(counsellor_user_id)
-                    Counsellor_object = json.loads(counsellor_user_id.content).get('user_id')
-
-                # Create a SendBird channel
-                print(User_object, Counsellor_object, user.name, counsellorNickName)
-                channel = createChannel(User_object, Counsellor_object, user.name, counsellorNickName)
-                channel_url = json.loads(channel.content).get('channel_url')
-                print("Channel Url in views.py : ", channel_url)
-
-                if not channel_url:
-                    raise Exception("Sorry, channel is not created on SendBird!!")
-
-                return HttpResponse(channel_url, status=200)
-
-            except ACU.DoesNotExist:
-                return JsonResponse({'message': 'User not found in the database'}, status=404)
-            except Exception as e:
-                print(e)
-                return JsonResponse({'message': str(e)}, status=500)
-        else:
-            return JsonResponse({'message': 'User not logged in'}, status=401)
-    else:
-        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
-    
-    #End of SendBird Api
-
-##########API FOR ADMIN DASHBOARD (COUNT API)##########
-
-#Api for getting total of user count
-def getUsersCount(request):
-    try:
-        users_count = ACU.objects.count()
-        return JsonResponse({'users_count': users_count})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-    
-#Api for getting total of Blogs count
-def getBlogsCount(request):
-    try:
-        blog_count =Blogs.objects.count()
-        return JsonResponse({'blog_count': blog_count})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-    
-
-#Api for getting total of Counsellors count
-def getCounsellorsCount(request):
-    try:
-        counsellor_count = Counsellor.objects.filter(is_approved=True).count()
-        return JsonResponse({'counsellor_count': counsellor_count})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-
-#Api for getting total of Reviews count
-def getReviewsCount(request):
-    try:
-        review_count = Reviews.objects.filter(is_approved=True).count()
-        return JsonResponse({'review_count': review_count})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-    
-##########---end of dashboard api---##########
+     
 
 @csrf_exempt
 def editBlog(request):
@@ -877,10 +733,186 @@ def deleteBlog(request, bid):
 
 # Counsellor Dashboard End 
 
-#admin dashboard
+##########API FOR ADMIN DASHBOARD##########
 
+#Api for getting total of user count
+def getUsersCount(request):
+    try:
+        users_count = ACU.objects.count()
+        return JsonResponse({'users_count': users_count})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+#Api for getting total of Blogs count
+def getBlogsCount(request):
+    try:
+        blog_count =Blogs.objects.count()
+        return JsonResponse({'blog_count': blog_count})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+
+#Api for getting total of Counsellors count
+def getCounsellorsCount(request):
+    try:
+        counsellor_count = Counsellor.objects.filter(is_approved=True).count()
+        return JsonResponse({'counsellor_count': counsellor_count})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+#Api for getting total of Reviews count
+def getReviewsCount(request):
+    try:
+        review_count = Reviews.objects.filter(is_approved=True).count()
+        return JsonResponse({'review_count': review_count})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+# Admin Profile
+def getAdminProfile(request):
+    if request.method == 'GET':
+        try:
+            profileData = ACU.objects.get(role = 'A')
+            serializer = ACUSerializer(profileData)
+            return HttpResponse(json.dumps({'profileData' : serializer.data}))
+        except Exception as e:
+            return HttpResponse(json.dumps({'status': 'error'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}),status=405)
+
+@csrf_exempt
+def updateAdminProfile(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body.decode('utf-8'))
+        profile_data = data.get('profileForm', {})
+        name = profile_data.get('name')
+        password = profile_data.get('password')
+        admin = ACU.objects.get(role = 'A')
+        admin.name = name
+        admin.password = make_password(password)
+        admin.save()
+        return HttpResponse(json.dumps({'status' : 'profile updated successfully'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
+# Admin Profile End
+
+# User Report
+def getUsers(request):
+    if request.method == 'GET':
+        try:
+            users = ACU.objects.filter(Q(role = 'U') | Q(role = 'B'))
+            serializer = ACUSerializer(users, many=True)
+            return HttpResponse(json.dumps({'usersList' : serializer.data}))
+        except Exception as e:
+            return HttpResponse(json.dumps({'status': 'error'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}),status=405)
+    
+
+@csrf_exempt
+def deleteUser(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            user_id = data.get('selectedRow')
+            user = ACU.objects.get(id=user_id)
+            # Deleting Counsellor directory
+            if user.role == 'B':
+                removeDirectory((os.path.join(settings.BASE_DIR, 'Counsellors')), user.email)
+            user.delete()
+            return HttpResponse(json.dumps({'status': 'user deleted successfully'}))
+        except ACU.DoesNotExist:
+            return HttpResponse(json.dumps({'status': 'error', 'message': 'User not found'}), status=404, content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
+# User Report End
+
+# Approve Reviews
+def getUnapprovedReviews(request):
+    if request.method == 'GET':
+        try:
+            reviewsData = Reviews.objects.filter(is_approved = False)
+            serializer = ReviewsSerializer(reviewsData, many = True)
+            return HttpResponse(json.dumps({'unapprovedReviews' : serializer.data}))
+        except Exception as e:
+            return HttpResponse(json.dumps({'status': 'error'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}),status=405)
+
+
+@csrf_exempt
+def deleteReview(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            review_id = data.get('selectedRow')
+            review = Reviews.objects.get(id= review_id)
+            review.delete()
+            return HttpResponse(json.dumps({'status': 'user deleted successfully'}))
+        except ACU.DoesNotExist:
+            return HttpResponse(json.dumps({'status': 'error', 'message': 'User not found'}), status=404, content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
+    
+@csrf_exempt
+def approveReview(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body.decode('utf-8'))
+        reviewer_id = data.get('selectedRow')
+        review = Reviews.objects.get(id= reviewer_id)
+        review.is_approved = True
+        review.save()
+        return HttpResponse(json.dumps({'status' : 'review approved successfully'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
+# Approve Reviews End
+    
+# Approve Blogs
+def getUnapprovedBlogs(request):
+    if request.method == 'GET':
+        try:
+            blogsData = Blogs.objects.filter(is_approved = False)
+            serializer = BlogsSerializer(blogsData, many = True)
+            return HttpResponse(json.dumps({'unapprovedBlogs' : serializer.data}))
+        except Exception as e:
+            return HttpResponse(json.dumps({'status': 'error'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}),status=405)
+
+@csrf_exempt
+def rejectBlog(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            blog_id = data.get('blog_id')
+            # reason = data.get('rejectionReason')
+            blog = Blogs.objects.get(id= blog_id)
+            email = data.get('counsellor_email')
+            # Deleting blog cover image from Counsellors directory
+            path_blog_image = os.path.join(settings.BASE_DIR, f"Counsellors/{email}/Blogs/{blog.cover_image}")
+            os.remove(path_blog_image)
+            blog.delete()
+            return HttpResponse(json.dumps({'status': 'blog deleted successfully'}))
+        except ACU.DoesNotExist:
+            return HttpResponse(json.dumps({'status': 'error', 'message': 'blog not found'}), status=404, content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
+    
+@csrf_exempt
+def approveBlog(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body.decode('utf-8'))
+        blog_id = data.get('blog_id')
+        blog = Blogs.objects.get(id= blog_id)
+        blog.is_approved = True
+        blog.save()
+        return HttpResponse(json.dumps({'status' : 'blog approved successfully'}))
+    else:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
+# Approve Blogs End       
+
+    
 #api that gets counsellors data
-
 @api_view(['GET'])
 def getCounsellorsData(request):
     if request.method == 'GET':
@@ -944,5 +976,5 @@ def getApprovedCounsellors(request):
     else:
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
-    
-    
+    ##########---end of dashboard api---##########
+   
