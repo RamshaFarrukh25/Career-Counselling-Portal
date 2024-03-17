@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit"
 import signupReducer from "./features/signup/signupSlice"
 import otpReducer from "./features/otp/otpSlice"
+import headerReducer from "./features/header/headerSlice"
 import loginReducer from "./features/login/loginSlice"
 import reviewsReducer from "./features/reviews/reviewsSlice"
 import offerCounsellingReducer from "./features/offerCounselling/offerCounsellingSlice"
@@ -29,6 +30,7 @@ export const store = configureStore({
         signup: signupReducer,
         login: loginReducer,
         otp: otpReducer,
+        header: headerReducer,
         reviews: reviewsReducer,
         offerCounselling: offerCounsellingReducer,
         askCounsellor: askCounsellorReducer,

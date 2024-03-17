@@ -16,6 +16,7 @@ import ProfileCSS from "../../assets/styles/dashboards/counsellor_css/Profile.mo
 import {getCounsellorProfileData} from "../../features/dashboards/counsellor/counsellorProfileSlice"
 import { useDispatch,useSelector } from 'react-redux';
 
+
 export default function Profile() {
   const dispatch = useDispatch()
   const {counsellorProfileData} = useSelector((store)=>store.counsellorProfile)
@@ -23,6 +24,7 @@ export default function Profile() {
   useEffect(() => {
     dispatch(getCounsellorProfileData())
   }, [])
+
 
   return (
     <section className={ProfileCSS.profileSection}>

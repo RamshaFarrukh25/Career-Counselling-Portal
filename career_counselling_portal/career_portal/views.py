@@ -14,8 +14,13 @@ from rest_framework.decorators import api_view
 from .serializers import *
 import traceback
 from .Utils.sendbird import createUser, createChannel, getUser  
-
 from .Utils.counsellor import makeDirectoy, saveImage, deleteImage, removeDirectory
+from .config.config import pusher_client
+import hmac
+import hashlib
+from django.http import HttpResponse, HttpResponseForbidden
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.encoding import force_bytes
 
 # Send OTP
 def generate_otp():
@@ -231,7 +236,6 @@ def loginUser(request):
         data = json.loads(request.body.decode('utf-8'))
         email = data.get('email')
         password = data.get('password')
-
         try:
             user = ACU.objects.get(email=email)
             if user is not None and check_password(password, user.password):
@@ -681,8 +685,6 @@ def createSendBirdChannel(request):
         counsellorNickName = data.get('counsellorNickName')
         counsellorProfileURL = data.get('counsellorProfileURL')
         user_id =  request.session.get('user_id')
-        print("User id", user_id)
-        print("Counsellor id", counsellorId, counsellorNickName, counsellorProfileURL)
         # Check if the user is logged in (user_id exists in the session)
         if user_id is not None:
             try:
@@ -719,7 +721,7 @@ def createSendBirdChannel(request):
                 print(User_object, Counsellor_object, user.name, counsellorNickName)
                 channel = createChannel(User_object, Counsellor_object, user.name, counsellorNickName)
                 channel_url = json.loads(channel.content).get('channel_url')
-                print("Channel Url in views.py : ", channel_url)
+                #print("Channel Url in views.py : ", channel_url)
 
                 if not channel_url:
                     raise Exception("Sorry, channel is not created on SendBird!!")
@@ -829,3 +831,58 @@ def deleteBlog(request, bid):
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
 # Counsellor Dashboard End 
+##WebHook API##--
+API_TOKEN =settings.SEND_BIRD_API_TOKEN
+notificationArray =[]
+@csrf_exempt
+def sendBirdWebHook(request):
+    if request.method == 'POST':
+        try:
+            sendbird_signature = request.headers.get('X-Signature')
+            generated_signature = hmac.new(
+                key=bytes(API_TOKEN, 'utf-8'),
+                msg=request.body,
+                digestmod=hashlib.sha256
+            ).hexdigest()
+            if hmac.compare_digest(generated_signature, sendbird_signature):
+                demo_data = json.loads(request.body)
+                # print("demo data", demo_data)
+                sender_id = demo_data['sender']['user_id']
+                sender_nickname = demo_data['sender']['nickname']
+                # Extract receiver information
+                members = demo_data['members']
+                receiver_id = next((member['user_id'] for member in members if member['user_id'] != sender_id), None)
+                receiver_nickname = next((member['nickname'] for member in members if member['user_id'] == receiver_id), None)
+                channel_unread_message_count =  next((member['channel_unread_message_count'] for member in demo_data['members'] if member['user_id'] == receiver_id), 0)
+                total_unread_message_count = next((member['total_unread_message_count'] for member in demo_data['members'] if member['user_id'] == receiver_id), 0)
+                last_message = demo_data['payload']['message']
+                last_message_id = demo_data['payload']['message_id']
+                last_message_created_at = demo_data['payload']['created_at']
+                channel_url = demo_data['channel']['channel_url']
+                notificationArray.append({
+                'sender_id': sender_id,
+                'receiver_id': receiver_id,
+                'total_unread_message_count': total_unread_message_count,
+                'last_message': last_message,
+                'last_message_id': last_message_id,
+                'last_message_created_at': last_message_created_at,
+                'channel_url': channel_url,
+                'channel_unread_message_count': channel_unread_message_count,
+                'sender_name': sender_nickname if sender_nickname else None,
+                'receiver_name': receiver_nickname if receiver_nickname else None
+                })
+                notificationArray.sort(key=lambda x: x['last_message_created_at'], reverse=True)
+                if total_unread_message_count > 0:
+                    pusher_client.trigger('Career_Counselling_portal-development', 'demo', {'message': notificationArray})
+                    print("Notification Array: " , notificationArray)
+                    # print("length of notificstion Array", len(notificationArray))
+                    print("run pusher")
+                return JsonResponse({"Payload": f"{request.body}"}, status=200)
+            return JsonResponse({"error": "not work"}, status=400)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+    
+

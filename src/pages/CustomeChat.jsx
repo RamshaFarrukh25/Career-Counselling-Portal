@@ -3,11 +3,16 @@ import SBConversation from '@sendbird/uikit-react/Channel';
 import SBChannelList from '@sendbird/uikit-react/ChannelList';
 import SBChannelSettings from '@sendbird/uikit-react/ChannelSettings';
 import { useNavigate } from 'react-router-dom';
+import {useDispatch,useSelector } from 'react-redux';
+import { setNotificationData } from "../features/header/headerSlice"
 
 export default function CustomizedApp(props) {
   const [showSettings, setShowSettings] = useState(false);
   const [currentChannelUrl, setCurrentChannelUrl] = useState('');
+  const {user_id} = useSelector((store)=>store.authentication)
+  const {notificationData} = useSelector((store) => store.header)
   const navigate = useNavigate();
+  const dispatch= useDispatch()
 
   useEffect(() => {
     // Update currentChannelUrl when props.channelUrl changes
@@ -15,6 +20,8 @@ export default function CustomizedApp(props) {
       setCurrentChannelUrl(props.channel_url);
     }
   }, [props.channel_url, currentChannelUrl]);
+ 
+
   
   const handleChannelSelect = (channelUrl) => {
     event.preventDefault();
@@ -33,6 +40,41 @@ export default function CustomizedApp(props) {
   const handleSettingsCloseClick = () => {
     setShowSettings(false);
   };
+  if(currentChannelUrl)
+  {
+    const applicationId = '1C58D52A-D0E4-4BB8-93D2-3786F691A2C9';
+        
+        const apiToken = '6b41c4d5d34b23a9e7cb0ccef24a5c7350d8491a';
+
+        const url = `https://api-${applicationId}.sendbird.com/v3/users/${user_id}/unread_channel_count`;
+
+                        fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Api-Token': apiToken
+                        }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                          const updatedNotificationData = [...notificationData]; // Copying the array
+                          //console.log("copy data", updatedNotificationData)
+                            updatedNotificationData[0] = {
+                                ...updatedNotificationData[0], // Copying the object
+                                total_unread_message_count: data.unread_count // Updating the value
+                            };
+                            console.log("Updated Notification in user side", updatedNotificationData);
+                            dispatch(setNotificationData({ data: updatedNotificationData }));
+                            //console.log('Unread channel count:', data.unread_count);
+                           
+                            //console.log('Unread channel count in customized chat:', data.unread_count);
+                        })
+                        
+                
+                .catch(error => {
+                    console.error('Error fetching unread channel count:', error);
+                });
+  }
 
   return (
     <div className="customized-app" style={{ height: '100vh', width: '100vw' }}>

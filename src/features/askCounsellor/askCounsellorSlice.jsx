@@ -5,7 +5,6 @@ const initialState = {
     topCounsellorsList:''
 }
 
-
 // API that GETS TOP Counsellors
 const apiUrl = "http://127.0.0.1:8000/getTopCounsellors";
 

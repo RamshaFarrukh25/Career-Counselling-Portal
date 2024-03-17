@@ -46,6 +46,7 @@ urlpatterns = [
     path('addBlog', views.addBlog, name='addBlog'),
     path('editBlog', views.editBlog, name='editBlog'),
     path('deleteBlog/<int:bid>', views.deleteBlog, name='deleteBlog'),
+    path('sendBirdWebHook', views.sendBirdWebHook, name='sendBirdWebHook'),
 
     # Admin Profile
     path('getAdminProfile', views.getAdminProfile, name='getAdminProfile'),
