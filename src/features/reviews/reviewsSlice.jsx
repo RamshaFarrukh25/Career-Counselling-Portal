@@ -4,6 +4,7 @@ import RatingLogo from "../../assets/images/Reviews_RatingLogo.png"
 import RevLogoA from "../../assets/images/Reviews_reviewColored.png"
 
 
+
 const initialState = {
     showReviewForm: true, // State to track which form to show
     changeReviewImage: RevLogoA,
@@ -27,14 +28,33 @@ const initialState = {
 const apiUrl = "http://127.0.0.1:8000/saveReviews";
 
 
-export const saveReviews = createAsyncThunk('reviewsSlice/saveReviews', async ({reviewsForm}) => {
-    try{
-      const response = await axios.post(apiUrl, {reviewsForm} );
-      return response.data;
-    } 
-    catch (error) {
-      throw error;
-    }
+
+// export const saveReviews = createAsyncThunk('reviewsSlice/saveReviews', async ({reviewsForm}) => {
+//     try{
+//       const response = await axios.post(apiUrl, {reviewsForm} );
+      
+//       const channel = pusher.subscribe('Career_Counselling_portal-development');
+//       console.log(channel)
+//       channel.bind('demo', function(data) {
+//         console.log(data)
+//         alert(JSON.stringify(data));
+//       });
+//       return response.data;
+//     } 
+//     catch (error) {
+//       throw error;
+//     }
+// });
+
+
+export const saveReviews = createAsyncThunk('reviewsSlice/saveReviews', async ({ reviewsForm }) => {
+  try {
+    const response = await axios.post(apiUrl, { reviewsForm });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 });
 
 // API THAT GETS LATEST REVIEWS

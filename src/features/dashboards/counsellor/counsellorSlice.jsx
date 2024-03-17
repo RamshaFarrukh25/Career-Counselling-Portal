@@ -5,6 +5,7 @@ const initialState = {
     name: "",
     email: "",
     profilePic: "",
+    notificationData:[]
 }
 
 export const getCounsellorData = createAsyncThunk('counsellorSlice/getCounsellorData', async() => {
@@ -19,7 +20,11 @@ export const getCounsellorData = createAsyncThunk('counsellorSlice/getCounsellor
 const counsellorSlice = createSlice({
     name: 'counsellor',
     initialState,
-    reducers:{},
+    reducers:{
+        setNotificationData:(state,{payload})=>{
+            state.notificationData = payload.data;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getCounsellorData.pending, (state) => {
@@ -38,3 +43,4 @@ const counsellorSlice = createSlice({
 })
 
 export default counsellorSlice.reducer
+export const {setNotificationData} = counsellorSlice.actions

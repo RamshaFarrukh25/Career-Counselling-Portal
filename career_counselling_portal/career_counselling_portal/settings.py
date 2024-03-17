@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-8bu81l(qn0iu6%!v!a3x14o=c3^)4sg5p=pl*@9**x%_xz9+&t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -86,6 +86,10 @@ DATABASES = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173", 
+    "https://1d35-223-123-20-203.ngrok-free.app" # Add your React development server
+]
 
 
 # Password validation
@@ -137,5 +141,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'BotGuidedPathways@gmail.com'
 EMAIL_HOST_PASSWORD = 'jpozjwkohygndsxj'
 
-SEND_BIRD_APP_ID = '0265F914-AC8E-4BCF-99D8-3F5663A93043'
-SEND_BIRD_API_TOKEN = 'c9c172124260077d92cfb4f8a3aa0e06b3f0a12d'
+
+SEND_BIRD_APP_ID = '1C58D52A-D0E4-4BB8-93D2-3786F691A2C9'
+SEND_BIRD_API_TOKEN = '6b41c4d5d34b23a9e7cb0ccef24a5c7350d8491a'
+
