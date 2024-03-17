@@ -21,9 +21,11 @@ import settingsReducer from "./features/dashboards/counsellor/settingsSlice"
 //Admin Dashboard
 import profileReducer from './features/dashboards/admin/profile/profileSlice'
 import dashboardReducer from './features/dashboards/admin/adminDashboard/dashboardSlice'
-
 import userReportReducer from './features/dashboards/admin/userReport/userReportSlice'
+import approveCounsellorsReportReducer from './features/dashboards/admin/counsellorsReport/counsellorsReportSlice'
 import approveReviewsReducer from './features/dashboards/admin/approveReviews/approveReviewsSlice'
+import approveBlogsReducer from "./features/dashboards/admin/approveBlogs/approveBlogsSlice"
+import approveCounsellorsReducer from "./features/dashboards/admin/approveCounsellors/approveCounsellorsSlice"
 
 export const store = configureStore({
     reducer: {
@@ -46,11 +48,12 @@ export const store = configureStore({
         settings: settingsReducer,
         //Admin Dashboard
         profile:profileReducer,
-
         dashboard:dashboardReducer,
-
         userReport: userReportReducer,
-        approveReviews: approveReviewsReducer
-
+        approveReviews: approveReviewsReducer,
+        approveBlogs: approveBlogsReducer,
+        approveCounsellors:approveCounsellorsReducer,
+        approveCounsellorsReport:approveCounsellorsReportReducer
+        
     }
 })

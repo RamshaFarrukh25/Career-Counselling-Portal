@@ -28,14 +28,10 @@ urlpatterns = [
     path('blogDetails',views.blogDetails,name='blogDetails'),
     #Create SendBirdChannel
     path('createSendBirdChannel', views.createSendBirdChannel, name='createSendBirdChannel'),
-    #Total User Count
-    path('getUsersCount', views.getUsersCount, name='getUsersCount'),
-    #Total Blogs Count
-    path('getBlogsCount', views.getBlogsCount, name='getBlogsCount'),
-    #Total Counsellors Count
-    path('getCounsellorsCount', views.getCounsellorsCount, name='getCounsellorsCount'),
-    #Total Reviews Count
-    path('getReviewsCount', views.getReviewsCount, name='getReviewsCount'),
+    # CareerGPT History
+    path('saveHistory', views.saveHistory, name='saveHistory'),
+    path('getHistory', views.getHistory, name='getHistory'),
+
     # Counsellor Dashboard 
     path('getCounsellorData', views.getCounsellorData, name='getCounsellorData'),
     path('getCounsellorCardsData', views.getCounsellorCardsData, name='getCounsellorCardsData'),
@@ -48,6 +44,17 @@ urlpatterns = [
     path('deleteBlog/<int:bid>', views.deleteBlog, name='deleteBlog'),
     path('sendBirdWebHook', views.sendBirdWebHook, name='sendBirdWebHook'),
 
+
+    # Admin Dashboard 
+
+    # Total User Count
+    path('getUsersCount', views.getUsersCount, name='getUsersCount'),
+    # Total Blogs Count
+    path('getBlogsCount', views.getBlogsCount, name='getBlogsCount'),
+    # Total Counsellors Count
+    path('getCounsellorsCount', views.getCounsellorsCount, name='getCounsellorsCount'),
+    # Total Reviews Count
+    path('getReviewsCount', views.getReviewsCount, name='getReviewsCount'),
     # Admin Profile
     path('getAdminProfile', views.getAdminProfile, name='getAdminProfile'),
     path('updateAdminProfile', views.updateAdminProfile, name='updateAdminProfile'),
@@ -58,4 +65,14 @@ urlpatterns = [
     path('getUnapprovedReviews', views.getUnapprovedReviews, name='getUnapprovedReviews'),
     path('deleteReview', views.deleteReview,  name='deleteReview'),
     path('approveReview', views.approveReview, name='approveReview'),
+    # Approve Blogs
+    path('getUnapprovedBlogs', views.getUnapprovedBlogs,  name='getUnapprovedBlogs'),
+    path('rejectBlog', views.rejectBlog, name='rejectBlog'),
+    path('approveBlog', views.approveBlog, name='approveBlog'),
+    
+    path('getCounsellorsData', views.getCounsellorsData, name='getCounsellorsData'),
+    path('getApprovedCounsellors', views.getApprovedCounsellors, name='getApprovedCounsellors'),
+    path('deleteCounsellor/<str:userEmail>/<str:rejectionReason>', views.deleteCounsellor, name='deleteCounsellor'),
+    path('approveCounsellor/<str:userEmail>/<str:greetingMessage>', views.approveCounsellor, name='approveCounsellor'),
+
 ]

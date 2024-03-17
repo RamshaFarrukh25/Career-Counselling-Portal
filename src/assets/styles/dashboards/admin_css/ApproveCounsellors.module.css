@@ -3,34 +3,37 @@
 {
   font-size: 20px;
 }
-.modalContainer {
+.modalContainer 
+{
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-  padding: 20px;
-  width: 80%;
-  max-width: 500px; /* Adjust the maximum width as needed */
+  padding: 15px;
+  width: 100%;
+  max-width: 600px; 
   border-radius: 8px;
-  overflow-y: auto; /* Enable scrolling if content exceeds the height */
+  overflow-y: auto;
 }
 
 
 .modalContent {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Add space between content */
-  max-height: 400px; /* Set maximum height for scroll */
-  overflow-y: auto; /* Enable scrolling within the modal content */
+  gap: 15px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
-.modalActions {
+.modalActions 
+{
   display: flex;
-  justify-content: center; /* Align buttons to the right */
+  justify-content: center;
   margin-top: 20px;
 }
-.imageModalContainer {
+.imageModalContainer 
+{
   position: fixed;
   top: 50%;
   left: 50%;
@@ -40,14 +43,27 @@
   align-items: center;
   justify-content: center;
   background-color: white;
-  padding: 20px;
+  padding: 25px;
+  border: 1px solid black;
 }
 .imageModalContent {
-  height: 80vh; /* Adjust as needed */
+  height: 90vh; /* Adjust as needed */
   overflow-y: scroll;
   text-align: center;
 }
-
+.confirmDeletionHeading{
+   color:rgb(165, 8, 8);
+}
+.confirmApprovalnHeading
+{
+  color:#105c22;
+  font-size: 25px;
+}
+.commentBox{
+  width: 70%;
+  padding: 10px;
+  border-radius: 5px;
+}
 .enlargedImage {
   max-width: 100%;
   height: auto;
@@ -69,10 +85,10 @@
 .deleteButton {
   border-radius: 10px;
   padding: 10px 20px;
-  background-color: #e00;
+  background-color: rgb(165, 8, 8);
   color: #fff;
   border:1px solid #d00;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s ease, transform 0.3s ease;
@@ -84,14 +100,22 @@
 }
 
 .certImage {
-  width: 180px; /* Adjust the width of certification images */
-  height: 200px;
-  margin-right: 20px;
+  width: 90%;
+  margin-bottom: 20px;
+  border: 1px solid black;
+  border-radius: 12px;
 }
 .icon-eye {
 
-  color: #007bff; /* Change this to your preferred color */
+  color: #007bff;
   font-size: 20px;
+}
+.horizontalLine
+{
+  width: 100%;
+  border-top: 1px solid black;
+  margin-top: 0px;
+  text-align: center;
 }
 
 .icon-trash {
@@ -118,7 +142,18 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
+.approvebuttonStyle{
+  border-radius: 10px;
+  padding: 10px 20px;
+  background-color:#105c22;
+  color: #fff;
+  border:yellowgreen;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease;
 
+}
 .buttonContainer {
   display: flex;
   justify-content: center;

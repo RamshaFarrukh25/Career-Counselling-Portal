@@ -21,6 +21,7 @@ import  ApproveBlogs  from './dashboards/admin/pages/ApproveBlogs'
 import ApproveCounsellors  from './dashboards/admin/pages/ApproveCounsellors'
 import AdminProfile  from './dashboards/admin/pages/Profile'
 import UserReport from './dashboards/admin/pages/UserReport'
+import CounsellorsReport from "./dashboards/admin/pages/CounsellorReport"
 import ApproveReviews from './dashboards/admin/pages/ApproveReviews'
 //Counsellor Dashboard
 import Counsellor from './dashboards/counsellor/Counsellor'
@@ -64,6 +65,7 @@ export default function App() {
             <Route path="approveBlogs" element={<ApproveBlogs/>} />
             <Route path="profile" element={<AdminProfile/>} />
             <Route path="userReport" element={<UserReport/>}></Route>
+            <Route path="counsellorsReport" element={<CounsellorsReport/>}></Route>
             <Route path="approveReviews" element={<ApproveReviews/>}/>
             </Route>
           </Route>

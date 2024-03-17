@@ -8,12 +8,12 @@ import { authenticate } from "../features/authentication/authenticationSlice"
 
 export default function AskCounsellor() {
   const { user_id, is_exist } = useSelector((store) => store.authentication)
-  console.log("User_id", user_id)
+  //console.log("User_id", user_id)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { topCounsellorsList } = useSelector((store) => store.askCounsellor);
+  const { topCounsellorsList } = useSelector((store) => store.askCounsellor)
 
   useEffect(() => {
     dispatch(getTopCounsellors());
@@ -33,7 +33,7 @@ export default function AskCounsellor() {
 
   const handleChatButtonClick = (counsellor) => {
     if (is_exist) {
-      createChannel(counsellor.id, counsellor.name, "", navigate);
+      createChannel(counsellor.id, counsellor.name, "", navigate)
     } else {
       // Redirect to login page if the user is not logged in
       navigate("/login");
