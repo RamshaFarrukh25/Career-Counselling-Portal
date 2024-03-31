@@ -193,3 +193,13 @@
     min-height: 100vh;
     transition: all 0.3s; 
 }
+.notificationCount {
+    position: relative;
+    top: -10px; /* Adjust the value to position it correctly */
+    right: -10px; /* Adjust the value to position it correctly */
+    background-color: rgb(164, 174, 17);
+    color: white;
+    border-radius: 50%;
+    padding: 4px 8px;
+    font-size: 12px;
+}
