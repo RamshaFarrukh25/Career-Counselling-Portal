@@ -42,9 +42,9 @@ export default function CustomizedApp(props) {
   };
   if(currentChannelUrl)
   {
-    const applicationId = '1C58D52A-D0E4-4BB8-93D2-3786F691A2C9';
+    const applicationId = 'B3C55D36-ADA4-4D77-82D5-3C3BB439AE7F';
         
-        const apiToken = '6b41c4d5d34b23a9e7cb0ccef24a5c7350d8491a';
+        const apiToken = '7f2ae6b3a4400c4692315192d8cc961d906983d2';
 
         const url = `https://api-${applicationId}.sendbird.com/v3/users/${user_id}/unread_channel_count`;
 
@@ -58,7 +58,7 @@ export default function CustomizedApp(props) {
                         .then(response => response.json())
                         .then(data => {
                           const updatedNotificationData = [...notificationData]; // Copying the array
-                          //console.log("copy data", updatedNotificationData)
+                          console.log("copy data", updatedNotificationData)
                             updatedNotificationData[0] = {
                                 ...updatedNotificationData[0], // Copying the object
                                 total_unread_message_count: data.unread_count // Updating the value

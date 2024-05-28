@@ -15,13 +15,11 @@ from rest_framework.decorators import api_view
 from .serializers import *
 import traceback
 from .Utils.sendbird import createUser, createChannel, getUser  
-from .Utils.counsellor import makeDirectoy, saveImage, deleteImage, removeDirectory
-from .config.config import pusher_client
 import hmac
 import hashlib
-from django.http import HttpResponse, HttpResponseForbidden
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.encoding import force_bytes
+from .config.config import pusher_client
+
+from .Utils.counsellor import makeDirectoy, saveImage, deleteImage, removeDirectory
 
 # Send OTP
 def generate_otp():
@@ -237,6 +235,7 @@ def loginUser(request):
         data = json.loads(request.body.decode('utf-8'))
         email = data.get('email')
         password = data.get('password')
+
         try:
             user = ACU.objects.get(email=email)
             #print(user)
@@ -436,6 +435,8 @@ def blogDetails(request):
     
 
 #SendBird Api for Create Channel 
+
+#SendBird Api for Create Channel
 @csrf_exempt
 def createSendBirdChannel(request):
     if request.method == 'POST':
@@ -470,7 +471,7 @@ def createSendBirdChannel(request):
                     user_user_id = createUser(user_id, user.name, "")
                     print(user_user_id)
                     User_object = json.loads(user_user_id.content).get('user_id')
-                    
+
                 if (not getUser(Counsellor_object)):
                     counsellor_user_id = createUser(counsellorId, counsellorNickName, counsellorProfileURL)
                     print(counsellor_user_id)
@@ -578,7 +579,7 @@ def getCounsellorProfileData(request):
         try:
             uid = request.session.get('user_id')
             counsellor = Counsellor.objects.select_related('counsellor_id').prefetch_related('working_experiences', 'qualification').get(counsellor_id=uid)
-            serializer = counsellors = (counsellor)
+            serializer = CounsellorSerializer(counsellor)
             return JsonResponse({'status': 'success','counsellor_profile_data':serializer.data})
         
         except ACU.DoesNotExist:
@@ -680,112 +681,7 @@ def addBlog(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     else:
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
-
-    
-    
-# CareerGPT History End    
-    
-
-#SendBird Api for Create Channel
-@csrf_exempt
-def createSendBirdChannel(request):
-    if request.method == 'POST':
-        data = json.loads(request.body.decode('utf-8'))
-        counsellorId = data.get('counsellorId')
-        counsellorNickName = data.get('counsellorNickName')
-        counsellorProfileURL = data.get('counsellorProfileURL')
-        user_id =  request.session.get('user_id')
-        # Check if the user is logged in (user_id exists in the session)
-        if user_id is not None:
-            try:
-                # Fetch user details from the database using the user_id
-                user = ACU.objects.get(id=user_id)
-                print("User",user)
-                # counsellor = Counsellor.objects.get(counsellor_id=user)
-                User_object = user_id
-                Counsellor_object = counsellorId
-                # Check if the entry already exists in UserChatWithCounsellors
-                # existing_entry = UserChatWithCounsellors.objects.filter(
-                #     user_id=user,
-                #     counsellor_id=counsellor
-                # ).exists()
-
-                # if not existing_entry:
-                #     # If the entry doesn't exist, create one
-                #     UserChatWithCounsellors.objects.create(
-                #         user_id=user,
-                #         counsellor_id=counsellor
-                #     )
-
-                if (not getUser(User_object)):
-                    user_user_id = createUser(user_id, user.name, "")
-                    print(user_user_id)
-                    User_object = json.loads(user_user_id.content).get('user_id')
-
-                if (not getUser(Counsellor_object)):
-                    counsellor_user_id = createUser(counsellorId, counsellorNickName, counsellorProfileURL)
-                    print(counsellor_user_id)
-                    Counsellor_object = json.loads(counsellor_user_id.content).get('user_id')
-
-                # Create a SendBird channel
-                print(User_object, Counsellor_object, user.name, counsellorNickName)
-                channel = createChannel(User_object, Counsellor_object, user.name, counsellorNickName)
-                channel_url = json.loads(channel.content).get('channel_url')
-                #print("Channel Url in views.py : ", channel_url)
-
-                if not channel_url:
-                    raise Exception("Sorry, channel is not created on SendBird!!")
-
-                return HttpResponse(channel_url, status=200)
-
-            except ACU.DoesNotExist:
-                return JsonResponse({'message': 'User not found in the database'}, status=404)
-            except Exception as e:
-                print(e)
-                return JsonResponse({'message': str(e)}, status=500)
-        else:
-            return JsonResponse({'message': 'User not logged in'}, status=401)
-    else:
-        return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}), status=405, content_type='application/json')
-    
-    #End of SendBird Api
-
-##########API FOR ADMIN DASHBOARD (COUNT API)##########
-
-#Api for getting total of user count
-def getUsersCount(request):
-    try:
-        users_count = ACU.objects.count()
-        return JsonResponse({'users_count': users_count})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-    
-#Api for getting total of Blogs count
-def getBlogsCount(request):
-    try:
-        blog_count =Blogs.objects.count()
-        return JsonResponse({'blog_count': blog_count})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-    
-
-#Api for getting total of Counsellors count
-def getCounsellorsCount(request):
-    try:
-        counsellor_count = Counsellor.objects.filter(is_approved=True).count()
-        return JsonResponse({'counsellor_count': counsellor_count})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-
-#Api for getting total of Reviews count
-def getReviewsCount(request):
-    try:
-        review_count = Reviews.objects.filter(is_approved=True).count()
-        return JsonResponse({'review_count': review_count})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-    
-##########---end of dashboard api---##########
+     
 
 @csrf_exempt
 def editBlog(request):
@@ -841,61 +737,6 @@ def deleteBlog(request, bid):
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
 # Counsellor Dashboard End 
-
-##WebHook API##--
-API_TOKEN =settings.SEND_BIRD_API_TOKEN
-notificationArray =[]
-@csrf_exempt
-def sendBirdWebHook(request):
-    if request.method == 'POST':
-        try:
-            sendbird_signature = request.headers.get('X-Signature')
-            generated_signature = hmac.new(
-                key=bytes(API_TOKEN, 'utf-8'),
-                msg=request.body,
-                digestmod=hashlib.sha256
-            ).hexdigest()
-            if hmac.compare_digest(generated_signature, sendbird_signature):
-                demo_data = json.loads(request.body)
-                # print("demo data", demo_data)
-                sender_id = demo_data['sender']['user_id']
-                sender_nickname = demo_data['sender']['nickname']
-                # Extract receiver information
-                members = demo_data['members']
-                receiver_id = next((member['user_id'] for member in members if member['user_id'] != sender_id), None)
-                receiver_nickname = next((member['nickname'] for member in members if member['user_id'] == receiver_id), None)
-                channel_unread_message_count =  next((member['channel_unread_message_count'] for member in demo_data['members'] if member['user_id'] == receiver_id), 0)
-                total_unread_message_count = next((member['total_unread_message_count'] for member in demo_data['members'] if member['user_id'] == receiver_id), 0)
-                last_message = demo_data['payload']['message']
-                last_message_id = demo_data['payload']['message_id']
-                last_message_created_at = demo_data['payload']['created_at']
-                channel_url = demo_data['channel']['channel_url']
-                notificationArray.append({
-                'sender_id': sender_id,
-                'receiver_id': receiver_id,
-                'total_unread_message_count': total_unread_message_count,
-                'last_message': last_message,
-                'last_message_id': last_message_id,
-                'last_message_created_at': last_message_created_at,
-                'channel_url': channel_url,
-                'channel_unread_message_count': channel_unread_message_count,
-                'sender_name': sender_nickname if sender_nickname else None,
-                'receiver_name': receiver_nickname if receiver_nickname else None
-                })
-                notificationArray.sort(key=lambda x: x['last_message_created_at'], reverse=True)
-                if total_unread_message_count > 0:
-                    pusher_client.trigger('Career_Counselling_portal-development', 'demo', {'message': notificationArray})
-                    print("Notification Array: " , notificationArray)
-                    # print("length of notificstion Array", len(notificationArray))
-                    print("run pusher")
-                return JsonResponse({"Payload": f"{request.body}"}, status=200)
-            return JsonResponse({"error": "not work"}, status=400)
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-
-    else:
-        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
-    
 
 ##########API FOR ADMIN DASHBOARD##########
 
@@ -1141,3 +982,61 @@ def getApprovedCounsellors(request):
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
     ##########---end of dashboard api---##########
+
+
+##WebHook API##--
+API_TOKEN =settings.SEND_BIRD_API_TOKEN
+notificationArray =[]
+@csrf_exempt
+def sendBirdWebHook(request):
+    if request.method == 'POST':
+        try:
+            sendbird_signature = request.headers.get('X-Signature')
+            generated_signature = hmac.new(
+                key=bytes(API_TOKEN, 'utf-8'),
+                msg=request.body,
+                digestmod=hashlib.sha256
+            ).hexdigest()
+            if hmac.compare_digest(generated_signature, sendbird_signature):
+                demo_data = json.loads(request.body)
+                # print("demo data", demo_data)
+                sender_id = demo_data['sender']['user_id']
+                sender_nickname = ACU.objects.get(id=sender_id)
+                print("Snder name", sender_nickname.name)
+                # Extract receiver information
+                members = demo_data['members']
+                receiver_id = next((member['user_id'] for member in members if member['user_id'] != sender_id), None)
+                receiver_nickname = ACU.objects.get(id=receiver_id)
+                print("Receiver_name", receiver_nickname.name)
+                channel_unread_message_count =  next((member['channel_unread_message_count'] for member in demo_data['members'] if member['user_id'] == receiver_id), 0)
+                total_unread_message_count = next((member['total_unread_message_count'] for member in demo_data['members'] if member['user_id'] == receiver_id), 0)
+                last_message = demo_data['payload']['message']
+                last_message_id = demo_data['payload']['message_id']
+                last_message_created_at = demo_data['payload']['created_at']
+                channel_url = demo_data['channel']['channel_url']
+                notificationArray.append({
+                'sender_id': sender_id,
+                'receiver_id': receiver_id,
+                'total_unread_message_count': total_unread_message_count,
+                'last_message': last_message,
+                'last_message_id': last_message_id,
+                'last_message_created_at': last_message_created_at,
+                'channel_url': channel_url,
+                'channel_unread_message_count': channel_unread_message_count,
+                'sender_name': sender_nickname.name if sender_nickname.name else None,
+                'receiver_name': receiver_nickname.name if receiver_nickname.name else None
+                })
+                notificationArray.sort(key=lambda x: x['last_message_created_at'], reverse=True)
+                if total_unread_message_count > 0:
+                    pusher_client.trigger('Career_Counselling_portal-development', 'demo', {'message': notificationArray})
+                    print("Notification Array: " , notificationArray)
+                    # print("length of notificstion Array", len(notificationArray))
+                    print("run pusher")
+                return JsonResponse({"Payload": f"{request.body}"}, status=200)
+            return JsonResponse({"error": "not work"}, status=400)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+   
