@@ -15,9 +15,10 @@ def createUser(id, nickname, profile_url):
             "nickname": nickname,
             "profile_url": profile_url,
         }
-
+        print(settings.SEND_BIRD_APP_ID,settings.SEND_BIRD_API_TOKEN)
+        print("Payload in user create",payload)
         response = requests.post(url, headers=headers, json=payload)
-        print("reseponse---", response.json())
+        print("reseponse--- in create user", response.json())
         print(settings.SEND_BIRD_APP_ID, settings.SEND_BIRD_API_TOKEN)
         if response.status_code == 200:
             response_data = response.json()
@@ -38,8 +39,8 @@ def createUser(id, nickname, profile_url):
 def createChannel (user_id, counsellor_id, user_name, counsellor_name):
   print(user_id, counsellor_id, user_name, counsellor_name)
   try:
-    print(settings.SEND_BIRD_APP_ID)
-    print(settings.SEND_BIRD_API_TOKEN)
+    # print(settings.SEND_BIRD_APP_ID)
+    # print(settings.SEND_BIRD_API_TOKEN)
     url = f"https://api-{settings.SEND_BIRD_APP_ID}.sendbird.com/v3/group_channels"
     headers = {
     "Api-Token": settings.SEND_BIRD_API_TOKEN,

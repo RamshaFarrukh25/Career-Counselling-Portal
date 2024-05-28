@@ -23,7 +23,7 @@ export default function Chat() {
 
   return (
     <div className="chat-container" style={{ height: "80vh", width: "80vw" }}>
-      <SBProvider appId='1C58D52A-D0E4-4BB8-93D2-3786F691A2C9' userId= {`${user_id}`}>
+      <SBProvider appId='B3C55D36-ADA4-4D77-82D5-3C3BB439AE7F' userId= {`${user_id}`}>
         <CustomizedApp channel_url={channel_url} />
       </SBProvider>
     </div>

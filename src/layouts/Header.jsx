@@ -26,10 +26,12 @@ export default function Header(){
         cluster: 'ap1'
       });
     const channel = pusher.subscribe('Career_Counselling_portal-development');
+    console.log("Hello from header")
     channel.bind('demo', function(data) {
+
         console.log("bind", data.message)
         const filteredMessages = data.message.filter((e) => user_id == e.receiver_id);
-        console.log("Filer", filteredMessages)
+        console.log("Filter", filteredMessages)
     
         // Sort notifications based on the timestamp in descending order
         const sortedNotifications = filteredMessages.sort((a, b) => new Date(b.last_message_created_at) - new Date(a.last_message_created_at));
@@ -43,6 +45,7 @@ export default function Header(){
     
        
     });
+    
   return (
     <header className={HeaderCSS.header}>
         <nav className={` ${HeaderCSS.navigation} navbar navbar-expand-lg`}>

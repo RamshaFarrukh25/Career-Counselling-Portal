@@ -33,7 +33,7 @@ export default function Counsellor(){
     channel.bind('demo', function(data) {
         // console.log("bind", data.message)
         const filteredMessages = data.message.filter((e) => user_id == e.receiver_id);
-        // console.log("Filer", filteredMessages)
+        console.log("Filer in Counsellor page", filteredMessages)
 
         // Sort notifications based on the timestamp in descending order
         const sortedNotifications = filteredMessages.sort((a, b) => new Date(b.last_message_created_at) - new Date(a.last_message_created_at));
@@ -179,6 +179,7 @@ export default function Counsellor(){
                             }
                         }}
                     >
+                        {console.log("Incounsellor page", notificationData)}
                 {Object.values(notificationData).map((notificationItem, index) => (
                 <React.Fragment key={index}>
                     <MenuItem
