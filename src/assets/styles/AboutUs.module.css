@@ -128,16 +128,16 @@
 
 .iconsLeft{
     position: absolute;
-    top: 25px;
-    left: 25px;
+    top: 13px;
+    left: 18px;
     font-size: 1.2rem;
 }
 
 
 .iconsRight {
     position: absolute;
-    bottom: 35px;
-    right: 25px;
+    bottom: 25px;
+    right: 18px;
     font-size: 1.2rem;
 }
 

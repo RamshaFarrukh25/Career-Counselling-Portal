@@ -93,10 +93,3 @@ class CareerGPTHistory(models.Model):
     def __str__(self):
         return f'The user who used careerGPT is: {self.user_id.name}'
     
-
-class UserChatWithCounsellors(models.Model):
-    user_id = models.ForeignKey(ACU, on_delete=models.CASCADE)
-    counsellor_id = models.ForeignKey(Counsellor, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'{self.user_id.name} chats with {self.counsellor_id}.'

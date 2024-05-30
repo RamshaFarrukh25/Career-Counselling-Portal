@@ -312,9 +312,10 @@ def get_truncated_review(description,max_lines=3):
 def getTopCounsellors(request):
     if request.method == 'GET':
         top_counsellors = (Counsellor.objects
-                       .filter(Q(counsellor_id__role='C') | Q(counsellor_id__role='B'))
-                       .annotate(avg_rating=Avg('ratings__rating'))
-                       .order_by('-avg_rating'))
+                           .filter(Q(counsellor_id__role='C') | Q(counsellor_id__role='B'))
+                           .filter(is_approved=True)  # Filter by is_approved field
+                           .annotate(avg_rating=Avg('ratings__rating'))
+                           .order_by('-avg_rating'))
         serializer = TopCounsellorSerializer(top_counsellors, many=True)
         #print(serializer.data)
         for data in serializer.data:
@@ -370,9 +371,9 @@ def getReviews(request):
 @csrf_exempt
 def getCounsellorsByUID(request):
     if request.method == 'GET' and request.session.get('user_id'):
-        uid = request.session.get('user_id')
-        counsellorList = UserChatWithCounsellors.objects.filter(user_id = uid)
-        serializer = UserChatWithCounsellorsSerializer(counsellorList, many = True)
+        user = ACU.objects.filter(Q(role='C') | Q(role='B'))
+        counsellors = Counsellor.objects.filter(counsellor_id__in=user)
+        serializer = CounsellorDataSerializer(counsellors, many=True)
         return HttpResponse(json.dumps({"counsellorsList" : serializer.data}))
     else:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'Method not allowed'}))
