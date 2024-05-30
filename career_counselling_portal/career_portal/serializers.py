@@ -32,12 +32,12 @@ class TopCounsellorSerializer(serializers.ModelSerializer):
         fields = ['id','name', 'field_of_study','email','profile_pic', 'qualification', 'review_description', 'avg_rating','profile_pic']
 
 
-class UserChatWithCounsellorsSerializer(serializers.ModelSerializer):
-    counsellor_name = serializers.CharField(source='counsellor_id.counsellor_id.name')
+# class UserChatWithCounsellorsSerializer(serializers.ModelSerializer):
+#     counsellor_name = serializers.CharField(source='counsellor_id.counsellor_id.name')
 
-    class Meta:
-        model = UserChatWithCounsellors
-        fields = ["counsellor_id", "counsellor_name"]
+#     class Meta:
+#         model = UserChatWithCounsellors
+#         fields = ["counsellor_id", "counsellor_name"]
 
 
 class CounsellorDataSerializer(serializers.ModelSerializer):

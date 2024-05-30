@@ -18,8 +18,7 @@ import RevLogo from "../assets/images/Reviews_ReviewLogo.png"
 import RatingLogo from "../assets/images/Reviews_RatingLogo.png"
 import RevLogoA from "../assets/images/Reviews_reviewColored.png"
 import RatLogoA from "../assets/images/Reviews_ratingColored.png"
-import { Link, useNavigate } from "react-router-dom"
-import { ListItem } from "@mui/material"
+import { useNavigate } from "react-router-dom"
 
 
 export default function Reviews(){
@@ -189,7 +188,7 @@ export default function Reviews(){
                                     >
                                         <option selected disabled>Select Counsellor</option>
                                         {counsellorList ? counsellorList.map(item => (
-                                        <option key={item.counsellor_id} value={reviewsForm.selectedOption}>{item.counsellor_name}</option>
+                                        <option key={item.counsellor_id} value={reviewsForm.selectedOption}>{item.name}</option>
                                         )) : (
                                             <option disabled>Please Login to Rate Counsellors</option>
                                         )

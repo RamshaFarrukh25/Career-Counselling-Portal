@@ -41,12 +41,12 @@ export default function AboutUs(){
                                 <div className={`mt-3 text-uppercase ${AboutUsCSS.name}`}>
                                     Ramsha Farrukh
                                 </div>
-                                <div className={AboutUsCSS.designation}>Web Developer</div>
+                                <div className={AboutUsCSS.designation}>Team Leader</div>
                             </div>
                             <div className={`${AboutUsCSS.face} ${AboutUsCSS.backFace}`}>
                                 <span className={AboutUsCSS.iconsLeft}><i className="fa-solid fa-quote-left"></i></span>
                                 <div className={AboutUsCSS.testimonial}>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet iure ad ea doloremque possimus doloribus enim officia quisquam?
+                                Excels in management, ensuring smooth project execution through task division. A Full Stack development enthusiast, she combines leadership with technical expertise.
                                     <p className={AboutUsCSS.socialIcons}>
                                         <a href="#"><span className={AboutUsCSS.linkedIn}><i class="fa-brands fa-linkedin"></i></span></a>
                                         <a href="#"><span className={AboutUsCSS.gitHub}><i class="fa-brands fa-github"></i></span></a>
@@ -68,7 +68,7 @@ export default function AboutUs(){
                             <div className={`${AboutUsCSS.face} ${AboutUsCSS.backFace}`}>
                                 <span className={AboutUsCSS.iconsLeft}><i className="fa-solid fa-quote-left"></i></span>
                                 <div className={AboutUsCSS.testimonial}>
-                                    Lorem ipsum dolor sit amet adipisicing elit. Sapiente aperiam sequi sed voluptas sint, modi omnis praesentium autem!
+                                Passionate about coding conventions, excels in both front-end and back-end development. Stays relaxed under pressure, ensuring quality work.
                                     <p className={AboutUsCSS.socialIcons}>
                                         <a href="#"><span className={AboutUsCSS.linkedIn}><i class="fa-brands fa-linkedin"></i></span></a>
                                         <a href="#"><span className={AboutUsCSS.gitHub}><i class="fa-brands fa-github"></i></span></a>
@@ -90,7 +90,7 @@ export default function AboutUs(){
                             <div className={`${AboutUsCSS.face} ${AboutUsCSS.backFace}`}>
                                 <span className={AboutUsCSS.iconsLeft}><i className="fa-solid fa-quote-left"></i></span>
                                 <div className={AboutUsCSS.testimonial}>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, rem ab sequi tempora porro sunt nesciunt rerum quas.
+                                Enthusiastic about finding new tools to simplify workflows, a motivated backend development specialist who consistently delivers high-quality work.
                                     <p className={AboutUsCSS.socialIcons}>
                                         <a href="#"><span className={AboutUsCSS.linkedIn}><i class="fa-brands fa-linkedin"></i></span></a>
                                         <a href="#"><span className={AboutUsCSS.gitHub}><i class="fa-brands fa-github"></i></span></a>
@@ -112,7 +112,7 @@ export default function AboutUs(){
                             <div className={`${AboutUsCSS.face} ${AboutUsCSS.backFace}`}>
                                 <span className={AboutUsCSS.iconsLeft}><i className="fa-solid fa-quote-left"></i></span>
                                 <div className={AboutUsCSS.testimonial}>
-                                    Lorem, ipsum dolor sit amet adipisicing elit. Necessitatibus neque eos harum sapiente unde at repellendus sunt totam?
+                                Expert in browser searching, excels at finding solutions to project challenges. Always eager to learn something new.
                                     <p className={AboutUsCSS.socialIcons}>
                                         <a href="#"><span className={AboutUsCSS.linkedIn}><i class="fa-brands fa-linkedin"></i></span></a>
                                         <a href="#"><span className={AboutUsCSS.gitHub}><i class="fa-brands fa-github"></i></span></a>
