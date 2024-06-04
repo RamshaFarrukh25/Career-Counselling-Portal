@@ -13,7 +13,7 @@ function CounsellorChat() {
  
   return (
     
-    <SBProvider appId="B3C55D36-ADA4-4D77-82D5-3C3BB439AE7F" userId={`${user_id}`} colorSet={myColorSet}>
+    <SBProvider appId="70C4C4CC-A6BE-45C2-9263-21D45ECAFFE0" userId={`${user_id}`} colorSet={myColorSet}>
       <div className="chat-container" style={{ height: "100vh", width: "150vh" }}>
       <CustomizedApp />
       </div>
