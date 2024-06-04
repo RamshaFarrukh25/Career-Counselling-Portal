@@ -36,9 +36,9 @@ export default function CustomizedApp() {
     });
   if(currentChannelUrl)
   {
-    const applicationId = 'B3C55D36-ADA4-4D77-82D5-3C3BB439AE7F';
+    const applicationId = '70C4C4CC-A6BE-45C2-9263-21D45ECAFFE0';
         
-        const apiToken = '7f2ae6b3a4400c4692315192d8cc961d906983d2';
+        const apiToken = 'a3b8b5d1ea55c1e6c7b174b5a4e3d09435344791';
 
         const url = `https://api-${applicationId}.sendbird.com/v3/users/${user_id}/unread_channel_count`;
 
