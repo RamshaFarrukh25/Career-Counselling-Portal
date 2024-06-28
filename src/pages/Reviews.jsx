@@ -325,9 +325,8 @@ export default function Reviews(){
                 {latestReviews && Array.isArray(latestReviews) ? (latestReviews.map(item => (
                 (item.is_approved == true && <div className={`col-md-3 card ${ReviewsCSS.singleCard} mx-3 mb-3`} key={item.id}>
                         <div className={`card-body`}>
-                            <h5 className={`card-title`}>{item.reviewer_name}</h5>
-                            <h6 className={`card-subtitle mb-3 text-muted`}>{item.reviewer_email}</h6>
-                            <p className={`card-text`}>{item.reviewer_description}</p>
+                            <h5 className={`${ReviewsCSS.name} card-title`}>{item.reviewer_name}</h5>
+                            <p className={` ${ReviewsCSS.body} card-text`}>{item.reviewer_description}</p>
                         </div>
                     </div>)))) : (
                     <p>Loading...</p>

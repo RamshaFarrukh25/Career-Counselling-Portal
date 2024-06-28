@@ -372,7 +372,7 @@ def getReviews(request):
 def getCounsellorsByUID(request):
     if request.method == 'GET' and request.session.get('user_id'):
         user = ACU.objects.filter(Q(role='C') | Q(role='B'))
-        counsellors = Counsellor.objects.filter(counsellor_id__in=user)
+        counsellors = Counsellor.objects.filter(Q(counsellor_id__in=user) & Q(is_approved=True))
         serializer = CounsellorDataSerializer(counsellors, many=True)
         return HttpResponse(json.dumps({"counsellorsList" : serializer.data}))
     else:
@@ -744,7 +744,7 @@ def deleteBlog(request, bid):
 #Api for getting total of user count
 def getUsersCount(request):
     try:
-        users_count = ACU.objects.count()
+        users_count = ACU.objects.filter(Q(role='U') | Q(role='B')).count()
         return JsonResponse({'users_count': users_count})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
@@ -752,7 +752,7 @@ def getUsersCount(request):
 #Api for getting total of Blogs count
 def getBlogsCount(request):
     try:
-        blog_count =Blogs.objects.count()
+        blog_count =Blogs.objects.filter(is_approved=True).count()
         return JsonResponse({'blog_count': blog_count})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)

@@ -1,5 +1,5 @@
 import ProfileCSS from "../../../assets/styles/dashboards/admin_css/Profile.module.css"
-import Avatar from "../../../assets/images/Dr. Samantha Williams_Image.jpg"
+import Avatar from "../../../assets/images/Admin.jpg"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { 
@@ -27,8 +27,8 @@ export default function Profile() {
             <div className="row">
                 <div className={`col-md-4 col-sm-12 ${ProfileCSS.form}`}>
                     <img src={Avatar} className={`rounded-circle mb-3 ${ProfileCSS.avatarImage}`} alt="Avatar" />
-                    <h5 className={`mb-2 mx-4`}><strong>{profileForm.name}</strong></h5>
-                    <h5><span className={`badge bg-primary mx-4`}>Admin</span></h5>
+                    <h5 className={`mb-2 text-center`}><strong>{profileForm.name}</strong></h5>
+                    {/* <h5><span className={`badge bg-primary mx-4`}>Admin</span></h5> */}
                 </div>
 
                 <div className={`${ProfileCSS.form} col-md-8 col-sm-12`}>

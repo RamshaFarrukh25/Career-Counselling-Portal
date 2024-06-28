@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ACU, Counsellor, Qualification, WorkingExperience, Ratings, Reviews, Blogs, CareerGPTHistory, UserChatWithCounsellors
+from .models import ACU, Counsellor, Qualification, WorkingExperience, Ratings, Reviews, Blogs, CareerGPTHistory
 
 admin.site.register(ACU)
 admin.site.register(Counsellor)
@@ -9,4 +9,3 @@ admin.site.register(Ratings)
 admin.site.register(Reviews)
 admin.site.register(Blogs)
 admin.site.register(CareerGPTHistory)
-admin.site.register(UserChatWithCounsellors)

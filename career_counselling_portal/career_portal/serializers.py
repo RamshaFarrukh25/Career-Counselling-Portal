@@ -24,12 +24,16 @@ class TopCounsellorSerializer(serializers.ModelSerializer):
     email = serializers.CharField(source='counsellor_id.email')
     field_of_study = serializers.CharField(source='qualification.field_of_study')
     qualification = serializers.CharField(source='qualification.qualification')
-    review_description = serializers.CharField(source='ratings.first.review_description',allow_null=True)
+    review_description = serializers.SerializerMethodField()
     avg_rating = serializers.IntegerField()
-
+    
     class Meta:
         model = Counsellor
-        fields = ['id','name', 'field_of_study','email','profile_pic', 'qualification', 'review_description', 'avg_rating','profile_pic']
+        fields = ['id', 'name', 'field_of_study', 'email', 'profile_pic', 'qualification', 'review_description', 'avg_rating', 'profile_pic']
+
+    def get_review_description(self, obj):
+        latest_review = obj.ratings.order_by('-created_at').first()
+        return latest_review.review_description if latest_review else None
 
 
 class CounsellorDataSerializer(serializers.ModelSerializer):

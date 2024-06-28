@@ -267,7 +267,7 @@ export default function ApproveBlogs() {
               <p>Are you sure you want to delete this blog?</p>
               <p><strong>ID:</strong> {selectedBlog.id}</p>
               <p><strong>Blog Title: </strong>{selectedBlog.title}</p>
-              <p><strong>Reason of Rejection: </strong></p>
+              
               {/* rejection reason module */}
             </div>
           )}
