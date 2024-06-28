@@ -3,7 +3,7 @@
 # Hugging Face Authentication Token
 import os
 
-os.environ["HF_TOKEN"] = "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"
+os.environ["HF_TOKEN"] = "" # Write Hugging Face Write Token Here
 HF_TOKEN = os.environ["HF_TOKEN"]
 print(HF_TOKEN)
 
@@ -140,7 +140,7 @@ async def query(query_data: Query, response: Response):
 nest_asyncio.apply()
 
 # Ngrok Authentication Token
-ngrok.set_auth_token("2aXQFOJxrgvnLiUL9ClnsbSbK6P_3mUgFhgg1aSbP3z658TxC")
+ngrok.set_auth_token("") # Write ngrok Token Here
 
 # Setup a tunnel to the FastAPI server on port 4040
 public_url = ngrok.connect(5000)
