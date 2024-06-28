@@ -1,1 +1,0 @@
-Please don't delete __init__.py file.

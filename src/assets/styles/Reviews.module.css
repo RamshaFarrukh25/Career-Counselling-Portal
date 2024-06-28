@@ -158,6 +158,17 @@
 
   .singleCard{
     padding: 10px;
+    border: 2px solid var(--blue);
+  }
+
+  .name{
+    color: var(--blue);
+    text-shadow: 2px 2px var(--lavender);
+    font-size: 30px;
+  }
+
+  .body{
+    color: var(--blue);
   }
   
   /****** Style Star Rating Widget *****/
