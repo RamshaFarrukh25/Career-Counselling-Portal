@@ -1,0 +1,151 @@
+!pip install transformers torch accelerate
+
+# Hugging Face Authentication Token
+import os
+
+os.environ["HF_TOKEN"] = "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"
+HF_TOKEN = os.environ["HF_TOKEN"]
+print(HF_TOKEN)
+
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+from transformers import AutoTokenizer
+from transformers import pipeline
+import transformers
+import torch
+
+# Set multiprocessing start method to 'spawn'
+import multiprocessing
+multiprocessing.set_start_method('spawn', force=True)
+
+model = "meta-llama/Llama-2-7b-chat-hf" # meta-llama/Llama-2-7b-chat-hf
+
+tokenizer = AutoTokenizer.from_pretrained(model, token=HF_TOKEN, truncation=True, max_length=1024)
+
+
+
+llama_pipeline = pipeline(
+    "text-generation",  # LLM task
+    model=model,
+    torch_dtype=torch.float16,
+    device_map="auto",
+)
+
+SYSTEM_PROMPT = """<s>[INST] <<SYS>>
+You are a helpful bot. Your answers are clear and concise.
+<</SYS>>
+
+"""
+# Formatting function for message and history
+def format_message(message: str, history: list, memory_limit: int = 3) -> str:
+    """
+    Formats the message and history for the Llama model.
+
+    Parameters:
+        message (str): Current message to send.
+        history (list): Past conversation history.
+        memory_limit (int): Limit on how many past interactions to consider.
+
+    Returns:
+        str: Formatted message string
+    """
+    # always keep len(history) <= memory_limit
+    if len(history) > memory_limit:
+        history = history[-memory_limit:]
+
+    if len(history) == 0:
+        return SYSTEM_PROMPT + f"{message} [/INST]"
+
+    formatted_message = SYSTEM_PROMPT + f"{history[0][0]} [/INST] {history[0][1]} </s>"
+
+    # Handle conversation history
+    for user_msg, model_answer in history[1:]:
+        formatted_message += f"<s>[INST] {user_msg} [/INST] {model_answer} </s>"
+
+    # Handle the current message
+    formatted_message += f"<s>[INST] {message} [/INST]"
+
+    return formatted_message
+
+def get_llama_response(message: str, history: list, max_tokens: int = 200, max_length: int = 1024) -> str:
+    """
+    Generates a conversational response from the Llama model.
+
+    Parameters:
+        message (str): User's input message.
+        history (list): Past conversation history.
+        max_tokens (int): Maximum number of tokens to generate.
+        max_length (int): Maximum length of the entire generated sequence.
+
+    Returns:
+        str: Generated response from the Llama model.
+    """
+    query = format_message(message, history)
+    response = ""
+
+    sequences = llama_pipeline(
+        query,
+        do_sample=True,
+        top_k=10,
+        num_return_sequences=1,
+        eos_token_id=tokenizer.eos_token_id,
+        truncation=True,
+        max_length=1024,
+        max_new_tokens=200
+    )
+
+    generated_text = sequences[0]['generated_text']
+    response = generated_text[len(query):]  # Remove the prompt from the output
+
+    # Find the last newline character and truncate the response there
+    last_new_line_index = response.rfind('\n')
+    if last_new_line_index != -1:
+        response = response[:last_new_line_index + 1]
+        additional_line = "If you have any further questions, feel free to ask."
+        response += additional_line
+
+    return response.strip()
+
+
+response = get_llama_response("Hello", [])
+print("ChatbotResponse:   ", response)
+
+!pip install fastapi uvicorn
+!pip install pyngrok
+
+from fastapi import FastAPI, Request, Response
+from pydantic import BaseModel
+from typing import List
+
+from pyngrok import ngrok
+import nest_asyncio
+import uvicorn
+
+app = FastAPI()
+
+class Query(BaseModel):
+    user_query: str
+    history: List[tuple]
+
+@app.post("/query")
+async def query(query_data: Query, response: Response):  
+    response.headers["Access-Control-Allow-Origin"] = "http://127.0.0.1:5173"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    response.headers["Access-Control-Allow-Headers"] = "*"
+    response_content = get_llama_response(query_data.user_query, query_data.history)
+    return {"response": response_content}
+
+
+# Allow nested asyncio event loops (necessary for running Uvicorn in Kaggle)
+nest_asyncio.apply()
+
+# Ngrok Authentication Token
+ngrok.set_auth_token("2aXQFOJxrgvnLiUL9ClnsbSbK6P_3mUgFhgg1aSbP3z658TxC")
+
+# Setup a tunnel to the FastAPI server on port 4040
+public_url = ngrok.connect(5000)
+print("Public URL:", public_url)
+
+# Start FastAPI server using uvicorn
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=5000)
